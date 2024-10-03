@@ -39,6 +39,7 @@ module "file_notifier" {
   available_cpu      = "2"
   notify_api_secret_id  = "notify_api_dev"
   vpc_connector_name    = "vpcac-adenf-dev"
+  schedule           = "0 */2 * * *"
 }
 
 resource "google_secret_manager_secret_iam_binding" "notify_api_access" {
