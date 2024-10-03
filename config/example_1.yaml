@@ -1,0 +1,34 @@
+parameters:
+  max_files_per_manifest: 1000
+source_systems:
+  - ade_source_system: ny_tlc
+    single_file_manifest: true
+    fullscanned: true
+    entities:
+      - ade_source_entity: yellow_tripdata_bq
+        file_location: ny_tlc/yellow_tripdata
+        format: PARQUET
+      - ade_source_entity: green_tripdata_bq
+        file_location: ny_tlc/green_tripdata
+        format: PARQUET
+      - ade_source_entity: taxi_zone_bq
+        file_location: ny_tlc/taxi_zone
+        format: CSV
+        delim: COMMA
+        skiph: 1
+      - file_location: ny_tlc/taxi_zone_geography
+        ade_source_entity: taxi_zone_geography_bq
+        format: JSON
+  - ade_source_system: digitraffic
+    single_file_manifest: false
+    fullscanned: false
+    entities:
+      - ade_source_entity: metadata_vessels_bq
+        file_location: digitraffic/metadata_vessels/
+        format: JSON
+      - ade_source_entity: locations_latest_bq
+        file_location: digitraffic/locations_latest/
+        format: CSV
+        delim: SEMICOLON
+        skiph: 1
+        compression: GZIP

@@ -1,0 +1,6 @@
+functions-framework==3.8.1
+google-cloud-storage==2.18.2
+google-cloud-logging==3.11.2
+pyyaml==6.0.2
+
+git+https://github.com/solita/adenotifier.git@v0.2.2
