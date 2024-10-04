@@ -42,6 +42,17 @@ module "file_notifier" {
   schedule           = "0 */2 * * *"
 }
 
+# Optional module, if one wants to execute notifier from BigQuery with remote function.
+ module "bigquery_remote_function" {
+   source = "./modules/bigquery_remote_function"
+   project            = var.project
+   app                = var.app
+   env                = var.env
+   region             = var.region
+   notifier_function_name = module.file_notifier.notifier_function_name_http
+   notifier_function_url  = module.file_notifier.notifier_function_url_http
+}
+
 resource "google_secret_manager_secret_iam_binding" "notify_api_access" {
   secret_id   = "notify_api_dev"
   role = "roles/secretmanager.secretAccessor"
@@ -55,3 +66,4 @@ resource "google_secret_manager_secret_iam_binding" "notify_api_access" {
    region             = var.region
    cidr_range         = var.cidr_range
  }*/
+

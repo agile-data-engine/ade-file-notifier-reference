@@ -5,6 +5,7 @@ import logging
 import os
 import google.cloud.logging
 from datetime import datetime
+import time
 from gcp_handler import GCPFileHandler
 from common.notifier_common import (
     translate_dict,
@@ -33,10 +34,14 @@ def download_config(bucket_name, folder_prefix):
 
 def upload_notifier_status(bucket_name, notifier_status_content):
     year, month, day = datetime.now().strftime('%Y %m %d').split()
-    status_file_path = f"status/{year}/{month}/{day}/{year}_{month}_{day}_notifier_status.json"
+    timemillis = round(time.time() * 1000)
+    status_file_path = f"status/{year}/{month}/{day}/{timemillis}_notifier_status.json"
 
-    status_gcp_handler = GCPFileHandler(bucket_name, "status/")
-    upload_result = status_gcp_handler.upload_file(status_file_path, json.dumps(notifier_status_content))
+    if notifier_status_content != []:
+        status_gcp_handler = GCPFileHandler(bucket_name, "status/")
+        upload_result = status_gcp_handler.upload_file(status_file_path, json.dumps(notifier_status_content))
+    else:
+        return
 
     if upload_result:
         logging.info(f"Uploaded file to GCS: {status_file_path}")
@@ -102,10 +107,36 @@ def file_foldering(cloud_event: object) -> None:
 @functions_framework.cloud_event
 def add_to_manifest(cloud_event: object) -> None:
     """
-    Event format should be similar as BigQuery remote function events to allow adding this function either:
-       - Directly in Cloud Function with schedules or triggers
-       - With remote function from BigQuery
+    Event incoming from Pub/Sub.
+    Can be scheduled with Cloud Scheduler.
 
+    Args:
+        cloud_event (functions_framework.cloud_event): Google cloud event which triggers the function.
+
+    Returns:
+        Event processing status.
+    """
+    event_data = json.loads(base64.b64decode(cloud_event.data['message']['data']).decode())
+    return process_events(event_data)
+
+
+@functions_framework.http
+def add_to_manifest_http(request):
+    """
+    Event can be sent directly to Cloud function or from BigQuery remote function.
+
+    Args:
+        request (functions_framework.http): Http event.
+
+    Returns:
+        Event processing status.
+    """
+    event_data = request.get_json()
+    return process_events(event_data)
+
+
+def process_events(event_data: object):
+    """
     The calls block:
     {
         "calls": [
@@ -123,9 +154,15 @@ def add_to_manifest(cloud_event: object) -> None:
             ["system", ""]
         ]
     }
+
+    Args:
+        event_data: Either event data from Pub/Sub or http call, formatted to JSON object.
+
+    Returns:
+        Http responses with jsonify
     """
     try:
-        event_data = json.loads(base64.b64decode(cloud_event.data['message']['data']).decode())
+        logging.info(f'Cloud Function was triggered by event:\n{event_data}')
         bucket_name = os.environ['NOTIFIER_BUCKET']
         config_prefix = os.environ['CONFIG_PREFIX']
         secrets = json.loads(os.environ['NOTIFY_API_SECRET_ID'])
@@ -183,7 +220,7 @@ def add_to_manifest(cloud_event: object) -> None:
         
         upload_notifier_status(bucket_name, notifier_status)
 
-        return jsonify({"replies": [{"status": "OK"}]}), 200
+        return jsonify( { "replies" :  [{"status": "OK", "notifier_status": notifier_status}]} ), 200
     
     except Exception as e:
         logging.error(f"Error processing cloud event: {e}")

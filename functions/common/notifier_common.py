@@ -157,6 +157,13 @@ def manifest_handler(manifest_header, manifest_entries, secrets, max_files_in_ma
         notify = notifier.add_multiple_entries_to_manifest(manifest_part, manifest_header, base_url, api_key, api_key_secret)
         manifest_id = notify.id
 
-        manifests.append({"manifest_id": manifest_id, "entry_amount": len(manifest_part), "entries": manifest_part, "status": "success"})
+        formatted_timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
+        manifests.append({
+            "manifest_id": manifest_id, 
+            "entry_amount": len(manifest_part), 
+            "entries": manifest_part, 
+            "status": "success",
+            "notification_time": formatted_timestamp
+            })
 
     return manifests
