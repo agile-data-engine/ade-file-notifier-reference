@@ -20,6 +20,16 @@ client = google.cloud.logging.Client()
 client.setup_logging()
 
 def download_config(bucket_name, folder_prefix):
+    """
+    Downloads config-file from Notifier-bucket.
+        
+    Args:
+        bucket_name: notifier bucket name.
+        folder_prefix: Notifier config-folder.
+
+    Returns:
+        config_dict: config-file formatted to JSON-format
+    """
     gcp_handler = GCPFileHandler(bucket_name, folder_prefix)
 
     yaml_files_data = gcp_handler.download_and_load_yaml_files()
@@ -33,6 +43,18 @@ def download_config(bucket_name, folder_prefix):
     return config_dict
 
 def upload_notifier_status(bucket_name, notifier_status_content):
+    """
+    Uploads notifier status as JSON file to notifier bucket.
+    Status files are partitioned by year, month, day.
+    Status files are named with unix milliseconds in the name.
+        
+    Args:
+        bucket_name: notifier bucket name
+        notifier_status_content: Notifier status in JSON-format.
+
+    Returns:
+        None.
+    """
     year, month, day = datetime.now().strftime('%Y %m %d').split()
     timemillis = round(time.time() * 1000)
     status_file_path = f"status/{year}/{month}/{day}/{timemillis}_notifier_status.json"
@@ -123,7 +145,7 @@ def add_to_manifest(cloud_event: object) -> None:
 @functions_framework.http
 def add_to_manifest_http(request):
     """
-    Event can be sent directly to Cloud function or from BigQuery remote function.
+    Http request can be sent directly from Cloud function or from BigQuery remote function.
 
     Args:
         request (functions_framework.http): Http event.

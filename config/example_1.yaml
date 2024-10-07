@@ -22,6 +22,7 @@ source_systems:
   - ade_source_system: digitraffic
     single_file_manifest: false
     fullscanned: false
+    dag_trigger: DV_DIGITRAFFIC_BQ
     entities:
       - ade_source_entity: metadata_vessels_bq
         file_location: digitraffic/metadata_vessels/

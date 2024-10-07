@@ -1,6 +1,8 @@
 from datetime import datetime
 from adenotifier import notifier
 import logging
+import json
+import requests
 
 def translate_dict(input_data: object):
     """Translates config YAML (in dict-format) to proper configuration format,
@@ -126,9 +128,17 @@ def construct_folder_path(config: dict):
     return folder_path
 
 
-def get_matching_configs(config_data, ade_source_system, ade_source_entity):
+def get_matching_configs(config_data: object, ade_source_system: str, ade_source_entity: str):
     """
-    
+    Get matching config-files.
+
+    Args:
+        config_data (object): Configuration data.
+        ade_source_system (string)
+        ade_source_entity (string)
+    Returns:
+        matching_configs (object)
+
     """
     matching_configs = []
 
@@ -144,7 +154,23 @@ def get_matching_configs(config_data, ade_source_system, ade_source_entity):
     return matching_configs
 
 
-def manifest_handler(manifest_header, manifest_entries, secrets, max_files_in_manifest):
+def manifest_handler(
+        manifest_header: object, 
+        manifest_entries: object, 
+        secrets: object, 
+        max_files_in_manifest: int):
+    """
+    Handles manifest and posts to Notify API
+
+    Args:
+        manifest_header (object): Configuration for the manifest, such as delimiter, skip header etc.
+        manifest_entries (object): Manifest entries.
+        secrets (object): Secrets for Notify API
+        max_files_in_manifest (int): Max files sent per manifest. If given, can be used to split entries to multiple manifests.
+    Returns:
+        manifests
+
+    """
     manifest_parts = [manifest_entries[i:i + max_files_in_manifest] for i in range(0, len(manifest_entries), max_files_in_manifest)]
 
     base_url = secrets['base_url']
@@ -167,3 +193,29 @@ def manifest_handler(manifest_header, manifest_entries, secrets, max_files_in_ma
             })
 
     return manifests
+
+
+def start_dag_run_v2(session: requests.Session, base_url: str, dag_id: str):
+    """
+    Start DAG run.
+
+    Args:
+        session (requests.Session): Session to ADE External API.
+        base_url (string): URL to ADE External API.
+        dag_id (string): DAG name in ADE Runtime environment.
+    Returns:
+        content
+
+    """
+    response = session.post(f"{base_url}/dagger/v2/dags/{dag_id}/dag-runs")
+    content = json.loads(response.text) if response.text else ""
+
+    if response.status_code == 401:
+        logging.ERROR(
+            f"\nUnauthorized. Response code {response.status_code}", err=True)
+        exit(1)
+    elif response.status_code != 201:
+        logging.ERROR(
+            f"Unable to start dag with dag id {dag_id}. Response code {response.status_code}: \n{content}", err=True)
+        exit(1)
+    return content
