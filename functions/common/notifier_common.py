@@ -40,7 +40,8 @@ def translate_dict(input_data: object):
                     "delim": system.get('delim', None),
                     "format": system.get('format', None),
                     "fullscanned": system.get('fullscanned', None),
-                    "skiph": system.get('skiph', None)
+                    "skiph": system.get('skiph', None),
+                    "dag_trigger": system.get("dag_trigger", None)
                 }
                 
                 if system_params.get("format") == "PARQUET":
@@ -58,7 +59,8 @@ def translate_dict(input_data: object):
                             "path_replace": system.get('path_replace', None),
                             "path_replace_with": system.get('path_replace_with', None),
                             "single_file_manifest": system.get('single_file_manifest', None),
-                            "max_files_in_manifest": max_files_per_manifest
+                            "max_files_in_manifest": max_files_per_manifest,
+                            "dag_trigger": entity.get('dag_trigger', system_params['dag_trigger']),
                         },
                         "manifest_parameters": {
                             "columns": entity.get('columns', None),
@@ -194,6 +196,35 @@ def manifest_handler(
 
     return manifests
 
+def dag_trigger_handler(notifier_status: object, secrets: object):
+    """
+    Handle DAG triggers for notifier.
+
+    Args:
+        notifier_status (object): Notifier status object.
+        secrets (object): External API secrets containing URL and API-keys.
+    Returns:
+        dags_to_trigger
+
+    """
+    distinct_dags = set()
+
+    for item in notifier_status:
+        dag_trigger = item.get("config", {}).get("attributes", {}).get("dag_trigger")
+        if dag_trigger:
+            distinct_dags.add(dag_trigger)
+    
+    dags_to_trigger = list(distinct_dags)
+
+    session = requests.Session()
+    session.headers.update({"X-API-KEY-ID": secrets['api_key'],
+                    "X-API-KEY-SECRET": secrets['api_key_secret'], "Content-Type": "application/json"})
+
+    for dag_name in dags_to_trigger:
+        dag_run = start_dag_run_v2(session, secrets['base_url'], dag_name)
+        logging.info(f"Got response from dag_run : {dag_run}")
+
+    return dags_to_trigger
 
 def start_dag_run_v2(session: requests.Session, base_url: str, dag_id: str):
     """

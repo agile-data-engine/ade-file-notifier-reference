@@ -27,6 +27,12 @@ resource "google_cloudfunctions2_function" "add_to_manifest_function" {
       secret = var.notify_api_secret_id
       version = "latest"
     }
+    secret_environment_variables {
+      key = "EXTERNAL_API_SECRET_ID"
+      project_id = var.project
+      secret = var.external_api_secret_id
+      version = "latest"
+    }
     max_instance_count = var.max_instances
     max_instance_request_concurrency = var.max_instance_request_concurrency
     available_cpu = var.available_cpu

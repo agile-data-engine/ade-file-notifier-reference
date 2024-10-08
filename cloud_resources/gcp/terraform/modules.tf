@@ -6,6 +6,13 @@ module "service_account" {
   region             = var.region
 }
 
+module "secrets" {
+   source = "./modules/secrets"
+   env                = var.env
+   region             = var.region
+   notifier_service_account = module.service_account.notifier_service_account
+ }
+
 module "file_event_processor" {
   source = "./modules/file_event_processor"
   app                = var.app
@@ -23,40 +30,35 @@ module "file_event_processor" {
 
 module "file_notifier" {
   source = "./modules/file_notifier"
-  project            = var.project
-  app                = var.app
-  env                = var.env
-  region             = var.region
-  notifier_service_account = module.service_account.notifier_service_account
-  notifier_bucket    = module.file_event_processor.notifier_bucket_name
+  project                     = var.project
+  app                         = var.app
+  env                         = var.env
+  region                      = var.region
+  notifier_service_account    = module.service_account.notifier_service_account
+  notifier_bucket             = module.file_event_processor.notifier_bucket_name
   function_source_code_object = module.file_event_processor.notifier_bucket_source_code_object
-  file_url_prefix    = "gs://"
-  config_prefix      = "data-sources/"
-  function_timeout   = 540
-  function_memory    = "4G"
-  max_instances      = 10
+  file_url_prefix             = "gs://"
+  config_prefix               = "data-sources/"
+  function_timeout            = 540
+  function_memory             = "4G"
+  max_instances               = 10
   max_instance_request_concurrency = 1
-  available_cpu      = "2"
-  notify_api_secret_id  = "notify_api_dev"
-  vpc_connector_name    = "vpcac-adenf-dev"
-  schedule           = "0 */2 * * *"
+  available_cpu               = "2"
+  notify_api_secret_id        = module.secrets.notify_api_secret_id
+  external_api_secret_id      = module.secrets.external_api_secret_id
+  vpc_connector_name          = "vpcac-adenf-dev"
+  schedule                    = "0 */2 * * *"
 }
 
 # Optional module, if one wants to execute notifier from BigQuery with remote function.
  module "bigquery_remote_function" {
    source = "./modules/bigquery_remote_function"
-   project            = var.project
-   app                = var.app
-   env                = var.env
-   region             = var.region
+   project                = var.project
+   app                    = var.app
+   env                    = var.env
+   region                 = var.region
    notifier_function_name = module.file_notifier.notifier_function_name_http
    notifier_function_url  = module.file_notifier.notifier_function_url_http
-}
-
-resource "google_secret_manager_secret_iam_binding" "notify_api_access" {
-  secret_id   = "notify_api_dev"
-  role = "roles/secretmanager.secretAccessor"
-  members = ["serviceAccount:${module.service_account.notifier_service_account}"]
 }
 
 /*module "network" {
@@ -66,4 +68,3 @@ resource "google_secret_manager_secret_iam_binding" "notify_api_access" {
    region             = var.region
    cidr_range         = var.cidr_range
  }*/
-

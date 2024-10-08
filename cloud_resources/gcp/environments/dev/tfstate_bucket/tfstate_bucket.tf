@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-resource "google_storage_bucket" "terraform_state_bucke" {
+resource "google_storage_bucket" "terraform_state_bucket" {
   name          = "${var.app}-tfstate-${var.env}"
   project       = var.project
   location      = var.region

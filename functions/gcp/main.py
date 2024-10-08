@@ -12,7 +12,8 @@ from common.notifier_common import (
     identify_sources,
     construct_folder_path,
     get_matching_configs,
-    manifest_handler
+    manifest_handler,
+    dag_trigger_handler
 )
 from flask import jsonify
 
@@ -188,6 +189,7 @@ def process_events(event_data: object):
         bucket_name = os.environ['NOTIFIER_BUCKET']
         config_prefix = os.environ['CONFIG_PREFIX']
         secrets = json.loads(os.environ['NOTIFY_API_SECRET_ID'])
+        ext_api_secrets = json.loads(os.environ['EXTERNAL_API_SECRET_ID'])
 
         config_dict = download_config(bucket_name, config_prefix)
         notifier_status = []
@@ -241,6 +243,12 @@ def process_events(event_data: object):
                 return jsonify({"errorMessage": str(e)}), 400
         
         upload_notifier_status(bucket_name, notifier_status)
+
+        try:
+            dag_trigger_handler(notifier_status, ext_api_secrets)
+        except Exception as e:
+            logging.error(f"Error occurred: {e}")
+            return jsonify({"errorMessage": str(e)}), 400
 
         return jsonify( { "replies" :  [{"status": "OK", "notifier_status": notifier_status}]} ), 200
     

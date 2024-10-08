@@ -58,6 +58,10 @@ variable "notify_api_secret_id" {
     type = string
 }
 
+variable "external_api_secret_id" {
+    type = string
+}
+
 variable "vpc_connector_name" {
     type = string
 }
