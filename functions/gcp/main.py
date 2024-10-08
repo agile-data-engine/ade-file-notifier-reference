@@ -6,6 +6,7 @@ import os
 import google.cloud.logging
 from datetime import datetime
 import time
+import re
 from gcp_handler import GCPFileHandler
 from common.notifier_common import (
     translate_dict,
@@ -67,7 +68,7 @@ def upload_notifier_status(bucket_name, notifier_status_content):
         return
 
     if upload_result:
-        logging.info(f"Uploaded file to GCS: {status_file_path}")
+        logging.info(f"Notifier status successfully uploaded")
     else:
         logging.error(f"Failed to upload {status_file_path} to GCS.")
         return
@@ -91,6 +92,12 @@ def file_foldering(cloud_event: object) -> None:
 
         config_dict = download_config(bucket_name, config_prefix)
         event_url = f"{os.environ['FILE_URL_PREFIX']}{event_data['bucket']}/{event_data['name']}"
+
+        # Validate that there is file prefix in the event. 
+        # Google Cloud can make event from manual folder creation.
+        pattern = r'\.[a-zA-Z0-9]+$'
+        if re.search(pattern, event_url) is None:
+            return
         sources = identify_sources(event_url, config_dict)
 
         if (sources == []):
