@@ -1,0 +1,37 @@
+parameters:
+  max_files_per_manifest: 1000
+source_systems:
+  - ade_source_system: system2
+    batch_from_file_path_regex: "batch\\.(\\d*)\\.csv\\.gz"
+    path_replace: "https://"
+    path_replace_with: "azure://"
+    single_file_manifest: false
+    max_files_in_manifest: 1000
+    compression: GZIP
+    delim: SEMICOLON
+    format: CSV
+    fullscanned: false
+    skiph: 1
+    entities:
+      - ade_source_entity: entity1
+        file_location: system2/entity1
+        columns: [test1, test2, test3]
+      - ade_source_entity: entity2 
+        file_location: system2/entity2
+  - ade_source_system: system3
+    batch_from_file_path_regex: "batch\\.(\\d*)\\.csv\\.gz"
+    path_replace: "https://"
+    path_replace_with: "azure://"
+    single_file_manifest: true
+    max_files_in_manifest: 500
+    compression: GZIP
+    delim: COMMA
+    format: CSV
+    fullscanned: true
+    skiph: 1
+    entities:
+      - ade_source_entity: entity1
+        file_location: system3/entity1
+      - ade_source_entity: entity3
+        file_location: system3/entity3
+        

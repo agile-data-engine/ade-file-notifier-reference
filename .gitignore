@@ -1,0 +1,5 @@
+**/.terraform/
+**/*.tfstate.backup
+**/.output/
+**/*.drawio.bkp
+.DS_Store
