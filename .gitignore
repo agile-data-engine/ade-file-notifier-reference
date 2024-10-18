@@ -2,4 +2,6 @@
 **/*.tfstate.backup
 **/.output/
 **/*.drawio.bkp
+**/.venv/
+**/.vscode
 .DS_Store
