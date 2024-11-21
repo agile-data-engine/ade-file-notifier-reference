@@ -1,0 +1,13 @@
+{
+    "scriptFile": "queue_file.py",
+    "entryPoint": "queue_file",
+    "bindings": [
+        {
+            "name": "msg",
+            "type": "queueTrigger",
+            "direction": "in",
+            "queueName": "%blob_event_queue%",
+            "connection": "AzureWebJobsStorage"
+        }
+    ]
+}
