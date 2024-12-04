@@ -224,11 +224,14 @@ def process_events(event_data: object):
                 gcp_handler = GCPFileHandler(bucket_name, file_path_prefix)
                 json_files_data, file_list = gcp_handler.download_and_list_files()
 
-                if json_files_data == []:
+                if not json_files_data or not isinstance(json_files_data, list):
                     logging.info(f'No events to notify for ade_source_system: {ade_source_system}, ade_source_entity: {ade_source_entity}')
                     continue
-                entries = [item['full_file_path'] for item in json_files_data]
+                entries = [item['full_file_path'] for item in json_files_data if 'full_file_path' in item]
 
+                if not entries:
+                    logging.warning("No valid entries.")
+                    continue
                 for config in matching_configs:
                     folder_path = config['attributes']['folder_path']
                     ade_source_system = config['attributes']['ade_source_system']

@@ -46,8 +46,7 @@ module "file_notifier" {
   available_cpu               = "2"
   notify_api_secret_id        = module.secrets.notify_api_secret_id
   external_api_secret_id      = module.secrets.external_api_secret_id
-  vpc_connector_name          = "vpcac-adenf-dev"
-  schedule                    = "0 */2 * * *"
+  vpc_connector_name          = var.vpc_connector_name
 }
 
 # Optional module, if one wants to execute notifier from BigQuery with remote function.

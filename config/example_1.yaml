@@ -23,6 +23,7 @@ source_systems:
     single_file_manifest: false
     fullscanned: false
     dag_trigger: DV_DIGITRAFFIC_BQ
+    cron_schedule: "0 */2 * * *"
     entities:
       - ade_source_entity: metadata_vessels_bq
         file_location: digitraffic/metadata_vessels/
