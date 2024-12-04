@@ -106,7 +106,7 @@ def identify_sources(file_url: str, config: object):
 
         file_path = '/'.join(file_url.split('/')[3:])
 
-        if (file_path.startswith(f'{source_path}/') and source_extension in file_url):
+        if (file_path.startswith(f'{source_path}') and source_extension in file_url):
             sources.append(source)
 
     return sources

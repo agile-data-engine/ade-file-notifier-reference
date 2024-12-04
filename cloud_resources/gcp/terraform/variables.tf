@@ -27,6 +27,10 @@ variable "cidr_range" {
     type = string
 }
 
+variable "vpc_connector_name" {
+    type = string
+}
+
 variable "config_files" {
   description = "List of YAML files in the config directory"
   type        = list(string)
