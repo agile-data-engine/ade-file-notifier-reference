@@ -28,7 +28,7 @@ Reference Notifier solution architecture in high level:
 # Data source configuration
 Configure data sources into configuration files in YAML-format. 
 
-See configuration example in [config/example_1.yaml](config/example_1.yaml). These YAML-files can be split into multiple files depending on the requirements.
+See configuration examples in [config/example_1.yaml](config/example_1.yaml) and [config/example_2.yaml](config/example_2.yaml). These YAML-files can be split into multiple files depending on the requirements. YAML-files can be named freely.
 
 A table describing each attribute in YAML and supported levels:
 
@@ -44,10 +44,11 @@ A table describing each attribute in YAML and supported levels:
 | `source_systems.entities`    | Yes           | A list of entities associated with the source system, each representing a table.                                                                                     |
 | `entities.ade_source_entity` | Yes           | The identifier of the source entity within ADE, e.g., `yellow_tripdata_bq`.                                                                                              |
 | `entities.file_location`     | Yes           | The path to the entity's file location, relative to the root storage path, e.g., `ny_tlc/yellow_tripdata`.                                                                     |
-| `entities.format`            | Yes           | The file format of the entity, e.g., `PARQUET`, `CSV`, or `JSON`. Can be defined at both the **source_systems** level and the **entities** level. Entity level takes precedence. |
-| `entities.delim`             | No            | Specifies the delimiter used in the entity's file if the format is `CSV`. Examples: `COMMA`, `SEMICOLON`.                                                                       |
+| `entities.format`            | Yes           | The file format of the entity. Can be defined at both the **source_systems** level and the **entities** level. Entity level takes precedence. Allowed values: `PARQUET`, `CSV`, `XML`, or `JSON`|
+| `entities.delim`             | No            | Specifies the delimiter used in the entity's file if the format is `CSV`. Allowed values: `COMMA`, `TAB`, `SEMICOLON`, `PIPE`, `HASH`.                                                                       |
 | `entities.skiph`             | No            | The number of header rows to skip when processing the file, if applicable.                                                                                                      |
-| `entities.compression`       | No            | The compression format used for the file, e.g., `GZIP`.                                                                                                                         |
+| `entities.batch_from_file_path_regex` | No           | Regex to be used to extract batch information from file path/name. In the example `batch\\.(\\d*)\\.csv` is used to extract numeric batch `1234` from `batch.1234.csv` string. Can be defined at both the **source_systems** level and the **entities** level. Entity level takes precedence.                                                                                           |
+| `entities.compression`       | No            | The compression format used for the file, e.g., `GZIP`. Allowed values: `BZIP2`, `GZIP`, `LZOP`.                                                                                                                         |
 | `entities.fullscanned`       | No            | Specifies whether the entity is fully scanned. Overrides the `fullscanned` setting at the **source_systems** level if defined at the **entity** level.                         |
 | `source_systems.single_file_manifest` | No           | Indicates whether a single file manifest is created for the source system. Default: `false`. Can also be set for each **entity** within `entities`.                            |
 | `entities.fullscanned`       | No            | Specifies whether the entity is fully scanned. Overrides the value set at the **source_systems** level if defined.                                                                 |
@@ -59,6 +60,7 @@ A table describing each attribute in YAML and supported levels:
   - **`compression`**
   - **`fullscanned`**
   - **`single_file_manifest`**
+  - **`batch_from_file_path_regex`**
 
 
 The YAML-files are translated to configuration format specified in [adenotifier library readme](https://github.com/agile-data-engine/adenotifier). YAML-format is simplification of the configuration.
