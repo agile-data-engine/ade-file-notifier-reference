@@ -61,7 +61,7 @@ A table describing each attribute in YAML and supported levels:
   - **`single_file_manifest`**
 
 
-The YAML-files are translated to configuration format specified in [adenotifier library readme](https://github.com/solita/adenotifier). YAML-format is simplification of the configuration.
+The YAML-files are translated to configuration format specified in [adenotifier library readme](https://github.com/agile-data-engine/adenotifier). YAML-format is simplification of the configuration.
 
 # Deployable resources
 Describing terraform and function code and how to deploy the resources.
@@ -93,4 +93,4 @@ functions
 Let's say you would need to deploy to aws, so in that case you can just remove azure and gcp folders from /functions.
 
 # Dependencies
-This solution uses the [adenotifier](https://github.com/solita/adenotifier) Python library. Please specify a version in requirements.txt to prevent issues with library upgrades.
+This solution uses the [adenotifier](https://github.com/agile-data-engine/adenotifier) Python library. Please specify a version in requirements.txt to prevent issues with library upgrades.
