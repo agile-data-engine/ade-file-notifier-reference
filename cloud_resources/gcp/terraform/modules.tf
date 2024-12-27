@@ -28,6 +28,20 @@ module "file_event_processor" {
   available_cpu      = "1"
 }
 
+/*
+Optional network module, if it needs to be created. 
+The assumption is that network setup already exists.
+Note that variable: var.vpc_connector_name needs to be properly set up,
+if network is done from this module.
+module "network" {
+   source = "./modules/network"
+   app                = var.app
+   env                = var.env
+   region             = var.region
+   cidr_range         = var.cidr_range
+ }
+ */
+
 module "file_notifier" {
   source = "./modules/file_notifier"
   project                     = var.project
@@ -59,11 +73,3 @@ module "file_notifier" {
    notifier_function_name = module.file_notifier.notifier_function_name_http
    notifier_function_url  = module.file_notifier.notifier_function_url_http
 }
-
-/*module "network" {
-   source = "./modules/network"
-   app                = var.app
-   env                = var.env
-   region             = var.region
-   cidr_range         = var.cidr_range
- }*/
