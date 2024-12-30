@@ -1,4 +1,5 @@
 **/.terraform/
+.terraform.lock.hcl
 **/*.tfstate.backup
 **/.output/
 **/*.drawio.bkp
