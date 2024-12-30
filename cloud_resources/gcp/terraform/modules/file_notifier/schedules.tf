@@ -1,15 +1,3 @@
-#resource "google_cloud_scheduler_job" "job" {
-#    name        = "${var.app}-${var.env}-example"
-#    description = "Notifier example schedule"
-#    schedule    = var.schedule
-#    region = "europe-west1"
-#    project  = var.project
-#    pubsub_target {
-#    topic_name = google_pubsub_topic.add_to_manifest_topic.id
-#    data       = base64encode("{\"calls\":[[\"digitraffic\", \"\"]]}")
-#    }
-#}
-
 # List all YAML files in the config/ folder
 locals {
   datasource_files = fileset("${path.root}/../../../config/", "*.yaml")
@@ -48,7 +36,7 @@ resource "google_cloud_scheduler_job" "cloud_scheduler_job" {
   project          = var.project
 
   pubsub_target {
-    topic_name = google_pubsub_topic.add_to_manifest_topic.id
+    topic_name = var.notifier_pubsub_topic_id
     data       = base64encode(
       jsonencode({
         calls = [[each.value.ade_source_system, ""]]

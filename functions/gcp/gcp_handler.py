@@ -4,6 +4,10 @@ import yaml
 import json
 from google.cloud import storage
 import time
+import os
+from google.cloud import pubsub_v1
+from concurrent import futures
+from typing import Callable
 
 
 class GCPFileHandler:
@@ -198,3 +202,52 @@ class GCPFileHandler:
 
         logging.error(f"Exceeded max retries. Could not upload {file_path}.")
         return False
+    
+
+class GCPubSubHandler:
+    def __init__(self, topic_name):
+        self.publisher = pubsub_v1.PublisherClient()
+        self.topic_name = topic_name
+
+    def get_callback(
+        self, publish_future: pubsub_v1.publisher.futures.Future, data: str
+    ) -> Callable[[pubsub_v1.publisher.futures.Future], None]:
+        """Creates a callback to handle the result or timeout of a publish operation."""
+        def callback(publish_future: pubsub_v1.publisher.futures.Future) -> None:
+            try:
+                # Wait 60 seconds for the publish call to succeed
+                publish_future.result(timeout=60)
+                logging.info(f"Successfully published message: {data}")
+            except futures.TimeoutError:
+                logging.error(f"Publishing message '{data}' timed out.")
+            except Exception as e:
+                logging.error(f"Failed to publish message '{data}': {e}")
+
+        return callback
+
+    def publish_message(self, message: dict):
+        """Publish a message to the Pub/Sub topic."""
+        publish_futures = []
+        data = json.dumps(message)
+
+        try:
+            # Publish message to Pub/Sub
+            publish_future = self.publisher.publish(
+                self.topic_name,
+                data=data.encode("utf-8")
+            )
+            # Add callback for handling publish result
+            publish_future.add_done_callback(self.get_callback(publish_future, data))
+            publish_futures.append(publish_future)
+
+            # Wait for all futures to complete
+            futures.wait(publish_futures, return_when=futures.ALL_COMPLETED)
+            
+            # Check if any future failed or succeeded
+            if all(future.exception() is None for future in publish_futures):
+                logging.info(f"Successfully published messages to {self.topic_name}.")
+            else:
+                logging.error(f"Failed to publish messages to {self.topic_name}.")
+        
+        except Exception as e:
+            logging.error(f"Failed to publish message to Pub/Sub topic: {e}")

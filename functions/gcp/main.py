@@ -8,6 +8,7 @@ from datetime import datetime
 import time
 import re
 from gcp_handler import GCPFileHandler
+from gcp_handler import GCPubSubHandler
 from common.notifier_common import (
     translate_dict,
     identify_sources,
@@ -87,6 +88,7 @@ def file_foldering(cloud_event: object) -> None:
     """
     try:
         event_data = json.loads(base64.b64decode(cloud_event.data['message']['data']).decode())
+        logging.info(f'Got event data: {event_data}')
         bucket_name = os.environ['NOTIFIER_BUCKET']
         config_prefix = os.environ['CONFIG_PREFIX']
 
@@ -108,7 +110,7 @@ def file_foldering(cloud_event: object) -> None:
             logging.info(f'Source not identified for url: {event_url}')
             return
 
-        #storage_client = storage.Client()
+        logging.info(f'Got sources: {sources}. Length of sources: {len(sources)}')
         for source in sources:
             logging.info(f"Processing source: {source['id']}")
             folder_path = construct_folder_path(source)
@@ -124,7 +126,10 @@ def file_foldering(cloud_event: object) -> None:
             upload_result = gcp_handler.upload_file(file_path, filedata)
 
             if upload_result:
-                logging.info(f"Uploaded file to GCS: {file_path}")
+                # If single file manifest option is True, notification will be done right away
+                # this is done by sending data to Pub/Sub, which invokes the notification process
+                if source['attributes'].get('single_file_manifest', False):
+                    handle_single_file_manifest(source)
             else:
                 logging.error(f"Failed to upload {file_path} to GCS.")
                 return
@@ -132,6 +137,32 @@ def file_foldering(cloud_event: object) -> None:
         logging.error(f"Error processing cloud event: {e}")
         return
 
+
+def handle_single_file_manifest(source):
+    """
+    Handles the logic for when 'single_file_manifest' is True.
+    
+    Parameters:
+    - source: The source dictionary containing attributes.
+    
+    Raises:
+    - ValueError: If required attributes are missing or empty.
+    """
+    pubsub_handler = GCPubSubHandler(os.environ['NOTIFIER_PUBSUB_TOPIC'])
+
+    # Validate required attributes
+    source_system = source['attributes'].get('ade_source_system')
+    source_entity = source['attributes'].get('ade_source_entity')
+
+    if not source_system or not source_entity:
+        logging.error("Required attributes 'ade_source_system' or 'ade_source_entity' are missing or empty.")
+        raise ValueError("Both 'ade_source_system' and 'ade_source_entity' must be provided and non-empty.")
+
+    # Construct the message
+    message = {
+        "calls": [[source_system, source_entity]]
+    }
+    pubsub_handler.publish_message(message)
 
 
 @functions_framework.cloud_event

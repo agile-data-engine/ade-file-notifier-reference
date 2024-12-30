@@ -65,3 +65,7 @@ variable "external_api_secret_id" {
 variable "vpc_connector_name" {
     type = string
 }
+
+variable "notifier_pubsub_topic_id" {
+    type = string
+}

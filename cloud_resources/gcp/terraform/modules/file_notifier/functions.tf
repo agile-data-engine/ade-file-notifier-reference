@@ -42,7 +42,7 @@ resource "google_cloudfunctions2_function" "add_to_manifest_function" {
   }
   event_trigger {
     event_type = "google.cloud.pubsub.topic.v1.messagePublished"
-    pubsub_topic = google_pubsub_topic.add_to_manifest_topic.id
+    pubsub_topic = var.notifier_pubsub_topic_id
     retry_policy = "RETRY_POLICY_RETRY"
     trigger_region = var.region
     service_account_email = var.notifier_service_account
