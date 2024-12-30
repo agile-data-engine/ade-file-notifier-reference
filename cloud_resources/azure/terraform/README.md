@@ -1,7 +1,15 @@
 ## Azure login
 ```
-az login --tenant 12d0df3c-a73c-4e76-98a7-814d85f14fac
-az account set --subscription 74260aef-bffb-47fe-862b-a1a04aea52ab
+az login --tenant tenant_id
+az account set --subscription subscription_id
+```
+
+## Set API secrets as environment variables
+```
+export TF_VAR_notify_api_key=secret_value
+export TF_VAR_notify_api_key_secret=secret_value
+export TF_VAR_external_api_key=secret_value
+export TF_VAR_external_api_key_secret=secret_value
 ```
 
 ### DEV
