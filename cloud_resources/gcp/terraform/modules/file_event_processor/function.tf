@@ -53,6 +53,7 @@ resource "google_cloudfunctions2_function" "file_foldering_function" {
       NOTIFIER_BUCKET = google_storage_bucket.notifier_bucket.name
       CONFIG_PREFIX = var.config_prefix
       FILE_URL_PREFIX = var.file_url_prefix
+      NOTIFIER_PUBSUB_TOPIC = var.notifier_pubsub_topic_id
     }
     max_instance_count = var.max_instances_preprocessor
     max_instance_request_concurrency = var.max_instance_request_concurrency
@@ -61,7 +62,7 @@ resource "google_cloudfunctions2_function" "file_foldering_function" {
   }
   event_trigger {
     event_type = "google.cloud.pubsub.topic.v1.messagePublished"
-    pubsub_topic = google_pubsub_topic.file_event_topic.id
+    pubsub_topic = var.file_event_pubsub_topic_id
     retry_policy = "RETRY_POLICY_RETRY"
     trigger_region = var.region
     service_account_email = var.notifier_service_account

@@ -41,3 +41,11 @@ variable "max_instance_request_concurrency" {
 variable "available_cpu" {
     type = string
 }
+
+variable "file_event_pubsub_topic_id" {
+    type = string
+}
+
+variable "notifier_pubsub_topic_id" {
+    type = string
+}

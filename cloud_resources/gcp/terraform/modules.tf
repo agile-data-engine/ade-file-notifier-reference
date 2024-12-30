@@ -13,6 +13,15 @@ module "secrets" {
    notifier_service_account = module.service_account.notifier_service_account
  }
 
+ module "event_queues" {
+  source = "./modules/event_queues"
+  app                 = var.app
+  env                 = var.env
+  region              = var.region
+  source_data_bucket  = var.source_data_bucket
+  notifier_service_account = module.service_account.notifier_service_account
+ }
+
 module "file_event_processor" {
   source = "./modules/file_event_processor"
   app                = var.app
@@ -26,6 +35,8 @@ module "file_event_processor" {
   max_instances_preprocessor = 5
   max_instance_request_concurrency = 20
   available_cpu      = "1"
+  file_event_pubsub_topic_id = module.event_queues.file_event_pubsub_topic_id
+  notifier_pubsub_topic_id    = module.event_queues.notifier_pubsub_topic_id
 }
 
 /*
@@ -61,6 +72,7 @@ module "file_notifier" {
   notify_api_secret_id        = module.secrets.notify_api_secret_id
   external_api_secret_id      = module.secrets.external_api_secret_id
   vpc_connector_name          = var.vpc_connector_name
+  notifier_pubsub_topic_id    = module.event_queues.notifier_pubsub_topic_id
 }
 
 # Optional module, if one wants to execute notifier from BigQuery with remote function.
