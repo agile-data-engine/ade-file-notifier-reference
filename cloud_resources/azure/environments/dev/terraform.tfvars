@@ -1,11 +1,10 @@
-allowed_ips = ["85.194.237.84"]
+allowed_ips = ["85.194.237.84", "85.194.237.85", "95.175.96.152"]
 app = "refadenotif1234"
 env = "dev"
-external_api_base_url = "https://external.services.saasdev.agiledataengine.com//external-api/api/a9000000/datahub/dev"
+external_api_base_url = "https://external.services.saasdev.agiledataengine.com/external-api/api/a9000000/datahub/dev"
 location = "northeurope"
 notify_api_base_url = "https://external-api.dev.datahub.a9000000.saasdev.agiledataengine.com:443/notify-api"
 rg = "rg-ade-reference-notifier-dev"
-source_data_storage_account = "dlsadedemodev"
 source_data_container = "raw"
 security_group_id = "fd2f46e2-4965-41ff-9b90-dd1ca94941b3"
 subnet_cidr_range = "10.9.0.0/26"
