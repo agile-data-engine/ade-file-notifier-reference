@@ -1,6 +1,6 @@
-functions-framework==3.8.1
-google-cloud-storage==2.18.2
-google-cloud-logging==3.11.2
+functions-framework==3.8.2
+google-cloud-storage==2.19.0
+google-cloud-logging==3.11.3
 pyyaml==6.0.2
 
 git+https://github.com/agile-data-engine/adenotifier.git@v0.2.2
