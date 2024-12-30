@@ -50,7 +50,6 @@ A table describing each attribute in YAML and supported levels:
 | `entities.compression`       | No            | The compression format used for the file, e.g., `GZIP`. Allowed values: `BZIP2`, `GZIP`, `LZOP`.                                                                                                                         |
 | `entities.fullscanned`       | No            | Specifies whether the entity is fully scanned. Overrides the `fullscanned` setting at the **source_systems** level if defined at the **entity** level.                         |
 | `entities.single_file_manifest` | No            | Indicates whether a single file should be included in the manifest for the source system. Default: `false`. Can be defined at both the **source_systems** level and the **entities** level. Entity level takes precedence.|
-| `source_systems.single_file_manifest` | No           | Indicates whether a single file manifest is created for the source system. Default: `false`. Can also be set for each **entity** within `entities`.                            |
 
 - **Attributes that can be defined at both the `source_systems` and `entities` levels**. For each, the **entity-level** takes precedence:
   - **`format`**
