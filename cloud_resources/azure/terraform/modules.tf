@@ -18,6 +18,10 @@ module "secrets" {
   rg = var.rg
   security_group_id = var.security_group_id
   subnet_id = module.network.subnet_id
+  notify_api_key = var.notify_api_key
+  notify_api_key_secret = var.notify_api_key_secret
+  external_api_key = var.external_api_key
+  external_api_key_secret = var.external_api_key_secret
 }
 
 module "function_app" {
