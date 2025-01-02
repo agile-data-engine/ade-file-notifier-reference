@@ -4,14 +4,11 @@ resource "local_file" "timer_trigger_py" {
     import logging
     import azure.functions as func
     import os
-    from datetime import datetime
+    import json
     from azure.storage.queue import QueueClient
     from azure.identity import DefaultAzureCredential
 
     def main(myTimer: func.TimerRequest) -> None:
-        utc_timestamp = datetime.utcnow().isoformat()
-        logging.info(f"Timer trigger function ran at {utc_timestamp}")
-
         queue_url = os.getenv('AzureWebJobsStorage__queueServiceUri')
         queue_name = os.getenv('notify_queue')
         message_data = ${var.trigger_message}
