@@ -9,7 +9,7 @@ resource "azurerm_storage_account" "notifier" {
 
 resource "azurerm_storage_container" "notifier" {
   name                  = var.container_name
-  storage_account_name  = azurerm_storage_account.notifier.name
+  storage_account_id  = azurerm_storage_account.notifier.id
   container_access_type = "private"
 }
 
