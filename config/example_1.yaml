@@ -13,6 +13,7 @@ source_systems:
         format: PARQUET
       - ade_source_entity: taxi_zone_bq
         file_location: ny_tlc/taxi_zone
+        cron_schedule: "0 1 * * *"
         format: CSV
         delim: COMMA
         skiph: 1
@@ -27,6 +28,7 @@ source_systems:
     entities:
       - ade_source_entity: metadata_vessels_bq
         file_location: digitraffic/metadata_vessels/
+        cron_schedule: "0 1 * * *"
         format: JSON
       - ade_source_entity: locations_latest_bq
         file_location: digitraffic/locations_latest/
