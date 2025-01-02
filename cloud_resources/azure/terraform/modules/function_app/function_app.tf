@@ -11,6 +11,7 @@ module "function_files" {
 }
 
 data "archive_file" "function_archive" {
+  depends_on = [module.function_files]
   type        = "zip"
   output_path = "${path.root}/.output/app_${timestamp()}.zip" 
   source_dir = module.function_files.function_output_folder
