@@ -38,6 +38,10 @@ resource "azurerm_linux_function_app" "notifier" {
         application_stack {
             python_version = "3.11"
         }
+        cors {
+            # Allows functions to be triggered manually in Azure portal
+            allowed_origins = ["https://portal.azure.com"]
+        }
     }
     app_settings = {
         AzureWebJobsDisableHomepage = true
