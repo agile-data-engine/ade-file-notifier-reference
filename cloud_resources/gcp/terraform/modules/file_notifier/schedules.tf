@@ -83,7 +83,7 @@ resource "google_cloud_scheduler_job" "cloud_scheduler_job" {
   name             = "${var.app}-${each.value.name}-${var.env}"
   schedule         = each.value.cron
   time_zone        = "UTC"
-  region           = "europe-west1"
+  region           = var.region
   project          = var.project
 
   pubsub_target {
