@@ -1,9 +1,17 @@
 parameters:
   max_files_per_manifest: 1000
+schedules:
+  - schedule_id: 1
+    name: daily_0200
+    cron: "0 2 * * *"
+  - schedule_id: 2
+    name: daily_0400
+    cron: "0 4 * * *"
 source_systems:
   - ade_source_system: ny_tlc
     single_file_manifest: true
     fullscanned: true
+    schedule_id: 1
     entities:
       - ade_source_entity: yellow_tripdata_bq
         file_location: ny_tlc/yellow_tripdata
@@ -13,7 +21,6 @@ source_systems:
         format: PARQUET
       - ade_source_entity: taxi_zone_bq
         file_location: ny_tlc/taxi_zone
-        cron_schedule: "0 1 * * *"
         format: CSV
         delim: COMMA
         skiph: 1
@@ -24,15 +31,16 @@ source_systems:
     single_file_manifest: false
     fullscanned: false
     dag_trigger: DV_DIGITRAFFIC_BQ
-    cron_schedule: "0 */2 * * *"
+    schedule: ""
     entities:
       - ade_source_entity: metadata_vessels_bq
         file_location: digitraffic/metadata_vessels/
-        cron_schedule: "0 1 * * *"
+        schedule_id: 1
         format: JSON
       - ade_source_entity: locations_latest_bq
         file_location: digitraffic/locations_latest/
         format: CSV
         delim: SEMICOLON
+        schedule_id: 2
         skiph: 1
         compression: GZIP
