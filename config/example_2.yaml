@@ -10,7 +10,6 @@ source_systems:
     compression: GZIP
     batch_from_file_path_regex: batch\\.(\\d*)\\.csv
     dag_trigger: ADVENTUREWORKS_BQ
-    cron_schedule: "0 0 1 * *"
     entities:
       - ade_source_entity: address_bq
         file_location: adventureworks/address/
