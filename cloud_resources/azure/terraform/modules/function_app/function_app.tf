@@ -5,53 +5,16 @@ data "azurerm_key_vault" "notifier" {
     resource_group_name = var.rg
 }
 
-data "archive_file" "function_archive" {
-  type        = "zip"
-  output_path = "${path.root}/.output/${var.function_folder}/app_${timestamp()}.zip"
-
-  source {
-    filename = "notify/function.json"
-    content = file("${path.root}/../../../${var.function_folder}/azure/notify/function.json")
-  }
-
-  source {
-    filename = "notify/notify.py"
-    content = file("${path.root}/../../../${var.function_folder}/azure/notify/notify.py")
-  }
-
-  source {
-    filename = "queue_file/function.json"
-    content = file("${path.root}/../../../${var.function_folder}/azure/queue_file/function.json")
-  }
-
-  source {
-    filename = "queue_file/queue_file.py"
-    content = file("${path.root}/../../../${var.function_folder}/azure/queue_file/queue_file.py")
-  }
-
-  source {
-    filename = "shared/azure_handler.py"
-    content = file("${path.root}/../../../${var.function_folder}/azure/shared/azure_handler.py")
-  }
-  
-  source {
-    filename = "shared/notifier_common.py"
-    content = file("${path.root}/../../../${var.function_folder}/common/notifier_common.py")
-  }
-  
-  source {
-    filename = "host.json"
-    content = file("${path.root}/../../../${var.function_folder}/azure/host.json")
-  }
-
-  source {
-    filename = "requirements.txt"
-    content  = file("${path.root}/../../../${var.function_folder}/azure/requirements.txt")
-  }
+module "function_files" {
+    source = "../function_files"
+    function_folder = var.function_folder
 }
 
-output "name" {
-  value = azurerm_storage_account.notifier.primary_queue_endpoint
+data "archive_file" "function_archive" {
+  depends_on = [module.function_files]
+  type        = "zip"
+  output_path = "${path.root}/.output/app_${timestamp()}.zip" 
+  source_dir = module.function_files.function_output_folder
 }
 
 resource "azurerm_linux_function_app" "notifier" {
@@ -74,6 +37,10 @@ resource "azurerm_linux_function_app" "notifier" {
         vnet_route_all_enabled = true
         application_stack {
             python_version = "3.11"
+        }
+        cors {
+            # Allows functions to be triggered manually in Azure portal
+            allowed_origins = ["https://portal.azure.com"]
         }
     }
     app_settings = {

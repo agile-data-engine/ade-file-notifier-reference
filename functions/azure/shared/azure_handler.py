@@ -47,6 +47,7 @@ def upload_notifier_status(container_name, notifier_status_content):
     year, month, day = datetime.now().strftime('%Y %m %d').split()
     timemillis = round(time.time() * 1000)
     status_file_path = f"status/{year}/{month}/{day}/{timemillis}_notifier_status.json"
+    upload_result = None
 
     if notifier_status_content:
         status_azure_handler = AzureFileHandler(container_name, "status/")
@@ -55,7 +56,7 @@ def upload_notifier_status(container_name, notifier_status_content):
     if upload_result:
         logging.info(f"Uploaded file to Azure Blob Storage: {status_file_path}")
     else:
-        logging.error(f"Failed to upload {status_file_path} to Azure Blob Storage.")
+        logging.warning(f"Status file {status_file_path} not uploaded to Azure Blob Storage.")
 
     return
 
