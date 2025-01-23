@@ -8,7 +8,6 @@ from datetime import datetime
 import time
 import re
 from gcp_handler import GCPFileHandler
-from gcp_handler import GCPubSubHandler
 from common.notifier_common import (
     translate_dict,
     identify_sources,
