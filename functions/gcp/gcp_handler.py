@@ -31,7 +31,7 @@ class GCPFileHandler:
 
     def download_and_load_yaml_files(self):
         """
-        Download files concurrently, load their content into Python dictionaries.
+        Download files, load their content into Python dictionaries.
         """
         blob_names = self.list_files_in_folder()
 
