@@ -187,7 +187,7 @@ def manifest_handler(
         notify = notifier.add_multiple_entries_to_manifest(manifest_part, manifest_header, base_url, api_key, api_key_secret)
         manifest_id = notify.id
 
-        formatted_timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
+        formatted_timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
         manifests.append({
             "manifest_id": manifest_id, 
             "entry_amount": len(manifest_part), 
