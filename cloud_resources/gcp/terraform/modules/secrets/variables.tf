@@ -1,11 +1,11 @@
 variable "env" {
-    type = string
+  type = string
 }
 
 variable "region" {
-    type = string
+  type = string
 }
 
 variable "notifier_service_account" {
-    type = string
+  type = string
 }

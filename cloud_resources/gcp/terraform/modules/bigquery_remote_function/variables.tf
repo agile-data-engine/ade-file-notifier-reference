@@ -1,23 +1,23 @@
 variable "project" {
-    type = string
+  type = string
 }
 
 variable "app" {
-    type = string
+  type = string
 }
 
 variable "env" {
-    type = string
+  type = string
 }
 
 variable "region" {
-    type = string
+  type = string
 }
 
 variable "notifier_function_name" {
-    type = string
+  type = string
 }
 
 variable "notifier_function_url" {
-    type = string
+  type = string
 }

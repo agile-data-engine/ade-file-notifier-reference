@@ -1,51 +1,51 @@
 variable "app" {
-    type = string
+  type = string
 }
 
 variable "env" {
-    type = string
+  type = string
 }
 
 variable "region" {
-    type = string
+  type = string
 }
 
 variable "source_data_bucket" {
-    type = string
+  type = string
 }
 
 variable "function_folder" {
-    type = string
+  type = string
 }
 
 variable "notifier_service_account" {
-    type = string
+  type = string
 }
 
 variable "file_url_prefix" {
-    type = string
+  type = string
 }
 
 variable "config_prefix" {
-    type = string
+  type = string
 }
 
 variable "max_instances_preprocessor" {
-    type = number
+  type = number
 }
 
 variable "max_instance_request_concurrency" {
-    type = number
+  type = number
 }
 
 variable "available_cpu" {
-    type = string
+  type = string
 }
 
 variable "file_event_pubsub_topic_id" {
-    type = string
+  type = string
 }
 
 variable "notifier_pubsub_topic_id" {
-    type = string
+  type = string
 }

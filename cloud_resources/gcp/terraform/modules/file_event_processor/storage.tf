@@ -1,15 +1,15 @@
 # Notifier configuration bucket
 resource "google_storage_bucket" "notifier_bucket" {
-  name = "${var.app}-${var.env}"
-  location = var.region
-  storage_class = "STANDARD"
+  name                        = "${var.app}-${var.env}"
+  location                    = var.region
+  storage_class               = "STANDARD"
   uniform_bucket_level_access = true
-  force_destroy = true
+  force_destroy               = true
 }
 
 resource "google_storage_bucket_iam_binding" "bucket_viewer" {
   bucket = google_storage_bucket.notifier_bucket.name
-  role   = "roles/storage.objectViewer"  # Grants the storage.objects.list permission
+  role   = "roles/storage.objectViewer" # Grants the storage.objects.list permission
   members = [
     "serviceAccount:${var.notifier_service_account}"
   ]
@@ -17,7 +17,7 @@ resource "google_storage_bucket_iam_binding" "bucket_viewer" {
 
 resource "google_storage_bucket_iam_binding" "object_creator" {
   bucket = google_storage_bucket.notifier_bucket.name
-  role   = "roles/storage.objectCreator"  # Grants the storage.objects.list permission
+  role   = "roles/storage.objectCreator" # Grants the storage.objects.list permission
   members = [
     "serviceAccount:${var.notifier_service_account}"
   ]

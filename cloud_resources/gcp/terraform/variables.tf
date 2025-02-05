@@ -4,31 +4,31 @@ variable "project" {
 
 # Notifier app name used in resource naming
 variable "app" {
-    type = string
+  type = string
 }
 
 variable "region" {
-    type = string
+  type = string
 }
 
 variable "env" {
-    type = string
+  type = string
 }
 
 variable "state_bucket" {
-    type = string
+  type = string
 }
 
 variable "source_data_bucket" {
-    type = string
+  type = string
 }
 
 variable "cidr_range" {
-    type = string
+  type = string
 }
 
 variable "vpc_connector_name" {
-    type = string
+  type = string
 }
 
 variable "config_files" {

@@ -1,71 +1,75 @@
 variable "project" {
-    type = string
+  type = string
 }
 
 variable "app" {
-    type = string
+  type = string
 }
 
 variable "env" {
-    type = string
+  type = string
 }
 
 variable "region" {
-    type = string
+  type = string
 }
 
 variable "notifier_service_account" {
-    type = string
+  type = string
 }
 
 variable "notifier_bucket" {
-    type = string
+  type = string
 }
 
 variable "function_source_code_object" {
-    type = string
+  type = string
 }
 
 variable "file_url_prefix" {
-    type = string
+  type = string
 }
 
 variable "config_prefix" {
-    type = string
+  type = string
 }
 
 variable "max_instances" {
-    type = number
+  type = number
 }
 
 variable "max_instance_request_concurrency" {
-    type = number
+  type = number
 }
 
 variable "available_cpu" {
-    type = string
+  type = string
 }
 
 variable "function_memory" {
-    type = string
+  type = string
 }
 
 variable "function_timeout" {
-    type = number
+  type = number
 }
 
 variable "notify_api_secret_id" {
-    type = string
+  type = string
 }
 
 variable "external_api_secret_id" {
-    type = string
+  type = string
 }
 
 variable "vpc_connector_name" {
-    type = string
+  type = string
 }
 
 variable "notifier_pubsub_topic_id" {
-    type = string
+  type = string
+}
+
+variable "ingress_settings" {
+  type = string
 }

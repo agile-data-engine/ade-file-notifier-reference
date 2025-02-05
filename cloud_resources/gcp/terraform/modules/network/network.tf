@@ -1,6 +1,6 @@
 # VPC
 resource "google_compute_network" "cloud_function_network" {
-  name = "vpc-${var.app}-${var.env}"
+  name                    = "vpc-${var.app}-${var.env}"
   auto_create_subnetworks = false
 }
 
@@ -14,8 +14,8 @@ resource "google_vpc_access_connector" "connector" {
 
 # IP address
 resource "google_compute_address" "egress_ip_address" {
-  name    = "ip-${var.app}-${var.env}"
-  region  = var.region
+  name   = "ip-${var.app}-${var.env}"
+  region = var.region
 }
 
 # Router
@@ -27,11 +27,11 @@ resource "google_compute_router" "router" {
 
 # NAT
 resource "google_compute_router_nat" "cloud_function_nat" {
-  name  = "nat-${var.app}-${var.env}"
-  router = google_compute_router.router.name
-  region = google_compute_router.router.region
+  name                   = "nat-${var.app}-${var.env}"
+  router                 = google_compute_router.router.name
+  region                 = google_compute_router.router.region
   nat_ip_allocate_option = "MANUAL_ONLY"
-  nat_ips = google_compute_address.egress_ip_address.*.self_link
+  nat_ips                = google_compute_address.egress_ip_address.*.self_link
 
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
 

@@ -1,6 +1,6 @@
 # Service account
 resource "google_service_account" "account" {
-  account_id = "sa-${var.app}-${var.env}"
+  account_id   = "sa-${var.app}-${var.env}"
   display_name = "Service account for ${var.app}-${var.env}"
 }
 

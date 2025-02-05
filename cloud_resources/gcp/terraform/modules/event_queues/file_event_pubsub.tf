@@ -15,7 +15,7 @@ resource "google_pubsub_topic_iam_binding" "file_event_topic_binding" {
 
 # Attach PubSub to Storage notifications
 resource "google_storage_notification" "file_notification" {
-  bucket         = "${var.source_data_bucket}"
+  bucket         = var.source_data_bucket
   payload_format = "JSON_API_V1"
   topic          = google_pubsub_topic.file_event_topic.id
   event_types    = ["OBJECT_FINALIZE", "OBJECT_METADATA_UPDATE"]
