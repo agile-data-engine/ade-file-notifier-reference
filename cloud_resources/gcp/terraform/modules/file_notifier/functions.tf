@@ -39,6 +39,7 @@ resource "google_cloudfunctions2_function" "add_to_manifest_function" {
     service_account_email            = var.notifier_service_account
     vpc_connector                    = var.vpc_connector_name
     vpc_connector_egress_settings    = "ALL_TRAFFIC"
+    ingress_settings                 = var.ingress_settings
   }
   event_trigger {
     event_type            = "google.cloud.pubsub.topic.v1.messagePublished"
