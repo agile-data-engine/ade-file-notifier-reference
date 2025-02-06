@@ -50,6 +50,8 @@ module "network" {
    env                = var.env
    region             = var.region
    cidr_range         = var.cidr_range
+   nat_ip_allocate_option = "MANUAL_ONLY"
+   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
  }
  */
 
