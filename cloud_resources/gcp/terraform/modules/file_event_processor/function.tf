@@ -5,22 +5,22 @@ data "archive_file" "function_archive" {
 
   source {
     filename = "main.py"
-    content  = file("${path.root}/../../../${var.function_folder}/gcp/main.py")
+    content  = file("${path.root}/${var.function_folder}/gcp/main.py")
   }
 
   source {
     filename = "common/notifier_common.py"
-    content  = file("${path.root}/../../../${var.function_folder}/common/notifier_common.py")
+    content  = file("${path.root}/${var.function_folder}/common/notifier_common.py")
   }
 
   source {
     filename = "gcp_handler.py"
-    content  = file("${path.root}/../../../${var.function_folder}/gcp/gcp_handler.py")
+    content  = file("${path.root}/${var.function_folder}/gcp/gcp_handler.py")
   }
 
   source {
     filename = "requirements.txt"
-    content  = file("${path.root}/../../../${var.function_folder}/gcp/requirements.txt")
+    content  = file("${path.root}/${var.function_folder}/gcp/requirements.txt")
   }
 }
 
