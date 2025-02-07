@@ -1,0 +1,21 @@
+content: |-
+  {{ .Header }}
+
+  ## About
+
+  This module generates event "queues", which in practice are Pub/Sub topics.
+  One Pub/Sub topic for file events from Cloud Storage bucket and another for file notifier single_file_manifest functionality.
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Modules }}
+
+  {{ .Resources }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Footer }}
