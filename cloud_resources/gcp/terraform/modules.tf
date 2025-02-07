@@ -28,7 +28,7 @@ module "file_event_processor" {
   env                              = var.env
   region                           = var.region
   source_data_bucket               = var.source_data_bucket
-  function_folder                  = "functions"
+  function_folder                  = "../../../functions"
   notifier_service_account         = module.service_account.notifier_service_account
   file_url_prefix                  = "gs://"
   config_prefix                    = "data-sources/"
@@ -45,13 +45,15 @@ The assumption is that network setup already exists.
 Note that variable: var.vpc_connector_name needs to be properly set up,
 if network is done from this module.
 module "network" {
-   source = "./modules/network"
-   app                = var.app
-   env                = var.env
-   region             = var.region
-   cidr_range         = var.cidr_range
-   nat_ip_allocate_option = "MANUAL_ONLY"
-   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+  source = "./modules/network"
+  app                = var.app
+  env                = var.env
+  region             = var.region
+  cidr_range         = var.cidr_range
+  nat_ip_allocate_option = "MANUAL_ONLY"
+  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+  max_instances      = 3
+  min_instances      = 2
  }
  */
 
@@ -76,6 +78,7 @@ module "file_notifier" {
   vpc_connector_name               = var.vpc_connector_name
   notifier_pubsub_topic_id         = module.event_queues.notifier_pubsub_topic_id
   ingress_settings                 = "ALLOW_ALL"
+  scheduler_timezone               = "UTC"
 }
 
 # Optional module, if one wants to execute notifier from BigQuery with remote function.

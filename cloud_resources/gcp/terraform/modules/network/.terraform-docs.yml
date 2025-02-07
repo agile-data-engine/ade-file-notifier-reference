@@ -1,0 +1,21 @@
+content: |-
+  {{ .Header }}
+
+  ## About
+
+  This module generates network structure for the file notifier.
+  Network module is usually left out, because networks are usually part of some other stack.
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Modules }}
+
+  {{ .Resources }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Footer }}

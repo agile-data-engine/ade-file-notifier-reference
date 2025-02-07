@@ -1,0 +1,21 @@
+content: |-
+  {{ .Header }}
+
+  ## About
+
+  This module generates File Notifier Cloud function.
+  Also schedules are generated, if those are given in the configuration files.
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Modules }}
+
+  {{ .Resources }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Footer }}

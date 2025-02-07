@@ -1,7 +1,7 @@
 # Function zip archive
 data "archive_file" "function_archive" {
   type        = "zip"
-  output_path = "${path.root}/.output/${var.function_folder}/functions.zip"
+  output_path = "${path.root}/.output/functions/functions.zip"
 
   source {
     filename = "main.py"
@@ -26,7 +26,7 @@ data "archive_file" "function_archive" {
 
 # Function zip archive bucket object
 resource "google_storage_bucket_object" "function_object" {
-  name   = "functions-source-code/${var.function_folder}/${data.archive_file.function_archive.output_md5}.zip"
+  name   = "functions-source-code/functions/${data.archive_file.function_archive.output_md5}.zip"
   bucket = google_storage_bucket.notifier_bucket.name
   source = data.archive_file.function_archive.output_path
 }
