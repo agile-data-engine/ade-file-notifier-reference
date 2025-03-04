@@ -28,7 +28,7 @@ resource "azurerm_function_app_flex_consumption" "notifier" {
     }
     storage_container_type = "blobContainer"
     storage_container_endpoint = "${azurerm_storage_account.notifier.primary_blob_endpoint}${azurerm_storage_container.notifier.name}"
-    storage_authentication_type = "systemassignedidentity"
+    storage_authentication_type = "SystemAssignedIdentity"
     virtual_network_subnet_id = var.subnet_id
     zip_deploy_file = data.archive_file.function_archive.output_path
     runtime_name = "python"
