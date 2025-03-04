@@ -22,7 +22,7 @@ resource "azurerm_function_app_flex_consumption" "notifier" {
     name = "func-${var.app}-${var.env}"
     resource_group_name = var.rg
     service_plan_id = azurerm_service_plan.notifier.id
-    https_only = true
+    #https_only = true
     identity {
         type = "SystemAssigned"
     }
