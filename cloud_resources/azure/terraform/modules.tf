@@ -1,3 +1,11 @@
+module "app_service_plan" {
+  source = "./modules/app_service_plan"
+  app = var.app
+  env = var.env
+  location = var.location
+  rg = var.rg
+}
+
 module "network" {
   source = "./modules/network"
   app = var.app
@@ -26,9 +34,10 @@ module "secrets" {
 
 module "function_app" {
   source = "./modules/function_app"
-  depends_on = [module.network, module.secrets]
+  depends_on = [module.app_service_plan, module.network, module.secrets]
   allowed_ips = var.allowed_ips
   app = var.app
+  asp_id = module.app_service_plan.asp_id
   blob_event_queue = "blob-event-queue"
   config_prefix = "data-sources/"
   container_name = "notifier"

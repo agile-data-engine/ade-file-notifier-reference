@@ -6,6 +6,10 @@ variable "app" {
     type = string
 }
 
+variable "asp_id" {
+    type = string
+}
+
 variable "blob_event_queue" {
     type = string
 }

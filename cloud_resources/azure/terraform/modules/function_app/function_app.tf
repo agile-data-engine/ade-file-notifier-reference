@@ -17,29 +17,27 @@ data "archive_file" "function_archive" {
   source_dir = module.function_files.function_output_folder
 }
 
-resource "azurerm_function_app_flex_consumption" "notifier" {
-    location = var.location
+resource "azurerm_linux_function_app" "notifier" {
     name = "func-${var.app}-${var.env}"
+    location = var.location
     resource_group_name = var.rg
-    service_plan_id = azurerm_service_plan.notifier.id
-    #https_only = true
+    service_plan_id = var.asp_id
+    storage_account_name = azurerm_storage_account.notifier.name
+    storage_uses_managed_identity = true
+    virtual_network_subnet_id = var.subnet_id
+    functions_extension_version = "~4"
+    https_only = true
+    zip_deploy_file = data.archive_file.function_archive.output_path
     identity {
         type = "SystemAssigned"
     }
-    storage_container_type = "blobContainer"
-    storage_container_endpoint = "${azurerm_storage_account.notifier.primary_blob_endpoint}${azurerm_storage_container.notifier.name}"
-    storage_authentication_type = "SystemAssignedIdentity"
-    virtual_network_subnet_id = var.subnet_id
-    zip_deploy_file = data.archive_file.function_archive.output_path
-    runtime_name = "python"
-    runtime_version = "3.11"
-
-    #functions_extension_version = "~4"
-    
     site_config {
         application_insights_connection_string = azurerm_application_insights.notifier.connection_string
         application_insights_key = azurerm_application_insights.notifier.instrumentation_key
-        #vnet_route_all_enabled = true
+        vnet_route_all_enabled = true
+        application_stack {
+            python_version = "3.11"
+        }
         cors {
             # Allows functions to be triggered manually in Azure portal
             allowed_origins = ["https://portal.azure.com"]
@@ -67,19 +65,19 @@ resource "azurerm_function_app_flex_consumption" "notifier" {
 }
 
 resource "azurerm_role_assignment" "notifier-storage-contributor" {
-    principal_id         = azurerm_function_app_flex_consumption.notifier.identity[0].principal_id
+    principal_id         = azurerm_linux_function_app.notifier.identity[0].principal_id
     role_definition_name = "Storage Account Contributor"
     scope                = azurerm_storage_account.notifier.id
 }
 
 resource "azurerm_role_assignment" "notifier-blob-owner" {
-    principal_id         = azurerm_function_app_flex_consumption.notifier.identity[0].principal_id
+    principal_id         = azurerm_linux_function_app.notifier.identity[0].principal_id
     role_definition_name = "Storage Blob Data Owner"
     scope                = azurerm_storage_account.notifier.id
 }
 
 resource "azurerm_role_assignment" "notifier-queue-contributor" {
-    principal_id         = azurerm_function_app_flex_consumption.notifier.identity[0].principal_id
+    principal_id         = azurerm_linux_function_app.notifier.identity[0].principal_id
     role_definition_name = "Storage Queue Data Contributor"
     scope                = azurerm_storage_account.notifier.id
 }
@@ -87,7 +85,7 @@ resource "azurerm_role_assignment" "notifier-queue-contributor" {
 resource "azurerm_key_vault_access_policy" "notifier-access" {
     key_vault_id = data.azurerm_key_vault.notifier.id
     tenant_id    = data.azurerm_client_config.current.tenant_id
-    object_id    = azurerm_function_app_flex_consumption.notifier.identity[0].principal_id
+    object_id    = azurerm_linux_function_app.notifier.identity[0].principal_id
 
     secret_permissions = [
         "Get", "List"
