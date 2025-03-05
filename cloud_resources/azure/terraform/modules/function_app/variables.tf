@@ -14,6 +14,10 @@ variable "blob_event_queue" {
     type = string
 }
 
+variable "config_folder" {
+    type = string
+}
+
 variable "config_prefix" {
     type = string
 }

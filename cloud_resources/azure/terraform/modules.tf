@@ -39,6 +39,7 @@ module "function_app" {
   app = var.app
   asp_id = module.app_service_plan.asp_id
   blob_event_queue = "blob-event-queue"
+  config_folder = "config"
   config_prefix = "data-sources/"
   container_name = "notifier"
   env = var.env
