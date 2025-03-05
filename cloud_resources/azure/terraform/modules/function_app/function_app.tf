@@ -1,10 +1,5 @@
 data "azurerm_client_config" "current" {}
 
-data "azurerm_key_vault" "notifier" {
-    name                = var.key_vault_name
-    resource_group_name = var.rg
-}
-
 module "function_files" {
     source = "../function_files"
     function_folder = var.function_folder
@@ -57,10 +52,10 @@ resource "azurerm_linux_function_app" "notifier" {
         config_prefix = var.config_prefix
         notify_api_base_url = var.notify_api_base_url
         external_api_base_url = var.external_api_base_url
-        notify_api_key = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.notifier.vault_uri}/secrets/notify-api-key)"
-        notify_api_key_secret = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.notifier.vault_uri}/secrets/notify-api-key-secret)"
-        external_api_key = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.notifier.vault_uri}/secrets/external-api-key)"
-        external_api_key_secret = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.notifier.vault_uri}/secrets/external-api-key-secret)"
+        notify_api_key = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/notify-api-key)"
+        notify_api_key_secret = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/notify-api-key-secret)"
+        external_api_key = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/external-api-key)"
+        external_api_key_secret = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/external-api-key-secret)"
     }
 }
 
@@ -83,15 +78,11 @@ resource "azurerm_role_assignment" "notifier-queue-contributor" {
 }
 
 resource "azurerm_key_vault_access_policy" "notifier-access" {
-    key_vault_id = data.azurerm_key_vault.notifier.id
+    key_vault_id = var.key_vault_id
     tenant_id    = data.azurerm_client_config.current.tenant_id
     object_id    = azurerm_linux_function_app.notifier.identity[0].principal_id
 
     secret_permissions = [
         "Get", "List"
     ]
-
-    certificate_permissions = null
-    key_permissions = null
-    storage_permissions = null
 }
