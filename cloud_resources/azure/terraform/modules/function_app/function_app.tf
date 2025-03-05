@@ -90,4 +90,8 @@ resource "azurerm_key_vault_access_policy" "notifier-access" {
     secret_permissions = [
         "Get", "List"
     ]
+
+    certificate_permissions = null
+    key_permissions = null
+    storage_permissions = null
 }
