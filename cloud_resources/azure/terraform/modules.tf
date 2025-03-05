@@ -58,5 +58,6 @@ module "function_app" {
   source_data_container = var.source_data_container
   subnet_id = module.network.subnet_id
   system_topic_name = var.system_topic_name
+  system_topic_principal_id = var.system_topic_principal_id
   system_topic_rg = var.system_topic_rg
 }

@@ -69,6 +69,10 @@ variable "system_topic_name" {
     type = string
 }
 
+variable "system_topic_principal_id" {
+    type = string
+}
+
 variable "system_topic_rg" {
     type = string
 }

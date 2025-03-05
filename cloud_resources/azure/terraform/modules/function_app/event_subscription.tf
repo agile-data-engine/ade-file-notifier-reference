@@ -1,10 +1,5 @@
-data "azurerm_eventgrid_system_topic" "event-topic" {
-    name                = var.system_topic_name
-    resource_group_name = var.system_topic_rg
-}
-
 resource "azurerm_role_assignment" "topic-queue-message-sender" {
-    principal_id         = data.azurerm_eventgrid_system_topic.event-topic.identity[0].principal_id
+    principal_id         = var.system_topic_principal_id
     role_definition_name = "Storage Queue Data Message Sender"
     scope                = azurerm_storage_account.notifier.id
 }
@@ -12,8 +7,8 @@ resource "azurerm_role_assignment" "topic-queue-message-sender" {
 resource "azurerm_eventgrid_system_topic_event_subscription" "topic-queue-message-sender" {
     depends_on = [azurerm_role_assignment.topic-queue-message-sender]
     name  = "evgs-${var.app}-${var.env}"
-    system_topic = data.azurerm_eventgrid_system_topic.event-topic.name
-    resource_group_name = data.azurerm_eventgrid_system_topic.event-topic.resource_group_name
+    system_topic = var.system_topic_name
+    resource_group_name = var.system_topic_rg
     event_delivery_schema = "EventGridSchema"
     included_event_types = ["Microsoft.Storage.BlobCreated"]
 
