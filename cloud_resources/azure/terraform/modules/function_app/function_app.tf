@@ -1,6 +1,10 @@
 module "function_files" {
     source = "../function_files"
+    config_folder = var.config_folder
+    config_prefix = var.config_prefix
     function_folder = var.function_folder
+    storage_account_name = azurerm_storage_account.notifier.name
+    storage_container_name = azurerm_storage_container.notifier.name
 }
 
 data "archive_file" "function_archive" {

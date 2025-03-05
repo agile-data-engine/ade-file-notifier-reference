@@ -13,15 +13,6 @@ resource "azurerm_storage_container" "notifier" {
   container_access_type = "private"
 }
 
-resource "azurerm_storage_blob" "config-files" {
-  for_each               = fileset("${path.root}/../../../${var.config_folder}/", "{*.yaml,*.yml}")
-  name                   = "${var.config_prefix}${each.key}"
-  storage_account_name   = azurerm_storage_account.notifier.name
-  storage_container_name = azurerm_storage_container.notifier.name
-  type                   = "Block"
-  source                 = "${path.root}/../../../${var.config_folder}/${each.key}"
-}
-
 resource "azurerm_storage_account_network_rules" "notifier" {
   storage_account_id = azurerm_storage_account.notifier.id
   default_action             = "Allow" # ENABLED FOR LOCAL DEV, CHANGE TO "Deny"
