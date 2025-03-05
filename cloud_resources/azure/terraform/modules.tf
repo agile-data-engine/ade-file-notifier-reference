@@ -45,7 +45,9 @@ module "function_app" {
   env = var.env
   external_api_base_url = var.external_api_base_url
   function_folder = "functions"
+  key_vault_id = module.secrets.key_vault_id
   key_vault_name = module.secrets.key_vault_name
+  key_vault_uri = module.secrets.key_vault_uri
   location = var.location
   notify_queue = "notify-queue"
   notify_api_base_url = var.notify_api_base_url
