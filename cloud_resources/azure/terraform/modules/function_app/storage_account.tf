@@ -19,7 +19,7 @@ resource "azurerm_storage_blob" "config-files" {
   storage_account_name   = azurerm_storage_account.notifier.name
   storage_container_name = azurerm_storage_container.notifier.name
   type                   = "Block"
-  source                 = each.key
+  source                 = "${path.root}/../../../${var.config_folder}/${each.key}"
 }
 
 resource "azurerm_storage_account_network_rules" "notifier" {
