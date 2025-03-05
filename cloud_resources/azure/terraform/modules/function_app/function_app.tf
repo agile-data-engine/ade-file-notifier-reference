@@ -1,5 +1,3 @@
-data "azurerm_client_config" "current" {}
-
 module "function_files" {
     source = "../function_files"
     function_folder = var.function_folder
@@ -79,7 +77,7 @@ resource "azurerm_role_assignment" "notifier-queue-contributor" {
 
 resource "azurerm_key_vault_access_policy" "notifier-access" {
     key_vault_id = var.key_vault_id
-    tenant_id    = data.azurerm_client_config.current.tenant_id
+    tenant_id    = var.entra_tenant_id
     object_id    = azurerm_linux_function_app.notifier.identity[0].principal_id
 
     secret_permissions = [

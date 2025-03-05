@@ -21,6 +21,7 @@ module "secrets" {
   depends_on = [module.network]
   allowed_ips = var.allowed_ips
   app = var.app
+  entra_tenant_id = var.entra_tenant_id
   env = var.env
   location = var.location
   rg = var.rg
@@ -42,6 +43,7 @@ module "function_app" {
   config_folder = "config"
   config_prefix = "data-sources/"
   container_name = "notifier"
+  entra_tenant_id = var.entra_tenant_id
   env = var.env
   external_api_base_url = var.external_api_base_url
   function_folder = "functions"

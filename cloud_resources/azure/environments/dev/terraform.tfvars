@@ -1,5 +1,6 @@
 allowed_ips = ["0.0.0.0"]
 app = "refadenotif1234"
+entra_tenant_id = "tenant-id"
 env = "dev"
 external_api_base_url = "https://external.services.saas.agiledataengine.com/external-api/api/s1234567/datahub/dev"
 location = "regionname"

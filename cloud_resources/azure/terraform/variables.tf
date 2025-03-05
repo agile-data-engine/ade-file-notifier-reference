@@ -5,6 +5,10 @@ variable "app" {
     type = string
 }
 
+variable "entra_tenant_id" {
+    type = string
+}
+
 variable "env" {
     type = string
 }
