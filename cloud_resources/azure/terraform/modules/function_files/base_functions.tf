@@ -35,7 +35,6 @@ resource "local_file" "queue_file_queue_file_py" {
 resource "local_file" "shared_azure_handler_py" {
     source = "${path.root}/../../../${var.function_folder}/azure/shared/azure_handler.py"
     filename = "${local.output_folder}/shared/azure_handler.py"
-    content_md5 = filemd5("${path.root}/../../../${var.function_folder}/azure/shared/azure_handler.py")
 }
 
 resource "local_file" "shared_notifier_common_py" {
