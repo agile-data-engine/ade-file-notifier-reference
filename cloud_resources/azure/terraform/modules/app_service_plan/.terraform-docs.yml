@@ -1,0 +1,20 @@
+content: |-
+  {{ .Header }}
+
+  ## About
+
+  Module for creating an App Service Plan for the Function App.
+  
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Modules }}
+
+  {{ .Resources }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Footer }}
