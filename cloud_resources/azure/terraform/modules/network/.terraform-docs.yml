@@ -1,0 +1,20 @@
+content: |-
+  {{ .Header }}
+
+  ## About
+
+  Module for creating a virtual network, NAT gateway and public ip for the notifier Function App.
+  
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Modules }}
+
+  {{ .Resources }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Footer }}

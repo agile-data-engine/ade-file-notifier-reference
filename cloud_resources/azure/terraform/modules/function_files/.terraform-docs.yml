@@ -1,0 +1,20 @@
+content: |-
+  {{ .Header }}
+
+  ## About
+
+  Module for generating files and folders for Function App deployment. Files are copied from the function folder, timer_trigger_function module is called to generate timer trigger functions based on the configuration.
+  
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Modules }}
+
+  {{ .Resources }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Footer }}
