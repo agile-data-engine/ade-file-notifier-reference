@@ -50,14 +50,15 @@ def queue_file(msg: func.QueueMessage):
             upload_result = azure_handler.upload_file(file_path, file_data)
 
             if upload_result:
-                logging.info(f"Uploaded file to Azure Blob Storage: {file_path}")
+                logging.info(f"Successfully queued file: {file_path}")
 
                 # If single file manifest option is True, notification will be done right away
                 # this is done by sending data to queue, which invokes the notification process
                 if source['attributes'].get('single_file_manifest', False):
+                    logging.info("Single_file_manifest set as true, triggering notification.")
                     handle_single_file_manifest(source)
             else:
-                logging.error(f"Failed to upload {file_path} to Azure Blob Storage.")
+                logging.error(f"Failed to queue file: {file_path}")
                 return
         return
     except Exception as e:
@@ -101,7 +102,7 @@ def handle_single_file_manifest(source):
         queue_client = QueueClient(queue_url, queue_name=queue_name, credential=credential)
 
         queue_client.send_message(message_base64)
-        logging.info(f"Message added to queue: {message_json}")
+        logging.info(f"Trigger message added to queue: {message_json}")
 
     except Exception as e:
-        logging.error(f"Error adding message to queue: {e}")
+        logging.error(f"Error adding trigger message to queue: {e}")
