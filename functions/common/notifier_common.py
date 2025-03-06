@@ -54,11 +54,11 @@ def translate_dict(input_data: object):
                         "attributes": {
                             "ade_source_system": system['ade_source_system'],
                             "ade_source_entity": entity['ade_source_entity'],
-                            "batch_from_file_path_regex": system.get('batch_from_file_path_regex', None),
+                            "batch_from_file_path_regex": entity.get('batch_from_file_path_regex', system.get('batch_from_file_path_regex', None)),
                             "folder_path": entity.get('file_location', None),
-                            "path_replace": system.get('path_replace', None),
-                            "path_replace_with": system.get('path_replace_with', None),
-                            "single_file_manifest": system.get('single_file_manifest', None),
+                            "path_replace": entity.get('path_replace', system.get('path_replace', None)),
+                            "path_replace_with": entity.get('path_replace', system.get('path_replace_with', None)),
+                            "single_file_manifest": entity.get('single_file_manifest', system.get('single_file_manifest', None)),
                             "max_files_in_manifest": max_files_per_manifest,
                             "dag_trigger": entity.get('dag_trigger', system_params['dag_trigger']),
                         },
@@ -67,7 +67,7 @@ def translate_dict(input_data: object):
                             "compression": entity.get('compression', system_params['compression']),
                             "delim": entity.get('delim', system_params['delim']),
                             "format": "UNKNOWN" if entity.get('format', system_params['format']) == 'PARQUET' else entity.get('format', system_params['format']),
-                            "fullscanned": system_params['fullscanned'],
+                            "fullscanned": entity.get('fullscanned', system_params['fullscanned']),
                             "skiph": entity.get('skiph', system_params['skiph']),
                         }
                     }
