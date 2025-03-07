@@ -3,6 +3,7 @@ import concurrent.futures
 import logging
 import yaml
 import json
+import re
 from datetime import datetime
 from azure.identity import DefaultAzureCredential
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, ContentSettings
@@ -179,9 +180,14 @@ class AzureFileHandler:
         Args:
             file_path (str): Path of the file to be moved.
         """
+        
+        
         try:
-            # Construct the destination path in the 'processed' folder
-            new_path = file_path.replace("queued", "processed", 1)
+            # Construct the destination path in the 'processed' folder with the current time
+            current_time = datetime.now().strftime("%Y/%m/%d/%H")
+            pattern = r"\d{4}/\d{2}/\d{2}/\d{2}"
+            
+            new_path = re.sub(pattern, current_time, file_path).replace("queued", "processed", 1)
 
             # Get the blob object for the current file
             blob_client = self.container_client.get_blob_client(file_path)
