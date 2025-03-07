@@ -223,8 +223,9 @@ def dag_trigger_handler(notifier_status: object, secrets: object):
                     "X-API-KEY-SECRET": secrets['api_key_secret'], "Content-Type": "application/json"})
 
     for dag_name in dags_to_trigger:
+        logging.info(f"Triggering dag: {dag_name}")
         dag_run = start_dag_run_v2(session, secrets['base_url'], dag_name)
-        logging.info(f"Got response from dag_run : {dag_run}")
+        logging.info(f"Got response from dag_run: {dag_run}")
 
     return dags_to_trigger
 
