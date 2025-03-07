@@ -33,20 +33,8 @@ def translate_dict(input_data: object):
         else:
             max_files_per_manifest = source.get('parameters', {}).get('max_files_per_manifest', None)
 
+            # Iterate over systems
             for system in source['source_systems']:
-                # Extract parameters from the source system
-                system_params = {
-                    "compression": system.get('compression', None),
-                    "delim": system.get('delim', None),
-                    "format": system.get('format', None),
-                    "fullscanned": system.get('fullscanned', None),
-                    "skiph": system.get('skiph', None),
-                    "dag_trigger": system.get("dag_trigger", None)
-                }
-                
-                if system_params.get("format") == "PARQUET":
-                    system_params["format"] = "UNKNOWN"
-
                 # Iterate over entities
                 for entity in system['entities']:
                     output_entry = {
@@ -60,15 +48,16 @@ def translate_dict(input_data: object):
                             "path_replace_with": entity.get('path_replace_with', system.get('path_replace_with', None)),
                             "single_file_manifest": entity.get('single_file_manifest', system.get('single_file_manifest', None)),
                             "max_files_in_manifest": max_files_per_manifest,
-                            "dag_trigger": entity.get('dag_trigger', system_params['dag_trigger']),
+                            "dag_trigger": entity.get('dag_trigger', system.get("dag_trigger", None)),
+                            "file_extension": entity.get('file_extension', system.get("file_extension", None)),
                         },
                         "manifest_parameters": {
                             "columns": entity.get('columns', None),
-                            "compression": entity.get('compression', system_params['compression']),
-                            "delim": entity.get('delim', system_params['delim']),
-                            "format": "UNKNOWN" if entity.get('format', system_params['format']) == 'PARQUET' else entity.get('format', system_params['format']),
-                            "fullscanned": entity.get('fullscanned', system_params['fullscanned']),
-                            "skiph": entity.get('skiph', system_params['skiph']),
+                            "compression": entity.get('compression', system.get('compression', None)),
+                            "delim": entity.get('delim', system.get('delim', None)),
+                            "format": "UNKNOWN" if entity.get('format', system.get('format', None)) == 'PARQUET' else entity.get('format', system.get('format', None)),
+                            "fullscanned": entity.get('fullscanned', system.get('fullscanned', None)),
+                            "skiph": entity.get('skiph', system.get('skiph', None)),
                         }
                     }
                     
