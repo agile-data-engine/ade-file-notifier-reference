@@ -36,14 +36,15 @@ The configuration format is as follows:
 parameters:
   max_files_per_manifest: <value>
 schedules:
-  - schedule_id: <id>
-    name: <name>
-    cron: <cron_expression>
+  - schedule_id: <value>
+    name: <value>
+    cron: <value>
 source_systems:
-  - ade_source_system: <name>
+  - ade_source_system: <value>
     <attributes>
     entities:
-      - ade_source_entity: <name>
+      - ade_source_entity: <value>
+        file_location: <value>
         <attributes>
 ```
 
