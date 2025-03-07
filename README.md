@@ -74,7 +74,7 @@ Schedule lists can be split into multiple YAML files but the ids and names must 
 
 ## Source systems and entities
 
-Source systems and entities are the data source configuration for the notifier. This configuration corresponds to the source entities and source systems that have been configured in ADE, and the settings control the notifying and file load process.
+Source systems and entities are the data source configuration for the notifier. This configuration should correspond to the source entities and source systems configured in ADE, and the settings control the notifying and file load processes.
 
 | Attribute | Mandatory | Description |
 | - | - | - |
