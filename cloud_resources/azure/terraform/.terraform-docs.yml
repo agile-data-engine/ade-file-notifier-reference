@@ -1,0 +1,51 @@
+content: |-
+  {{ .Header }}
+
+  ## Terraform Deployment
+  
+  Log in to Azure:
+  ```
+  az login --tenant tenant_id
+  az account set --subscription subscription_id
+  ```
+
+  Set API secrets as environment variables:
+  ```
+  export TF_VAR_notify_api_key=secret_value
+  export TF_VAR_notify_api_key_secret=secret_value
+  export TF_VAR_external_api_key=secret_value
+  export TF_VAR_external_api_key_secret=secret_value
+  ```
+
+  Deploy DEV environment:
+  ```
+  terraform init -backend-config=../environments/dev/backend.conf
+
+  terraform plan -var-file="../environments/dev/terraform.tfvars"
+
+  terraform apply -var-file="../environments/dev/terraform.tfvars"
+  ```
+
+  Cleanup generated local function files before running apply again:
+  ```
+  rm -rf .output/
+  ```
+
+  Destroy DEV deployment if needed:
+  ```
+  terraform destroy -var-file="../environments/dev/terraform.tfvars"
+  ```
+  
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Modules }}
+
+  {{ .Resources }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Footer }}
