@@ -57,7 +57,7 @@ def translate_dict(input_data: object):
                             "batch_from_file_path_regex": entity.get('batch_from_file_path_regex', system.get('batch_from_file_path_regex', None)),
                             "folder_path": entity.get('file_location', None),
                             "path_replace": entity.get('path_replace', system.get('path_replace', None)),
-                            "path_replace_with": entity.get('path_replace', system.get('path_replace_with', None)),
+                            "path_replace_with": entity.get('path_replace_with', system.get('path_replace_with', None)),
                             "single_file_manifest": entity.get('single_file_manifest', system.get('single_file_manifest', None)),
                             "max_files_in_manifest": max_files_per_manifest,
                             "dag_trigger": entity.get('dag_trigger', system_params['dag_trigger']),
