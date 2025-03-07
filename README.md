@@ -50,9 +50,11 @@ source_systems:
 
 ## Parameters
 
+Parameters are general top-level settings.
+
 | Attribute | Mandatory | Description |
 | - | - | - |
-| `parameters` | Yes | A list of top-level parameters. |
+| `parameters` | Yes | A list of parameters. |
 | `max_files_per_manifest` | Yes | Specifies the maximum number of files that can be included in a single manifest. If more files are queued, file paths are split into multiple manifests. Typically one file load statement is executed per manifest (e.g. COPY INTO), however this varies by target database product. |
 
 If you split the configuration into multiple YAML files, set the parameters list in only one file.
@@ -71,6 +73,8 @@ Schedule lists can be split into multiple YAML files but the ids and names must 
 | `cron` | Yes | Cron expression for the schedule. |
 
 ## Source systems and entities
+
+Source systems and entities are the data source configuration for the notifier. This configuration corresponds to the source entities and source systems that have been configured in ADE, and the settings control the notifying and file load process.
 
 | Attribute | Mandatory | Description |
 | - | - | - |
