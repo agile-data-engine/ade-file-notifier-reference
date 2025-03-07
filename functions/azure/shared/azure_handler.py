@@ -180,14 +180,14 @@ class AzureFileHandler:
         Args:
             file_path (str): Path of the file to be moved.
         """
-        
-        
         try:
             # Construct the destination path in the 'processed' folder with the current time
-            current_time = datetime.now().strftime("%Y/%m/%d/%H")
-            pattern = r"\d{4}/\d{2}/\d{2}/\d{2}"
+            file_path_parts = file_path.split("/")
+            prefix = "/".join(file_path_parts[:3]) # E.g. queued/system/entity
+            filename = file_path_parts[-1]  # Extracted file name
+            current_time = datetime.now().strftime("%Y/%m/%d/%H") # yyyy/mm/dd/hh
             
-            new_path = re.sub(pattern, current_time, file_path).replace("queued", "processed", 1)
+            new_path = f"{prefix}/{current_time}/{filename}".replace("queued", "processed", 1)
 
             # Get the blob object for the current file
             blob_client = self.container_client.get_blob_client(file_path)
