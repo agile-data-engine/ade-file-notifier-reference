@@ -61,9 +61,9 @@ def process_events(event_data: object):
             "api_key_secret": os.getenv('notify_api_key_secret')
         }
         ext_api_secrets = {
-            "base_url": os.getenv('ext_api_base_url'),
-            "api_key": os.getenv('ext_api_key'),
-            "api_key_secret": os.getenv('ext_api_key_secret')
+            "base_url": os.getenv('external_api_base_url'),
+            "api_key": os.getenv('external_api_key'),
+            "api_key_secret": os.getenv('external_api_key_secret')
         }
         config_dict = download_config(container_name, config_prefix)
         notifier_status = []
