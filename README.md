@@ -74,7 +74,7 @@ Schedule lists can be split into multiple YAML files but the ids and names must 
 | Attribute | Mandatory | Description |
 | - | - | - |
 | `source_systems` | Yes | A list of source systems. |
-| source_systems.`ade_source_system` | Yes | Source system name as defined for the source entity in ADE, e.g. `taxidata` or `salesforce`. |
+| source_systems.`ade_source_system` | Yes | Source system name as defined for the source entity in ADE, e.g. `taxidata` or `mdm`. |
 | `entities` | Yes | A list of source entities. |
 | entities.`ade_source_entity` | Yes | Source entity name in ADE, e.g. `yellow_tripdata`. |
 | entities.`file_location` | Yes | The path to the file location, relative to the root storage path, e.g. `taxidata/yellow_tripdata`. |
