@@ -64,7 +64,6 @@ Module for creating a Function App and related components including:
 | <a name="input_notify_queue"></a> [notify\_queue](#input\_notify\_queue) | Notify queue name, triggers notifying | `string` | n/a | yes |
 | <a name="input_rg"></a> [rg](#input\_rg) | Resource group name | `string` | n/a | yes |
 | <a name="input_security_group_id"></a> [security\_group\_id](#input\_security\_group\_id) | Id of Entra security group which is given access to resources | `string` | n/a | yes |
-| <a name="input_source_data_container"></a> [source\_data\_container](#input\_source\_data\_container) | Name of source data container | `string` | n/a | yes |
 | <a name="input_storage_account_id"></a> [storage\_account\_id](#input\_storage\_account\_id) | Storage account id | `string` | n/a | yes |
 | <a name="input_storage_account_name"></a> [storage\_account\_name](#input\_storage\_account\_name) | Storage account name | `string` | n/a | yes |
 | <a name="input_storage_primary_blob_endpoint"></a> [storage\_primary\_blob\_endpoint](#input\_storage\_primary\_blob\_endpoint) | Storage account primary blob endpoint | `string` | n/a | yes |

@@ -85,7 +85,6 @@ module "function_app" {
   notify_api_base_url = var.notify_api_base_url
   rg = var.rg
   security_group_id = var.security_group_id
-  source_data_container = var.source_data_container
   subnet_id = module.network.subnet_id
   storage_account_id = module.storage_account.id
   storage_account_name = module.storage_account.name

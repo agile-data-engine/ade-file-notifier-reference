@@ -93,11 +93,6 @@ variable "security_group_id" {
     description = "Id of Entra security group which is given access to resources"
 }
 
-variable "source_data_container" {
-    type = string
-    description = "Name of source data container"
-}
-
 variable "subnet_id" {
     type = string
     description = "Subnet id for the Function App vnet configuration"
