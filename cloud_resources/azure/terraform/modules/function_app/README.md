@@ -34,20 +34,11 @@ Module for creating a Function App and related components including:
 | Name | Type |
 |------|------|
 | [azurerm_application_insights.notifier](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
-| [azurerm_eventgrid_system_topic_event_subscription.topic-queue-message-sender](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/eventgrid_system_topic_event_subscription) | resource |
 | [azurerm_key_vault_access_policy.notifier-access](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_linux_function_app.notifier](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_function_app) | resource |
-| [azurerm_role_assignment.group-blob-owner](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.group-queue-contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.notifier-blob-owner](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.notifier-queue-contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.notifier-storage-contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.topic-queue-message-sender](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_storage_account.notifier](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account) | resource |
-| [azurerm_storage_account_network_rules.notifier](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account_network_rules) | resource |
-| [azurerm_storage_container.notifier](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
-| [azurerm_storage_queue.blob-event-queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
-| [azurerm_storage_queue.notify-queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
 | [archive_file.function_archive](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 
 ## Inputs
@@ -74,6 +65,10 @@ Module for creating a Function App and related components including:
 | <a name="input_rg"></a> [rg](#input\_rg) | Resource group name | `string` | n/a | yes |
 | <a name="input_security_group_id"></a> [security\_group\_id](#input\_security\_group\_id) | Id of Entra security group which is given access to resources | `string` | n/a | yes |
 | <a name="input_source_data_container"></a> [source\_data\_container](#input\_source\_data\_container) | Name of source data container | `string` | n/a | yes |
+| <a name="input_storage_account_id"></a> [storage\_account\_id](#input\_storage\_account\_id) | Storage account id | `string` | n/a | yes |
+| <a name="input_storage_account_name"></a> [storage\_account\_name](#input\_storage\_account\_name) | Storage account name | `string` | n/a | yes |
+| <a name="input_storage_primary_blob_endpoint"></a> [storage\_primary\_blob\_endpoint](#input\_storage\_primary\_blob\_endpoint) | Storage account primary blob endpoint | `string` | n/a | yes |
+| <a name="input_storage_primary_queue_endpoint"></a> [storage\_primary\_queue\_endpoint](#input\_storage\_primary\_queue\_endpoint) | Storage account primary queue endpoint | `string` | n/a | yes |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | Subnet id for the Function App vnet configuration | `string` | n/a | yes |
 | <a name="input_system_topic_name"></a> [system\_topic\_name](#input\_system\_topic\_name) | System topic name for source file events | `string` | n/a | yes |
 | <a name="input_system_topic_principal_id"></a> [system\_topic\_principal\_id](#input\_system\_topic\_principal\_id) | System topic principal id for source file events | `string` | n/a | yes |
