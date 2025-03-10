@@ -1,7 +1,7 @@
 resource "azurerm_role_assignment" "topic-queue-message-sender" {
     principal_id         = var.system_topic_principal_id
     role_definition_name = "Storage Queue Data Message Sender"
-    scope                = azurerm_storage_account.notifier.id
+    scope                = var.queue_storage_account_id
 }
 
 resource "azurerm_eventgrid_system_topic_event_subscription" "topic-queue-message-sender" {
