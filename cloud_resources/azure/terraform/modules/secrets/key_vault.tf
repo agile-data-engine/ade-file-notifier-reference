@@ -9,6 +9,6 @@ resource "azurerm_key_vault" "notifier" {
       bypass = "None"
       default_action = "Deny"
       ip_rules = var.allowed_ips
-      virtual_network_subnet_ids = [var.subnet_id]
+      virtual_network_subnet_ids = var.allowed_subnet_ids
     }
 }

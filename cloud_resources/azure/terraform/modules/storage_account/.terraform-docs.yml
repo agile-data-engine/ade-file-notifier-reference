@@ -1,0 +1,24 @@
+content: |-
+  {{ .Header }}
+
+  ## About
+
+  Module for creating a Function App and related components including:
+  - Application Insights
+  - Storage account with queues for triggering the functions and blob containers for function files
+  - Event subscription for blob created source file events
+  - Role assignments
+  
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Modules }}
+
+  {{ .Resources }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Footer }}

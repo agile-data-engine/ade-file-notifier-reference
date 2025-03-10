@@ -17,3 +17,13 @@ variable "rg" {
     type = string
     description = "Resource group name"
 }
+
+variable "sku" {
+    type = string
+    description = "SKU name"
+}
+
+variable "worker_count" {
+    type = number
+    description = "Worker count"
+}

@@ -24,8 +24,8 @@ resource "azurerm_eventgrid_system_topic_event_subscription" "topic-queue-messag
     }
 
     storage_queue_endpoint {
-        storage_account_id = azurerm_storage_account.notifier.id
-        queue_name         = azurerm_storage_queue.blob-event-queue.name
+        storage_account_id = var.queue_storage_account_id
+        queue_name         = var.blob_event_queue_name
     }
 
     delivery_identity {

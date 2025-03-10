@@ -3,8 +3,8 @@ module "function_files" {
     config_folder = var.config_folder
     config_prefix = var.config_prefix
     function_folder = var.function_folder
-    storage_account_name = azurerm_storage_account.notifier.name
-    storage_container_name = azurerm_storage_container.notifier.name
+    storage_account_name = var.storage_account_name
+    storage_container_name = var.container_name
 }
 
 data "archive_file" "function_archive" {
@@ -19,7 +19,7 @@ resource "azurerm_linux_function_app" "notifier" {
     location = var.location
     resource_group_name = var.rg
     service_plan_id = var.asp_id
-    storage_account_name = azurerm_storage_account.notifier.name
+    storage_account_name = var.storage_account_name
     storage_uses_managed_identity = true
     virtual_network_subnet_id = var.subnet_id
     functions_extension_version = "~4"
@@ -43,8 +43,8 @@ resource "azurerm_linux_function_app" "notifier" {
     app_settings = {
         AzureWebJobsDisableHomepage = true
         AzureWebJobsStorage__credential = "managedidentity"
-        AzureWebJobsStorage__blobServiceUri = azurerm_storage_account.notifier.primary_blob_endpoint
-        AzureWebJobsStorage__queueServiceUri = azurerm_storage_account.notifier.primary_queue_endpoint
+        AzureWebJobsStorage__blobServiceUri = var.storage_primary_blob_endpoint
+        AzureWebJobsStorage__queueServiceUri = var.storage_primary_queue_endpoint
         AzureWebJobsFeatureFlags = "EnableWorkerIndexing"
         ENABLE_ORYX_BUILD = true
         SCM_DO_BUILD_DURING_DEPLOYMENT = true
@@ -64,19 +64,19 @@ resource "azurerm_linux_function_app" "notifier" {
 resource "azurerm_role_assignment" "notifier-storage-contributor" {
     principal_id         = azurerm_linux_function_app.notifier.identity[0].principal_id
     role_definition_name = "Storage Account Contributor"
-    scope                = azurerm_storage_account.notifier.id
+    scope                = var.storage_account_id
 }
 
 resource "azurerm_role_assignment" "notifier-blob-owner" {
     principal_id         = azurerm_linux_function_app.notifier.identity[0].principal_id
     role_definition_name = "Storage Blob Data Owner"
-    scope                = azurerm_storage_account.notifier.id
+    scope                = var.storage_account_id
 }
 
 resource "azurerm_role_assignment" "notifier-queue-contributor" {
     principal_id         = azurerm_linux_function_app.notifier.identity[0].principal_id
     role_definition_name = "Storage Queue Data Contributor"
-    scope                = azurerm_storage_account.notifier.id
+    scope                = var.storage_account_id
 }
 
 resource "azurerm_key_vault_access_policy" "notifier-access" {

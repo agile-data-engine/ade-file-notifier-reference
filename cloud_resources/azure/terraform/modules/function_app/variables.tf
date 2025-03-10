@@ -103,6 +103,26 @@ variable "subnet_id" {
     description = "Subnet id for the Function App vnet configuration"
 }
 
+variable "storage_account_id" {
+    type = string
+    description = "Storage account id"
+}
+
+variable "storage_account_name" {
+    type = string
+    description = "Storage account name"
+}
+
+variable "storage_primary_blob_endpoint" {
+    type = string
+    description = "Storage account primary blob endpoint"
+}
+
+variable "storage_primary_queue_endpoint" {
+    type = string
+    description = "Storage account primary queue endpoint"
+}
+
 variable "system_topic_name" {
     type = string
     description = "System topic name for source file events"
