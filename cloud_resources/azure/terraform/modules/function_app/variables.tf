@@ -117,18 +117,3 @@ variable "storage_primary_queue_endpoint" {
     type = string
     description = "Storage account primary queue endpoint"
 }
-
-variable "system_topic_name" {
-    type = string
-    description = "System topic name for source file events"
-}
-
-variable "system_topic_principal_id" {
-    type = string
-    description = "System topic principal id for source file events"
-}
-
-variable "system_topic_rg" {
-    type = string
-    description = "System topic resource group name for source file events"
-}

@@ -90,7 +90,4 @@ module "function_app" {
   storage_account_name = module.storage_account.name
   storage_primary_blob_endpoint = module.storage_account.primary_blob_endpoint
   storage_primary_queue_endpoint = module.storage_account.primary_queue_endpoint
-  system_topic_name = var.system_topic_name
-  system_topic_principal_id = var.system_topic_principal_id
-  system_topic_rg = var.system_topic_rg
 }
