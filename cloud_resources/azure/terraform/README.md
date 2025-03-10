@@ -40,26 +40,18 @@ terraform destroy -var-file="../environments/dev/terraform.tfvars"
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.11 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | =4.21.1 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.21 |
-
-## Providers
-
-No providers.
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_app_service_plan"></a> [app\_service\_plan](#module\_app\_service\_plan) | ./modules/app_service_plan | n/a |
+| <a name="module_event_subscription"></a> [event\_subscription](#module\_event\_subscription) | ./modules/event_subscription | n/a |
 | <a name="module_function_app"></a> [function\_app](#module\_function\_app) | ./modules/function_app | n/a |
 | <a name="module_network"></a> [network](#module\_network) | ./modules/network | n/a |
 | <a name="module_secrets"></a> [secrets](#module\_secrets) | ./modules/secrets | n/a |
-
-## Resources
-
-No resources.
+| <a name="module_storage_account"></a> [storage\_account](#module\_storage\_account) | ./modules/storage_account | n/a |
 
 ## Inputs
 
@@ -85,9 +77,5 @@ No resources.
 | <a name="input_system_topic_principal_id"></a> [system\_topic\_principal\_id](#input\_system\_topic\_principal\_id) | System topic principal id for source file events | `string` | n/a | yes |
 | <a name="input_system_topic_rg"></a> [system\_topic\_rg](#input\_system\_topic\_rg) | System topic resource group name for source file events | `string` | n/a | yes |
 | <a name="input_vnet_cidr_range"></a> [vnet\_cidr\_range](#input\_vnet\_cidr\_range) | Virtual network CIDR address space | `string` | n/a | yes |
-
-## Outputs
-
-No outputs.
 
 <!-- END_TF_DOCS -->
