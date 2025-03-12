@@ -67,7 +67,8 @@ def queue_file(msg: func.QueueMessage):
                 return
         return
     except Exception as e:
-        logging.error(f"Error processing event: {event_data}")
+        logging.error(f"Error processing event: {e}")
+        logging.error(f"Event: {event_data}")
         raise
 
 def handle_single_file_manifest(source):
@@ -111,3 +112,5 @@ def handle_single_file_manifest(source):
 
     except Exception as e:
         logging.error(f"Error adding trigger message to queue: {e}")
+        logging.error(f"Message: {message_json}")
+        raise
