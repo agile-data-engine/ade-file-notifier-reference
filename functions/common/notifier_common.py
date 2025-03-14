@@ -47,7 +47,7 @@ def translate_dict(input_data: object):
                             "path_replace": entity.get('path_replace', system.get('path_replace', None)),
                             "path_replace_with": entity.get('path_replace_with', system.get('path_replace_with', None)),
                             "single_file_manifest": entity.get('single_file_manifest', system.get('single_file_manifest', None)),
-                            "max_files_in_manifest": max_files_per_manifest,
+                            "max_files_per_manifest": max_files_per_manifest,
                             "dag_trigger": entity.get('dag_trigger', system.get("dag_trigger", None)),
                             "file_extension": entity.get('file_extension', system.get("file_extension", None)),
                         },
@@ -151,7 +151,7 @@ def manifest_handler(
         manifest_header: object, 
         manifest_entries: object, 
         secrets: object, 
-        max_files_in_manifest: int):
+        max_files_per_manifest: int):
     """
     Handles manifest and posts to Notify API
 
@@ -159,12 +159,12 @@ def manifest_handler(
         manifest_header (object): Configuration for the manifest, such as delimiter, skip header etc.
         manifest_entries (object): Manifest entries.
         secrets (object): Secrets for Notify API
-        max_files_in_manifest (int): Max files sent per manifest. If given, can be used to split entries to multiple manifests.
+        max_files_per_manifest (int): Max files sent per manifest. If given, can be used to split entries to multiple manifests.
     Returns:
         manifests
 
     """
-    manifest_parts = [manifest_entries[i:i + max_files_in_manifest] for i in range(0, len(manifest_entries), max_files_in_manifest)]
+    manifest_parts = [manifest_entries[i:i + max_files_per_manifest] for i in range(0, len(manifest_entries), max_files_per_manifest)]
 
     base_url = secrets['base_url']
     api_key = secrets['api_key']

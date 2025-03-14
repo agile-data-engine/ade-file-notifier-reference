@@ -272,7 +272,7 @@ def process_events(event_data: object):
                     manifest_entries = [{"sourceFile": entry} for entry in entries if folder_path in entry]
                     #logging.info(f"Manifest entries amount: {len(manifest_entries)}")
 
-                    max_files_per_manifest = config['attributes']['max_files_in_manifest']
+                    max_files_per_manifest = config['attributes']['max_files_per_manifest']
                     manifests = manifest_handler(config, manifest_entries, secrets, max_files_per_manifest)
                     notifier_status.append({"config": config, "notifier_manifests": manifests})
 
