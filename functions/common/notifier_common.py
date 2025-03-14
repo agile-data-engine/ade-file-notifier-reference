@@ -54,10 +54,10 @@ def translate_dict(input_data: object):
                         "manifest_parameters": {
                             "columns": entity.get('columns', None),
                             "compression": entity.get('compression', system.get('compression', None)),
-                            "delim": entity.get('delim', system.get('delim', None)),
+                            "delim": entity.get('delim', system.get('delim', None) if entity.get('format', system.get('format', None)) == 'CSV' else None),
                             "format": "UNKNOWN" if entity.get('format', system.get('format', None)) == 'PARQUET' else entity.get('format', system.get('format', None)),
                             "fullscanned": entity.get('fullscanned', system.get('fullscanned', None)),
-                            "skiph": entity.get('skiph', system.get('skiph', None)),
+                            "skiph": entity.get('skiph', system.get('skiph', None) if entity.get('format', system.get('format', None)) == 'CSV' else None),
                         }
                     }
                     
