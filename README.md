@@ -57,7 +57,7 @@ Parameters are general top-level settings.
 | `parameters` | Yes | A list of parameters. |
 | `max_files_per_manifest` | Yes | Specifies the maximum number of files that can be included in a single manifest. If more files are queued, file paths are split into multiple manifests. Typically one file load statement is executed per manifest (e.g. COPY INTO), however this varies by target database product. |
 
-If you split the configuration into multiple YAML files, set the parameters list in only one file.
+If you split the configuration into multiple YAML files, set the parameters list in all files.
 
 ## Schedules
 
