@@ -35,7 +35,7 @@ def queue_file(msg: func.QueueMessage):
         blob_url = event_data['data'].get('blobUrl', event_data['data'].get('url'))
         if not blob_url:
             raise KeyError("Neither 'blobUrl' nor 'url' found in event data")
-        
+
         sources = identify_sources(blob_url, config_dict)
 
         if (sources == [] or not sources):
