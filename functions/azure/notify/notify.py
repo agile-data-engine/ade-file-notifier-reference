@@ -61,9 +61,9 @@ def process_events(event_data: object):
             "api_key_secret": os.getenv('notify_api_key_secret')
         }
         ext_api_secrets = {
-            "base_url": os.getenv('ext_api_base_url'),
-            "api_key": os.getenv('ext_api_key'),
-            "api_key_secret": os.getenv('ext_api_key_secret')
+            "base_url": os.getenv('external_api_base_url'),
+            "api_key": os.getenv('external_api_key'),
+            "api_key_secret": os.getenv('external_api_key_secret')
         }
         config_dict = download_config(container_name, config_prefix)
         notifier_status = []
@@ -104,7 +104,7 @@ def process_events(event_data: object):
                     manifest_entries = [{"sourceFile": entry} for entry in entries if folder_path in entry]
                     #logging.info(f"Manifest entries amount: {len(manifest_entries)}")
 
-                    max_files_per_manifest = config['attributes']['max_files_in_manifest']
+                    max_files_per_manifest = config['attributes']['max_files_per_manifest']
                     manifests = manifest_handler(config, manifest_entries, secrets, max_files_per_manifest)
                     notifier_status.append({"config": config, "notifier_manifests": manifests})
 

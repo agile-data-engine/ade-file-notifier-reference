@@ -3,6 +3,6 @@ resource "azurerm_service_plan" "notifier" {
   resource_group_name = var.rg
   location = var.location
   os_type = "Linux"
-  sku_name = "EP1"
-  worker_count = 1
+  sku_name = var.sku
+  worker_count = var.worker_count
 }

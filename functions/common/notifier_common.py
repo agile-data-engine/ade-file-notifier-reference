@@ -33,20 +33,8 @@ def translate_dict(input_data: object):
         else:
             max_files_per_manifest = source.get('parameters', {}).get('max_files_per_manifest', None)
 
+            # Iterate over systems
             for system in source['source_systems']:
-                # Extract parameters from the source system
-                system_params = {
-                    "compression": system.get('compression', None),
-                    "delim": system.get('delim', None),
-                    "format": system.get('format', None),
-                    "fullscanned": system.get('fullscanned', None),
-                    "skiph": system.get('skiph', None),
-                    "dag_trigger": system.get("dag_trigger", None)
-                }
-                
-                if system_params.get("format") == "PARQUET":
-                    system_params["format"] = "UNKNOWN"
-
                 # Iterate over entities
                 for entity in system['entities']:
                     output_entry = {
@@ -54,21 +42,22 @@ def translate_dict(input_data: object):
                         "attributes": {
                             "ade_source_system": system['ade_source_system'],
                             "ade_source_entity": entity['ade_source_entity'],
-                            "batch_from_file_path_regex": system.get('batch_from_file_path_regex', None),
+                            "batch_from_file_path_regex": entity.get('batch_from_file_path_regex', system.get('batch_from_file_path_regex', None)),
                             "folder_path": entity.get('file_location', None),
-                            "path_replace": system.get('path_replace', None),
-                            "path_replace_with": system.get('path_replace_with', None),
-                            "single_file_manifest": system.get('single_file_manifest', None),
-                            "max_files_in_manifest": max_files_per_manifest,
-                            "dag_trigger": entity.get('dag_trigger', system_params['dag_trigger']),
+                            "path_replace": entity.get('path_replace', system.get('path_replace', None)),
+                            "path_replace_with": entity.get('path_replace_with', system.get('path_replace_with', None)),
+                            "single_file_manifest": entity.get('single_file_manifest', system.get('single_file_manifest', None)),
+                            "max_files_per_manifest": max_files_per_manifest,
+                            "dag_trigger": entity.get('dag_trigger', system.get("dag_trigger", None)),
+                            "file_extension": entity.get('file_extension', system.get("file_extension", None)),
                         },
                         "manifest_parameters": {
                             "columns": entity.get('columns', None),
-                            "compression": entity.get('compression', system_params['compression']),
-                            "delim": entity.get('delim', system_params['delim']),
-                            "format": "UNKNOWN" if entity.get('format', system_params['format']) == 'PARQUET' else entity.get('format', system_params['format']),
-                            "fullscanned": system_params['fullscanned'],
-                            "skiph": entity.get('skiph', system_params['skiph']),
+                            "compression": entity.get('compression', system.get('compression', None)),
+                            "delim": entity.get('delim', system.get('delim', None) if entity.get('format', system.get('format', None)) == 'CSV' else None),
+                            "format": "UNKNOWN" if entity.get('format', system.get('format', None)) == 'PARQUET' else entity.get('format', system.get('format', None)),
+                            "fullscanned": entity.get('fullscanned', system.get('fullscanned', None)),
+                            "skiph": entity.get('skiph', system.get('skiph', None) if entity.get('format', system.get('format', None)) == 'CSV' else None),
                         }
                     }
                     
@@ -162,7 +151,7 @@ def manifest_handler(
         manifest_header: object, 
         manifest_entries: object, 
         secrets: object, 
-        max_files_in_manifest: int):
+        max_files_per_manifest: int):
     """
     Handles manifest and posts to Notify API
 
@@ -170,12 +159,12 @@ def manifest_handler(
         manifest_header (object): Configuration for the manifest, such as delimiter, skip header etc.
         manifest_entries (object): Manifest entries.
         secrets (object): Secrets for Notify API
-        max_files_in_manifest (int): Max files sent per manifest. If given, can be used to split entries to multiple manifests.
+        max_files_per_manifest (int): Max files sent per manifest. If given, can be used to split entries to multiple manifests.
     Returns:
         manifests
 
     """
-    manifest_parts = [manifest_entries[i:i + max_files_in_manifest] for i in range(0, len(manifest_entries), max_files_in_manifest)]
+    manifest_parts = [manifest_entries[i:i + max_files_per_manifest] for i in range(0, len(manifest_entries), max_files_per_manifest)]
 
     base_url = secrets['base_url']
     api_key = secrets['api_key']
@@ -223,8 +212,9 @@ def dag_trigger_handler(notifier_status: object, secrets: object):
                     "X-API-KEY-SECRET": secrets['api_key_secret'], "Content-Type": "application/json"})
 
     for dag_name in dags_to_trigger:
+        logging.info(f"Triggering dag: {dag_name}")
         dag_run = start_dag_run_v2(session, secrets['base_url'], dag_name)
-        logging.info(f"Got response from dag_run : {dag_run}")
+        logging.info(f"Got response from dag_run: {dag_run}")
 
     return dags_to_trigger
 

@@ -1,13 +1,10 @@
-data "azurerm_client_config" "current" {}
-
-data "azurerm_key_vault" "notifier" {
-    name                = var.key_vault_name
-    resource_group_name = var.rg
-}
-
 module "function_files" {
     source = "../function_files"
+    config_folder = var.config_folder
+    config_prefix = var.config_prefix
     function_folder = var.function_folder
+    storage_account_name = var.storage_account_name
+    storage_container_name = var.container_name
 }
 
 data "archive_file" "function_archive" {
@@ -21,8 +18,8 @@ resource "azurerm_linux_function_app" "notifier" {
     name = "func-${var.app}-${var.env}"
     location = var.location
     resource_group_name = var.rg
-    service_plan_id = azurerm_service_plan.notifier.id
-    storage_account_name = azurerm_storage_account.notifier.name
+    service_plan_id = var.asp_id
+    storage_account_name = var.storage_account_name
     storage_uses_managed_identity = true
     virtual_network_subnet_id = var.subnet_id
     functions_extension_version = "~4"
@@ -46,8 +43,8 @@ resource "azurerm_linux_function_app" "notifier" {
     app_settings = {
         AzureWebJobsDisableHomepage = true
         AzureWebJobsStorage__credential = "managedidentity"
-        AzureWebJobsStorage__blobServiceUri = azurerm_storage_account.notifier.primary_blob_endpoint
-        AzureWebJobsStorage__queueServiceUri = azurerm_storage_account.notifier.primary_queue_endpoint
+        AzureWebJobsStorage__blobServiceUri = var.storage_primary_blob_endpoint
+        AzureWebJobsStorage__queueServiceUri = var.storage_primary_queue_endpoint
         AzureWebJobsFeatureFlags = "EnableWorkerIndexing"
         ENABLE_ORYX_BUILD = true
         SCM_DO_BUILD_DURING_DEPLOYMENT = true
@@ -57,34 +54,34 @@ resource "azurerm_linux_function_app" "notifier" {
         config_prefix = var.config_prefix
         notify_api_base_url = var.notify_api_base_url
         external_api_base_url = var.external_api_base_url
-        notify_api_key = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.notifier.vault_uri}/secrets/notify-api-key)"
-        notify_api_key_secret = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.notifier.vault_uri}/secrets/notify-api-key-secret)"
-        external_api_key = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.notifier.vault_uri}/secrets/external-api-key)"
-        external_api_key_secret = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault.notifier.vault_uri}/secrets/external-api-key-secret)"
+        notify_api_key = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/notify-api-key)"
+        notify_api_key_secret = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/notify-api-key-secret)"
+        external_api_key = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/external-api-key)"
+        external_api_key_secret = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/external-api-key-secret)"
     }
 }
 
 resource "azurerm_role_assignment" "notifier-storage-contributor" {
     principal_id         = azurerm_linux_function_app.notifier.identity[0].principal_id
     role_definition_name = "Storage Account Contributor"
-    scope                = azurerm_storage_account.notifier.id
+    scope                = var.storage_account_id
 }
 
 resource "azurerm_role_assignment" "notifier-blob-owner" {
     principal_id         = azurerm_linux_function_app.notifier.identity[0].principal_id
     role_definition_name = "Storage Blob Data Owner"
-    scope                = azurerm_storage_account.notifier.id
+    scope                = var.storage_account_id
 }
 
 resource "azurerm_role_assignment" "notifier-queue-contributor" {
     principal_id         = azurerm_linux_function_app.notifier.identity[0].principal_id
     role_definition_name = "Storage Queue Data Contributor"
-    scope                = azurerm_storage_account.notifier.id
+    scope                = var.storage_account_id
 }
 
 resource "azurerm_key_vault_access_policy" "notifier-access" {
-    key_vault_id = data.azurerm_key_vault.notifier.id
-    tenant_id    = data.azurerm_client_config.current.tenant_id
+    key_vault_id = var.key_vault_id
+    tenant_id    = var.entra_tenant_id
     object_id    = azurerm_linux_function_app.notifier.identity[0].principal_id
 
     secret_permissions = [

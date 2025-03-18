@@ -3,6 +3,7 @@ import concurrent.futures
 import logging
 import yaml
 import json
+import re
 from datetime import datetime
 from azure.identity import DefaultAzureCredential
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, ContentSettings
@@ -47,21 +48,15 @@ def upload_notifier_status(container_name, notifier_status_content):
     year, month, day = datetime.now().strftime('%Y %m %d').split()
     timemillis = round(time.time() * 1000)
     status_file_path = f"status/{year}/{month}/{day}/{timemillis}_notifier_status.json"
-    upload_result = None
 
     if notifier_status_content:
         status_azure_handler = AzureFileHandler(container_name, "status/")
-        upload_result = status_azure_handler.upload_file(status_file_path, json.dumps(notifier_status_content))
-
-    if upload_result:
-        logging.info(f"Uploaded file to Azure Blob Storage: {status_file_path}")
-    else:
-        logging.warning(f"Status file {status_file_path} not uploaded to Azure Blob Storage.")
+        status_azure_handler.upload_file(status_file_path, json.dumps(notifier_status_content))
 
     return
 
 class AzureFileHandler:
-    def __init__(self, container_name, prefix, max_retries=3, retry_delay=2):
+    def __init__(self, container_name, prefix, max_retries=3, retry_delay=2, max_workers=8):
         account_url = os.getenv('AzureWebJobsStorage__blobServiceUri')
         credential = DefaultAzureCredential()
         self.blob_service_client = BlobServiceClient(account_url, credential)
@@ -69,6 +64,7 @@ class AzureFileHandler:
         self.prefix = prefix
         self.max_retries = max_retries
         self.retry_delay = retry_delay
+        self.max_workers = max_workers
 
     def list_files_in_folder(self):
         """
@@ -80,102 +76,77 @@ class AzureFileHandler:
         except Exception as e:
             logging.error(f"Error listing files with prefix {self.prefix}: {e}")
             return []
-
-    def download_and_load_yaml_files(self):
-        """
-        Download files, load their content into Python dictionaries.
-        """
-        blob_names = self.list_files_in_folder()
-
-        if not blob_names:
-            logging.info(f"No files found in container with prefix {self.prefix}.")
-            return []
-
-        try:
-            file_data = []
-            for blob_name in blob_names:
-                blob_client = self.container_client.get_blob_client(blob_name)
-                
-                if blob_name.endswith(('.yaml', '.yml')):
-                    try:
-                        # Download blob content directly as string
-                        yaml_content_str = blob_client.download_blob().readall().decode('utf-8')
-
-                        # Parse the YAML content
-                        yaml_content = yaml.safe_load(yaml_content_str)
-                        if yaml_content:
-                            file_data.append(yaml_content)
-                        else:
-                            logging.warning(f"YAML file {blob_name} is empty.")
-                    except Exception as e:
-                        logging.error(f"Error processing YAML file {blob_name}: {e}")
-            if not file_data:
-                logging.warning("No valid data loaded.")
-            return file_data
-
-        except Exception as e:
-            logging.error(f"Error during file download or processing: {e}")
-            return []
         
     def download_file(self, blob_name):
         """
         Download and process a single file, with retry logic.
         """
         blob_client = self.container_client.get_blob_client(blob_name)
-
+        
         for attempt in range(self.max_retries):
             try:
-                # Process JSON files
+                file_content_str = blob_client.download_blob().readall().decode('utf-8')
+                
                 if blob_name.endswith('.json'):
-                    json_content_str = blob_client.download_blob().readall().decode()
-                    json_content = json.loads(json_content_str)
-                    if json_content:
-                        return json_content
-                    else:
-                        logging.warning(f"JSON file {blob_name} is empty.")
-                        return None
-
-                # If file type is not supported, skip
+                    return json.loads(file_content_str)
+                elif blob_name.endswith(('.yaml', '.yml')):
+                    return yaml.safe_load(file_content_str)
                 else:
                     logging.info(f"Unsupported file type for {blob_name}. Skipping.")
                     return None
-
             except Exception as e:
                 logging.error(f"Error downloading or processing file {blob_name} (attempt {attempt + 1}): {e}")
-                time.sleep(self.retry_delay)  # Delay before retry
+                time.sleep(self.retry_delay)
         return None
 
-    def download_and_list_files(self):
+    def download_and_load_yaml_files(self):
         """
-        Download and load files concurrently.
+        Download YAML configuration files concurrently.
         """
         blob_names = self.list_files_in_folder()
-
-        if not blob_names:
-            logging.info(f"No files found in container with prefix {self.prefix}.")
-            return [], []
-
+        yaml_files = [name for name in blob_names if name.endswith(('.yaml', '.yml'))]
+        
+        if not yaml_files:
+            logging.info(f"No YAML files found in container with prefix {self.prefix}.")
+            return []
+        
         file_data = []
-        max_workers = 8
-
-        # Use ThreadPoolExecutor for parallel file downloads
-        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-            # Submit all download tasks and collect futures
-            futures = {executor.submit(self.download_file, blob_name): blob_name for blob_name in blob_names}
-
-            # Process results as they are completed
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            futures = {executor.submit(self.download_file, blob_name): blob_name for blob_name in yaml_files}
             for future in concurrent.futures.as_completed(futures):
                 try:
                     result = future.result()
-                    if result:  # Add only non-empty results
+                    if result:
+                        file_data.append(result)
+                except Exception as e:
+                    logging.error(f"Error processing YAML file: {e}")
+        
+        return file_data
+    
+    def download_and_list_files(self):
+        """
+        Download JSON notification files concurrently.
+        """
+        blob_names = self.list_files_in_folder()
+        
+        if not blob_names:
+            logging.info(f"No files found in container with prefix {self.prefix}.")
+            return [], []
+        
+        file_data = []
+        file_list = [name for name in blob_names if name.endswith('.json')]
+        
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            futures = {executor.submit(self.download_file, blob_name): blob_name for blob_name in file_list}
+            
+            for future in concurrent.futures.as_completed(futures):
+                try:
+                    result = future.result()
+                    if result:
                         file_data.append(result)
                 except Exception as e:
                     logging.error(f"Error processing file: {e}")
-
-        if not file_data:
-            logging.warning("No valid data loaded.")
         
-        file_list = [name for name in blob_names if name.endswith('.json')]
         return file_data, file_list
     
     def move_file(self, file_path):
@@ -186,8 +157,13 @@ class AzureFileHandler:
             file_path (str): Path of the file to be moved.
         """
         try:
-            # Construct the destination path in the 'processed' folder
-            new_path = file_path.replace("queued", "processed", 1)
+            # Construct the destination path in the 'processed' folder with the current time
+            file_path_parts = file_path.split("/")
+            prefix = "/".join(file_path_parts[:3]) # E.g. queued/system/entity
+            filename = file_path_parts[-1]  # Extracted file name
+            current_time = datetime.now().strftime("%Y/%m/%d/%H") # yyyy/mm/dd/hh
+            
+            new_path = f"{prefix}/{current_time}/{filename}".replace("queued", "processed", 1)
 
             # Get the blob object for the current file
             blob_client = self.container_client.get_blob_client(file_path)
@@ -210,13 +186,11 @@ class AzureFileHandler:
         Args:
             file_paths (list): List of file paths to be moved.
         """
-        max_workers = 8  # You can adjust the number of threads based on your needs
 
         # Use ThreadPoolExecutor to execute file moves in parallel
-        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             futures = {executor.submit(self.move_file, file_path): file_path for file_path in file_paths}
             
-            # Optionally, you can process results as they complete
             for future in concurrent.futures.as_completed(futures):
                 file_path = futures[future]
                 try:

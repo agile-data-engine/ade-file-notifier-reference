@@ -18,12 +18,12 @@ variable "rg" {
     description = "Resource group name"
 }
 
-variable "subnet_cidr_range" {
+variable "sku" {
     type = string
-    description = "Notifier subnet CIDR address space"
+    description = "SKU name"
 }
 
-variable "vnet_cidr_range" {
-    type = string
-    description = "Virtual network CIDR address space"
+variable "worker_count" {
+    type = number
+    description = "Worker count"
 }

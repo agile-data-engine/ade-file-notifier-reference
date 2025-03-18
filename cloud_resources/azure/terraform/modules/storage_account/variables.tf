@@ -13,9 +13,14 @@ variable "app" {
     description = "Application name to be used for resource naming"
 }
 
-variable "entra_tenant_id" {
+variable "blob_event_queue" {
     type = string
-    description = "Entra tenant id"
+    description = "Blob event queue name, triggers source file queuing"
+}
+
+variable "container_name" {
+    type = string
+    description = "Storage container for function files"
 }
 
 variable "env" {
@@ -23,33 +28,14 @@ variable "env" {
     description = "Environment name"
 }
 
-variable "external_api_key" {
-    type = string
-    sensitive = true
-    description = "ADE External API key"
-}
-
-variable "external_api_key_secret" {
-    type = string
-    sensitive = true
-    description = "ADE External API key secret"
-}
-
 variable "location" {
     type = string
     description = "Region"
 }
 
-variable "notify_api_key" {
+variable "notify_queue" {
     type = string
-    sensitive = true
-    description = "ADE Notify API key"
-}
-
-variable "notify_api_key_secret" {
-    type = string
-    sensitive = true
-    description = "ADE Notify API key secret"
+    description = "Notify queue name, triggers notifying"
 }
 
 variable "rg" {

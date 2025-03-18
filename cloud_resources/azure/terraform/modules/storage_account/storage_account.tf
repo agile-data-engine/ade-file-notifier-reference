@@ -8,17 +8,16 @@ resource "azurerm_storage_account" "notifier" {
 }
 
 resource "azurerm_storage_container" "notifier" {
-  name                  = var.container_name
+  name                = var.container_name
   storage_account_id  = azurerm_storage_account.notifier.id
   container_access_type = "private"
 }
 
 resource "azurerm_storage_account_network_rules" "notifier" {
   storage_account_id = azurerm_storage_account.notifier.id
-
   default_action             = "Allow" # ENABLED FOR LOCAL DEV, CHANGE TO "Deny"
   ip_rules                   = var.allowed_ips
-  virtual_network_subnet_ids = [var.subnet_id]
+  virtual_network_subnet_ids = var.allowed_subnet_ids
   bypass                     = ["AzureServices"]
 }
 

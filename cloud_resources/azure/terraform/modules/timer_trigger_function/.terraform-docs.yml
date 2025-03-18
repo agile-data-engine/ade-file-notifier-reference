@@ -1,0 +1,20 @@
+content: |-
+  {{ .Header }}
+
+  ## About
+
+  Module for generating timer trigger functions based on schedules configured in notifier config files.
+  
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Modules }}
+
+  {{ .Resources }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Footer }}

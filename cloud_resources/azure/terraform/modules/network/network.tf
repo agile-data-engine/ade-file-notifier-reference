@@ -15,6 +15,7 @@ resource "azurerm_subnet" "notifier" {
     name = "Microsoft.Web/serverFarms"
     service_delegation {
       name = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
     }
   }
 }

@@ -24,7 +24,7 @@ SELECT
     JSON_VALUE(json_record.config.attributes.ade_source_entity) AS ade_source_entity,
     JSON_VALUE(json_record.config.attributes.ade_source_system) AS ade_source_system,
     JSON_VALUE(json_record.config.attributes.folder_path) AS folder_path,
-    JSON_VALUE(json_record.config.attributes.max_files_in_manifest) AS max_files_in_manifest,
+    JSON_VALUE(json_record.config.attributes.max_files_per_manifest) AS max_files_per_manifest,
     JSON_VALUE(json_record.config.attributes.single_file_manifest) AS single_file_manifest,
     JSON_VALUE(json_record.config.manifest_parameters.format) AS manifest_format,
     JSON_VALUE(json_record.config.manifest_parameters.fullscanned) AS manifest_fullscanned,
