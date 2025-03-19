@@ -27,6 +27,7 @@ module "file_event_processor" {
   app                              = var.app
   env                              = var.env
   region                           = var.region
+  notifier_bucket_name             = "${var.app}-${var.env}"
   source_data_bucket               = var.source_data_bucket
   function_folder                  = "../../../functions"
   notifier_service_account         = module.service_account.notifier_service_account

@@ -8,6 +8,11 @@ variable "env" {
   description = "Environment name"
 }
 
+variable "notifier_bucket_name" {
+  type = string
+  description = "Name for the notifier bucket"
+}
+
 variable "region" {
   type = string
   description = "Region for resources"

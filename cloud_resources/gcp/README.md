@@ -1,11 +1,30 @@
+# ADE File Notifier Reference for Google Cloud
+
+## Architecture
+A general solution architecture is presented in this diagram:
+![image](architecture/gcp_notifier.png)
+
+Please refer to the readme file in each [terraform module](terraform/modules/) for detailed lists of resources.
+
+## Deployment
+The infrastructure and Function App deployment have been implemented with Terraform.
+
+1. Define your environments in [environments](environments/), see [environments/dev](environments/dev/) for reference. 
+
+2. Configure a [backend.conf](environments/dev/backend.conf) and a [terraform.tfvars](environments/dev/terraform.tfvars) file for each environment.
+
+3. Configure your data sources in the [config](../../config/) folder. See [README.md](../../README.md) in the root directory for the configuration format.
+
+4. Run the Terraform deployment per environment as instructed in [terraform/README.md](terraform/README.md).
+
 ## Reading log files
 
 ### Creating external table to BigQuery
 
-Status files can be queried with BigQuery External tables as well.
+Status files can be queried with BigQuery External tables. External table and view creation can be added as terraform or to your tool of choice.
 
 ```SQL
-CREATE EXTERNAL TABLE file_notifier.raw_status_files (status_content string)
+CREATE OR REPLACE EXTERNAL TABLE file_notifier.raw_status_files (status_content string)
   OPTIONS (
     format ="CSV",
     field_delimiter = '\x10', quote = '',
@@ -17,7 +36,7 @@ WITH json_data AS (
   SELECT
     JSON_QUERY_ARRAY(PARSE_JSON(status_content)) AS json_content,
     _FILE_NAME as status_file_name
-  FROM file_notifier.test
+  FROM file_notifier.raw_status_files
 )
 SELECT
     JSON_VALUE(json_record.config.id) AS config_id,
@@ -41,7 +60,7 @@ FROM
   UNNEST(json_query_array(json_record.notifier_manifests)) as notifier,
   UNNEST(json_query_array(notifier.entries)) as entry;
 
-
+-- Example query
 SELECT
   count(source_file) as file_amount_notified,
   ade_source_entity,

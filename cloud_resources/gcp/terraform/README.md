@@ -20,7 +20,7 @@ terraform apply -var-file="../environments/dev/terraform.tfvars"
 ```
 
 
-### DEV
+### PROD
 ```
 gcloud auth application-default login --project hanki-2832-adeproservdemo-prod
 terraform init -backend-config=../environments/prod/backend.conf
