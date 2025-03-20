@@ -1,6 +1,6 @@
 # Notifier configuration bucket
 resource "google_storage_bucket" "notifier_bucket" {
-  name                        = "${var.app}-${var.env}"
+  name                        = var.notifier_bucket_name
   location                    = var.region
   storage_class               = "STANDARD"
   uniform_bucket_level_access = true

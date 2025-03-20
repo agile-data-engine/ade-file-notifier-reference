@@ -49,6 +49,7 @@ No modules.
 | <a name="input_function_folder"></a> [function\_folder](#input\_function\_folder) | Folder where functions can be found | `string` | `"functions"` | no |
 | <a name="input_max_instance_request_concurrency"></a> [max\_instance\_request\_concurrency](#input\_max\_instance\_request\_concurrency) | Max instance request concurrency for the Cloud function. | `number` | n/a | yes |
 | <a name="input_max_instances_preprocessor"></a> [max\_instances\_preprocessor](#input\_max\_instances\_preprocessor) | Max instances to be used for Cloud function. | `number` | n/a | yes |
+| <a name="input_notifier_bucket_name"></a> [notifier\_bucket\_name](#input\_notifier\_bucket\_name) | Name for the notifier bucket | `string` | n/a | yes |
 | <a name="input_notifier_pubsub_topic_id"></a> [notifier\_pubsub\_topic\_id](#input\_notifier\_pubsub\_topic\_id) | Pub/Sub topic id of the file notifier. This is used if single file manifesting is used. | `string` | n/a | yes |
 | <a name="input_notifier_service_account"></a> [notifier\_service\_account](#input\_notifier\_service\_account) | GCP service account used for the notifier | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | Region for resources | `string` | n/a | yes |

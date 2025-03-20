@@ -243,11 +243,16 @@ def process_events(event_data: object):
             if not isinstance(call, list) or len(call) < 1 or not isinstance(call[0], str):
                 logging.error(f"Invalid call format: {call}")
                 return jsonify({"errorMessage": "Invalid call format."}), 400
-
             
             ade_source_system = call[0]
-            ade_source_entity = call[1] if len(call) > 1 and call[1] else ""
-            file_path_prefix = f"queued/{ade_source_system}/{ade_source_entity}"
+            
+            if len(call) > 1 and call[1]:
+                ade_source_entity = call[1]
+                file_path_prefix = f"queued/{ade_source_system}/{ade_source_entity}/"
+            else:
+                ade_source_entity = ""
+                file_path_prefix = f"queued/{ade_source_system}/"
+
             matching_configs = get_matching_configs(config_dict, ade_source_system, ade_source_entity)
 
             try:
