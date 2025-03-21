@@ -36,3 +36,8 @@ variable "config_files" {
   type        = list(string)
   default     = []
 }
+
+variable "config_file_path" {
+  type = string
+  description = "File path for notifier config YAML-files."
+}
