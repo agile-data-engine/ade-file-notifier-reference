@@ -30,6 +30,7 @@ module "file_event_processor" {
   notifier_bucket_name             = "${var.app}-${var.env}"
   source_data_bucket               = var.source_data_bucket
   function_folder                  = "../../../functions"
+  config_file_path                 = "../../../config"
   notifier_service_account         = module.service_account.notifier_service_account
   file_url_prefix                  = "gs://"
   config_prefix                    = "data-sources/"

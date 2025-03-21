@@ -40,6 +40,11 @@ variable "file_url_prefix" {
   description = "Prefix to be used for files."
 }
 
+variable "config_file_path" {
+  type = string
+  description = "File path for notifier config YAML-files."
+}
+
 variable "config_prefix" {
   type = string
   default = "data-sources/"

@@ -33,7 +33,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_app"></a> [app](#input\_app) | Application name to be used for resource naming | `string` | n/a | yes |
-| <a name="input_config_file_path"></a> [config\_file\_path](#input\_config\_file\_path) | File path for notifier config YAML-files | `string` | n/a | yes |
+| <a name="input_config_file_path"></a> [config\_file\_path](#input\_config\_file\_path) | File path for notifier config YAML-files. | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment name | `string` | n/a | yes |
 | <a name="input_notifier_pubsub_topic_id"></a> [notifier\_pubsub\_topic\_id](#input\_notifier\_pubsub\_topic\_id) | Notifier Pub/Sub topic ID | `string` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | Google Cloud project | `string` | n/a | yes |

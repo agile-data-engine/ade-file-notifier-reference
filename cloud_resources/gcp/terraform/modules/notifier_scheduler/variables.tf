@@ -30,5 +30,5 @@ variable "scheduler_timezone" {
 
 variable "config_file_path" {
   type = string
-  description = "File path for notifier config YAML-files"
+  description = "File path for notifier config YAML-files."
 }
