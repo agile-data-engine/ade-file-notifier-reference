@@ -84,7 +84,3 @@ variable "notifier_pubsub_topic_id" {
 variable "ingress_settings" {
   type = string
 }
-
-variable "scheduler_timezone" {
-  type = string
-}

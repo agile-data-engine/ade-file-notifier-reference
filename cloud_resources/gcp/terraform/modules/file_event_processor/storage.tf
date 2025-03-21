@@ -33,7 +33,7 @@ resource "google_storage_bucket_iam_binding" "object_user" {
 
 # Listing all files in config/ folder
 locals {
-  datasource_files = fileset("${path.root}/../../../config/", "*.yaml")
+  datasource_files = fileset("${path.root}/${var.config_file_path}/", "*.yaml")
 }
 
 # Uploading all config files to a folder
@@ -42,5 +42,5 @@ resource "google_storage_bucket_object" "datasource_files" {
 
   name   = "data-sources/${each.value}"
   bucket = google_storage_bucket.notifier_bucket.name
-  source = "${path.root}/../../../config/${each.value}"
+  source = "${path.root}/${var.config_file_path}/${each.value}"
 }

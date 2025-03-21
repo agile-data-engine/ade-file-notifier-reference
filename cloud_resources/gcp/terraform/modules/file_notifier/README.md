@@ -4,7 +4,6 @@
 ## About
 
 This module generates File Notifier Cloud function.
-Also schedules are generated, if those are given in the configuration files.
 
 ## Requirements
 
@@ -27,7 +26,6 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [google_cloud_scheduler_job.cloud_scheduler_job](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_scheduler_job) | resource |
 | [google_cloudfunctions2_function.add_to_manifest_function](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloudfunctions2_function) | resource |
 | [google_cloudfunctions2_function.add_to_manifest_function_http](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloudfunctions2_function) | resource |
 
@@ -53,7 +51,6 @@ No modules.
 | <a name="input_notify_api_secret_id"></a> [notify\_api\_secret\_id](#input\_notify\_api\_secret\_id) | n/a | `string` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | Google Cloud project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | Region for resources | `string` | n/a | yes |
-| <a name="input_scheduler_timezone"></a> [scheduler\_timezone](#input\_scheduler\_timezone) | n/a | `string` | n/a | yes |
 | <a name="input_vpc_connector_name"></a> [vpc\_connector\_name](#input\_vpc\_connector\_name) | n/a | `string` | n/a | yes |
 
 ## Outputs

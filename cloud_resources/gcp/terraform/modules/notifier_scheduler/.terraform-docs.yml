@@ -3,7 +3,7 @@ content: |-
 
   ## About
 
-  This module generates File Notifier Cloud function.
+  This module creates Cloud Scheduler schedules, if those are given in the configuration files.
 
   {{ .Requirements }}
 

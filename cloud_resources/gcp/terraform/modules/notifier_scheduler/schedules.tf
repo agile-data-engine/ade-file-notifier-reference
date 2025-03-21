@@ -1,11 +1,11 @@
 locals {
   # List all YAML files in the config/ folder
-  datasource_files = fileset("${path.root}/../../../config/", "*.yaml")
+  datasource_files = fileset("${path.root}/${var.config_file_path}/", "*.yaml")
 
   # Parse each YAML file
   parsed_configs = {
     for file in local.datasource_files :
-    file => yamldecode(file("${path.root}/../../../config/${file}"))
+    file => yamldecode(file("${path.root}/${var.config_file_path}/${file}"))
   }
 
   # Construct list of schedules
