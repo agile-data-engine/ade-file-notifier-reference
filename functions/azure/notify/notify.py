@@ -79,10 +79,15 @@ def process_events(event_data: object):
                 logging.error(f"Invalid call format: {call}")
                 return
 
-            
             ade_source_system = call[0]
-            ade_source_entity = call[1] if len(call) > 1 and call[1] else ""
-            file_path_prefix = f"queued/{ade_source_system}/{ade_source_entity}"
+            
+            if len(call) > 1 and call[1]:
+                ade_source_entity = call[1]
+                file_path_prefix = f"queued/{ade_source_system}/{ade_source_entity}/"
+            else:
+                ade_source_entity = ""
+                file_path_prefix = f"queued/{ade_source_system}/"
+            
             matching_configs = get_matching_configs(config_dict, ade_source_system, ade_source_entity)
 
             try:
@@ -91,7 +96,7 @@ def process_events(event_data: object):
                 json_files_data, file_list = file_handler.download_and_list_files()
 
                 if json_files_data == []:
-                    logging.info(f'No events to notify for ade_source_system: {ade_source_system}, ade_source_entity: {ade_source_entity}')
+                    logging.info(f'No events to notify for ade_source_system: {ade_source_system}, ade_source_entity: {ade_source_entity}\nFile list: {file_list}')
                     continue
                 entries = [item['full_file_path'] for item in json_files_data]
 
