@@ -1,9 +1,10 @@
 azure-functions==1.21.3
 azure-identity==1.19.0
-azure-storage-blob==12.23.1
+azure-storage-blob==12.25.0
 azure-storage-queue==12.12.0
 python-dotenv==1.0.1
 pyyaml==6.0.2
 requests==2.32.3
+cryptography==43.0.3 # https://github.com/Azure/azure-sdk-for-python/issues/38725
 
 git+https://github.com/agile-data-engine/adenotifier.git@v0.2.3
