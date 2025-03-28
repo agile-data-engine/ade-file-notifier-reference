@@ -5,7 +5,17 @@ module "app_service_plan" {
   location = var.location
   rg = var.rg
   sku = "EP1"
+  tags = var.tags
   worker_count = 1
+}
+
+module "log_analytics" {
+  source = "./modules/log_analytics"
+  app = var.app
+  env = var.env
+  location = var.location
+  rg = var.rg
+  tags = var.tags
 }
 
 module "network" {
@@ -15,12 +25,12 @@ module "network" {
   location = var.location
   rg = var.rg
   subnet_cidr_range = var.subnet_cidr_range
+  tags = var.tags
   vnet_cidr_range = var.vnet_cidr_range
 }
 
 module "secrets" {
   source = "./modules/secrets"
-  depends_on = [module.network]
   allowed_ips = var.allowed_ips
   allowed_subnet_ids = [module.network.subnet_id]
   app = var.app
@@ -33,11 +43,11 @@ module "secrets" {
   notify_api_key_secret = var.notify_api_key_secret
   rg = var.rg
   security_group_id = var.security_group_id
+  tags = var.tags
 }
 
 module "storage_account" {
   source = "./modules/storage_account"
-  depends_on = [module.network]
   allowed_ips = var.allowed_ips
   allowed_subnet_ids = [module.network.subnet_id]
   app = var.app
@@ -48,11 +58,11 @@ module "storage_account" {
   notify_queue = "notify-queue"
   rg = var.rg
   security_group_id = var.security_group_id
+  tags = var.tags
 }
 
 module "event_subscription" {
   source = "./modules/event_subscription"
-  depends_on = [module.storage_account]
   app = var.app
   blob_event_queue_name = module.storage_account.blob_event_queue_name
   env = var.env
@@ -65,7 +75,6 @@ module "event_subscription" {
 
 module "function_app" {
   source = "./modules/function_app"
-  depends_on = [module.app_service_plan, module.network, module.secrets, module.storage_account]
   allowed_ips = var.allowed_ips
   app = var.app
   asp_id = module.app_service_plan.asp_id
@@ -81,6 +90,7 @@ module "function_app" {
   key_vault_name = module.secrets.key_vault_name
   key_vault_uri = module.secrets.key_vault_uri
   location = var.location
+  log_analytics_workspace_id = module.log_analytics.workspace_id
   notify_queue = module.storage_account.notify_queue_name
   notify_api_base_url = var.notify_api_base_url
   rg = var.rg
@@ -90,4 +100,5 @@ module "function_app" {
   storage_account_name = module.storage_account.name
   storage_primary_blob_endpoint = module.storage_account.primary_blob_endpoint
   storage_primary_queue_endpoint = module.storage_account.primary_queue_endpoint
+  tags = var.tags
 }

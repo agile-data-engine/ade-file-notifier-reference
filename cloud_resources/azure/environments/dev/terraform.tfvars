@@ -13,4 +13,5 @@ subscription_id = "subscription_id"
 system_topic_name = "evgt-staccountname"
 system_topic_principal_id = "principal_id"
 system_topic_rg = "rgnamedev"
+tags = {}
 vnet_cidr_range = "10.9.0.0/22"

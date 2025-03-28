@@ -23,6 +23,11 @@ variable "sku" {
     description = "SKU name"
 }
 
+variable "tags" {
+    type = map(string)
+    description = "Azure tags"
+}
+
 variable "worker_count" {
     type = number
     description = "Worker count"

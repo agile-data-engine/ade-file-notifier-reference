@@ -73,6 +73,11 @@ variable "location" {
     description = "Region"
 }
 
+variable "log_analytics_workspace_id" {
+    type = string
+    description = "Log Analytics Workspace id"
+}
+
 variable "notify_queue" {
     type = string
     description = "Notify queue name, triggers notifying"
@@ -116,4 +121,9 @@ variable "storage_primary_blob_endpoint" {
 variable "storage_primary_queue_endpoint" {
     type = string
     description = "Storage account primary queue endpoint"
+}
+
+variable "tags" {
+    type = map(string)
+    description = "Azure tags"
 }

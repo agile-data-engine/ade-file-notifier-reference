@@ -96,6 +96,11 @@ variable "system_topic_rg" {
     description = "System topic resource group name for source file events"
 }
 
+variable "tags" {
+    type = map(string)
+    description = "Azure tags"
+}
+
 variable "vnet_cidr_range" {
     type = string
     description = "Virtual network CIDR address space"

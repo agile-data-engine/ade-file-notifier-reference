@@ -5,6 +5,7 @@ resource "azurerm_storage_account" "notifier" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
   shared_access_key_enabled = true # ENABLED FOR LOCAL DEV, CHANGE TO false
+  tags = var.tags
 }
 
 resource "azurerm_storage_container" "notifier" {

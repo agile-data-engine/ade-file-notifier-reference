@@ -25,6 +25,7 @@ resource "azurerm_linux_function_app" "notifier" {
     functions_extension_version = "~4"
     https_only = true
     zip_deploy_file = data.archive_file.function_archive.output_path
+    tags = var.tags
     identity {
         type = "SystemAssigned"
     }

@@ -61,3 +61,8 @@ variable "security_group_id" {
     type = string
     description = "Id of Entra security group which is given access to resources"
 }
+
+variable "tags" {
+    type = map(string)
+    description = "Azure tags"
+}

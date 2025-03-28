@@ -1,0 +1,20 @@
+content: |-
+  {{ .Header }}
+
+  ## About
+
+  Module for creating a Log Analytics Workspace
+  
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Modules }}
+
+  {{ .Resources }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  {{ .Footer }}
