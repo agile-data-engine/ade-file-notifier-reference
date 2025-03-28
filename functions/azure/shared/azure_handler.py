@@ -56,7 +56,7 @@ def upload_notifier_status(container_name, notifier_status_content):
     return
 
 class AzureFileHandler:
-    def __init__(self, container_name, prefix, max_retries=3, retry_delay=2, max_workers=8):
+    def __init__(self, container_name, prefix, max_retries=3, retry_delay=2, max_workers=4):
         account_url = os.getenv('AzureWebJobsStorage__blobServiceUri')
         credential = DefaultAzureCredential()
         self.blob_service_client = BlobServiceClient(account_url, credential)
@@ -129,12 +129,12 @@ class AzureFileHandler:
         """
         blob_names = self.list_files_in_folder()
         
-        if not blob_names:
-            logging.info(f"No files found in container with prefix {self.prefix}.")
-            return [], []
-        
         file_data = []
         file_list = [name for name in blob_names if name.endswith('.json')]
+
+        if file_list == []:
+            logging.info(f"No notification files found in container with prefix {self.prefix}.")
+            return [], []
         
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             futures = {executor.submit(self.download_file, blob_name): blob_name for blob_name in file_list}
@@ -215,8 +215,8 @@ class AzureFileHandler:
 
         for attempt in range(self.max_retries):
             try:
-                blob_client.upload_blob(data=data, blob_type="BlockBlob", overwrite=True, content_settings=ContentSettings(content_type=blob_content_type))
-                logging.info(f"Uploaded file to Azure Blob Storage: {file_path}")
+                result = blob_client.upload_blob(data=data, blob_type="BlockBlob", overwrite=True, content_settings=ContentSettings(content_type=blob_content_type), validate_content=True)
+                logging.info(f"Uploaded file to Azure Blob Storage: {file_path}\nResult: {result}")
                 return True
 
             except Exception as e:
