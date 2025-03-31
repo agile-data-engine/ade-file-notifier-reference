@@ -3,11 +3,7 @@
 
 ## About
 
-Module for creating a Function App and related components including:
-- Application Insights
-- Storage account with queues for triggering the functions and blob containers for function files
-- Event subscription for blob created source file events
-- Role assignments
+Module for creating an event subscription for Microsoft.Storage.BlobCreated events from an Event Grid system topic with a storage queue endpoint. Also assigns Storage Queue Data Message Sender role for the system topic to the storage account.
 
 ## Requirements
 

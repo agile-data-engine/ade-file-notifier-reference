@@ -3,11 +3,7 @@
 
 ## About
 
-Module for creating a Function App and related components including:
-- Application Insights
-- Storage account with queues for triggering the functions and blob containers for function files
-- Event subscription for blob created source file events
-- Role assignments
+Module for creating a storage account with queues for triggering the functions and blob containers for function files.
 
 ## Requirements
 
@@ -30,7 +26,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [azurerm_role_assignment.group-blob-owner](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.group-blob-contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.group-queue-contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_storage_account.notifier](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account) | resource |
 | [azurerm_storage_account_network_rules.notifier](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account_network_rules) | resource |
@@ -42,16 +38,18 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_allowed_ips"></a> [allowed\_ips](#input\_allowed\_ips) | List of allowed ip addresses | `list` | n/a | yes |
-| <a name="input_allowed_subnet_ids"></a> [allowed\_subnet\_ids](#input\_allowed\_subnet\_ids) | List of allowed subnet ids | `list` | n/a | yes |
+| <a name="input_allowed_cidr_ranges"></a> [allowed\_cidr\_ranges](#input\_allowed\_cidr\_ranges) | List of allowed cidr ip address ranges | `list(string)` | n/a | yes |
+| <a name="input_allowed_subnet_ids"></a> [allowed\_subnet\_ids](#input\_allowed\_subnet\_ids) | List of allowed vnet subnet ids | `list(string)` | n/a | yes |
 | <a name="input_app"></a> [app](#input\_app) | Application name to be used for resource naming | `string` | n/a | yes |
 | <a name="input_blob_event_queue"></a> [blob\_event\_queue](#input\_blob\_event\_queue) | Blob event queue name, triggers source file queuing | `string` | n/a | yes |
 | <a name="input_container_name"></a> [container\_name](#input\_container\_name) | Storage container for function files | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment name | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | Region | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | Storage account name | `string` | n/a | yes |
 | <a name="input_notify_queue"></a> [notify\_queue](#input\_notify\_queue) | Notify queue name, triggers notifying | `string` | n/a | yes |
 | <a name="input_rg"></a> [rg](#input\_rg) | Resource group name | `string` | n/a | yes |
-| <a name="input_security_group_id"></a> [security\_group\_id](#input\_security\_group\_id) | Id of Entra security group which is given access to resources | `string` | n/a | yes |
+| <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | Ids of Entra security groups which are given access to resources | `list(string)` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Azure tags | `map(string)` | n/a | yes |
 
 ## Outputs
 

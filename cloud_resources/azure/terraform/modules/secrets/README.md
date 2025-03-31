@@ -37,8 +37,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_allowed_ips"></a> [allowed\_ips](#input\_allowed\_ips) | List of allowed ip addresses | `list` | n/a | yes |
-| <a name="input_allowed_subnet_ids"></a> [allowed\_subnet\_ids](#input\_allowed\_subnet\_ids) | List of allowed subnet ids | `list` | n/a | yes |
+| <a name="input_allowed_cidr_ranges"></a> [allowed\_cidr\_ranges](#input\_allowed\_cidr\_ranges) | List of allowed cidr ip address ranges | `list(string)` | n/a | yes |
+| <a name="input_allowed_subnet_ids"></a> [allowed\_subnet\_ids](#input\_allowed\_subnet\_ids) | List of allowed vnet subnet ids | `list(string)` | n/a | yes |
 | <a name="input_app"></a> [app](#input\_app) | Application name to be used for resource naming | `string` | n/a | yes |
 | <a name="input_entra_tenant_id"></a> [entra\_tenant\_id](#input\_entra\_tenant\_id) | Entra tenant id | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment name | `string` | n/a | yes |
@@ -48,7 +48,8 @@ No modules.
 | <a name="input_notify_api_key"></a> [notify\_api\_key](#input\_notify\_api\_key) | ADE Notify API key | `string` | n/a | yes |
 | <a name="input_notify_api_key_secret"></a> [notify\_api\_key\_secret](#input\_notify\_api\_key\_secret) | ADE Notify API key secret | `string` | n/a | yes |
 | <a name="input_rg"></a> [rg](#input\_rg) | Resource group name | `string` | n/a | yes |
-| <a name="input_security_group_id"></a> [security\_group\_id](#input\_security\_group\_id) | Id of Entra security group which is given access to resources | `string` | n/a | yes |
+| <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | Ids of Entra security groups which are given access to resources | `list(string)` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Azure tags | `map(string)` | n/a | yes |
 
 ## Outputs
 

@@ -37,6 +37,7 @@ No modules.
 | <a name="input_location"></a> [location](#input\_location) | Region | `string` | n/a | yes |
 | <a name="input_rg"></a> [rg](#input\_rg) | Resource group name | `string` | n/a | yes |
 | <a name="input_sku"></a> [sku](#input\_sku) | SKU name | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Azure tags | `map(string)` | n/a | yes |
 | <a name="input_worker_count"></a> [worker\_count](#input\_worker\_count) | Worker count | `number` | n/a | yes |
 
 ## Outputs

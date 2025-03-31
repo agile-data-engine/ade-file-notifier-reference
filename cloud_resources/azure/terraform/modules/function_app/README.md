@@ -3,11 +3,7 @@
 
 ## About
 
-Module for creating a Function App and related components including:
-- Application Insights
-- Storage account with queues for triggering the functions and blob containers for function files
-- Event subscription for blob created source file events
-- Role assignments
+Module for creating a Function App, Application Insights and role assignments/access policies for working with storage, queues and key vault.
 
 ## Requirements
 
@@ -45,7 +41,8 @@ Module for creating a Function App and related components including:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_allowed_ips"></a> [allowed\_ips](#input\_allowed\_ips) | List of allowed ip addresses | `list` | n/a | yes |
+| <a name="input_allowed_cidr_ranges"></a> [allowed\_cidr\_ranges](#input\_allowed\_cidr\_ranges) | List of allowed cidr ip address ranges | `list(string)` | n/a | yes |
+| <a name="input_allowed_subnet_ids"></a> [allowed\_subnet\_ids](#input\_allowed\_subnet\_ids) | List of allowed vnet subnet ids | `list(string)` | n/a | yes |
 | <a name="input_app"></a> [app](#input\_app) | Application name to be used for resource naming | `string` | n/a | yes |
 | <a name="input_asp_id"></a> [asp\_id](#input\_asp\_id) | App Service Plan id | `string` | n/a | yes |
 | <a name="input_blob_event_queue"></a> [blob\_event\_queue](#input\_blob\_event\_queue) | Blob event queue name, triggers source file queuing | `string` | n/a | yes |
@@ -60,18 +57,16 @@ Module for creating a Function App and related components including:
 | <a name="input_key_vault_name"></a> [key\_vault\_name](#input\_key\_vault\_name) | Key vault name | `string` | n/a | yes |
 | <a name="input_key_vault_uri"></a> [key\_vault\_uri](#input\_key\_vault\_uri) | Key vault URI | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | Region | `string` | n/a | yes |
+| <a name="input_log_analytics_workspace_id"></a> [log\_analytics\_workspace\_id](#input\_log\_analytics\_workspace\_id) | Log Analytics Workspace id | `string` | n/a | yes |
 | <a name="input_notify_api_base_url"></a> [notify\_api\_base\_url](#input\_notify\_api\_base\_url) | Notify API base url, e.g. https://external-api.dev.datahub.s1234567.saas.agiledataengine.com:443/notify-api | `string` | n/a | yes |
 | <a name="input_notify_queue"></a> [notify\_queue](#input\_notify\_queue) | Notify queue name, triggers notifying | `string` | n/a | yes |
 | <a name="input_rg"></a> [rg](#input\_rg) | Resource group name | `string` | n/a | yes |
-| <a name="input_security_group_id"></a> [security\_group\_id](#input\_security\_group\_id) | Id of Entra security group which is given access to resources | `string` | n/a | yes |
 | <a name="input_storage_account_id"></a> [storage\_account\_id](#input\_storage\_account\_id) | Storage account id | `string` | n/a | yes |
 | <a name="input_storage_account_name"></a> [storage\_account\_name](#input\_storage\_account\_name) | Storage account name | `string` | n/a | yes |
 | <a name="input_storage_primary_blob_endpoint"></a> [storage\_primary\_blob\_endpoint](#input\_storage\_primary\_blob\_endpoint) | Storage account primary blob endpoint | `string` | n/a | yes |
 | <a name="input_storage_primary_queue_endpoint"></a> [storage\_primary\_queue\_endpoint](#input\_storage\_primary\_queue\_endpoint) | Storage account primary queue endpoint | `string` | n/a | yes |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | Subnet id for the Function App vnet configuration | `string` | n/a | yes |
-| <a name="input_system_topic_name"></a> [system\_topic\_name](#input\_system\_topic\_name) | System topic name for source file events | `string` | n/a | yes |
-| <a name="input_system_topic_principal_id"></a> [system\_topic\_principal\_id](#input\_system\_topic\_principal\_id) | System topic principal id for source file events | `string` | n/a | yes |
-| <a name="input_system_topic_rg"></a> [system\_topic\_rg](#input\_system\_topic\_rg) | System topic resource group name for source file events | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Azure tags | `map(string)` | n/a | yes |
 
 ## Outputs
 

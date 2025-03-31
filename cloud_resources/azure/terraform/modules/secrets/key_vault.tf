@@ -9,7 +9,7 @@ resource "azurerm_key_vault" "notifier" {
     network_acls {
       bypass = "None"
       default_action = "Deny"
-      ip_rules = var.allowed_ips
+      ip_rules = var.allowed_cidr_ranges
       virtual_network_subnet_ids = var.allowed_subnet_ids
     }
 }

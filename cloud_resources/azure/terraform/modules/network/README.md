@@ -42,6 +42,7 @@ No modules.
 | <a name="input_location"></a> [location](#input\_location) | Region | `string` | n/a | yes |
 | <a name="input_rg"></a> [rg](#input\_rg) | Resource group name | `string` | n/a | yes |
 | <a name="input_subnet_cidr_range"></a> [subnet\_cidr\_range](#input\_subnet\_cidr\_range) | Notifier subnet CIDR address space | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Azure tags | `map(string)` | n/a | yes |
 | <a name="input_vnet_cidr_range"></a> [vnet\_cidr\_range](#input\_vnet\_cidr\_range) | Virtual network CIDR address space | `string` | n/a | yes |
 
 ## Outputs

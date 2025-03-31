@@ -31,8 +31,8 @@ module "network" {
 
 module "secrets" {
   source = "./modules/secrets"
-  allowed_ips = var.allowed_ips
-  allowed_subnet_ids = [module.network.subnet_id]
+  allowed_cidr_ranges = var.allowed_cidr_ranges
+  allowed_subnet_ids = setunion([module.network.subnet_id], var.allowed_subnet_ids)
   app = var.app
   entra_tenant_id = var.entra_tenant_id
   env = var.env
@@ -42,22 +42,23 @@ module "secrets" {
   notify_api_key = var.notify_api_key
   notify_api_key_secret = var.notify_api_key_secret
   rg = var.rg
-  security_group_id = var.security_group_id
+  security_group_ids = var.security_group_ids
   tags = var.tags
 }
 
 module "storage_account" {
   source = "./modules/storage_account"
-  allowed_ips = var.allowed_ips
-  allowed_subnet_ids = [module.network.subnet_id]
+  allowed_cidr_ranges = var.allowed_cidr_ranges
+  allowed_subnet_ids = setunion([module.network.subnet_id], var.allowed_subnet_ids)
   app = var.app
   blob_event_queue = "blob-event-queue"
   container_name = "notifier"
   env = var.env
   location = var.location
+  name = var.storage_account_name
   notify_queue = "notify-queue"
   rg = var.rg
-  security_group_id = var.security_group_id
+  security_group_ids = var.security_group_ids
   tags = var.tags
 }
 
@@ -75,7 +76,8 @@ module "event_subscription" {
 
 module "function_app" {
   source = "./modules/function_app"
-  allowed_ips = var.allowed_ips
+  allowed_cidr_ranges = var.allowed_cidr_ranges
+  allowed_subnet_ids = setunion([module.network.subnet_id], var.allowed_subnet_ids)
   app = var.app
   asp_id = module.app_service_plan.asp_id
   blob_event_queue = module.storage_account.blob_event_queue_name
@@ -94,7 +96,6 @@ module "function_app" {
   notify_queue = module.storage_account.notify_queue_name
   notify_api_base_url = var.notify_api_base_url
   rg = var.rg
-  security_group_id = var.security_group_id
   subnet_id = module.network.subnet_id
   storage_account_id = module.storage_account.id
   storage_account_name = module.storage_account.name

@@ -40,6 +40,28 @@ resource "azurerm_linux_function_app" "notifier" {
             # Allows functions to be triggered manually in Azure portal
             allowed_origins = ["https://portal.azure.com"]
         }
+
+        dynamic "ip_restriction" {
+            for_each = var.allowed_cidr_ranges
+            content {
+                ip_address = ip_restriction.value
+                action     = "Allow"
+                priority   = 100
+                name       = "AllowedIP_${ip_restriction.key}"
+            }
+        }
+
+        dynamic "ip_restriction" {
+            for_each = var.allowed_subnet_ids
+            content {
+                virtual_network_subnet_id = ip_restriction.value
+                action                    = "Allow"
+                priority                  = 100
+                name                      = "AllowedVNet_${ip_restriction.key}"
+            }
+        }
+
+        ip_restriction_default_action = "Deny"
     }
     app_settings = {
         AzureWebJobsDisableHomepage = true
