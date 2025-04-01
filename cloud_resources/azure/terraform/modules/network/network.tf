@@ -13,9 +13,9 @@ resource "azurerm_subnet" "notifier" {
   address_prefixes     = [var.subnet_cidr_range]
   service_endpoints    = ["Microsoft.Storage", "Microsoft.KeyVault"]
   delegation {
-    name = "Microsoft.Web/serverFarms"
+    name = "delegation"
     service_delegation {
-      name = "Microsoft.Web/serverFarms"
+      name = var.service_delegation_name
       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
     }
   }

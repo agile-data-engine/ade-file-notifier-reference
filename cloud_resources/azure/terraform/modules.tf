@@ -4,7 +4,7 @@ module "app_service_plan" {
   env = var.env
   location = var.location
   rg = var.rg
-  sku = "EP1"
+  sku = "EP1" # "FC1" for flex consumption plan
   tags = var.tags
   worker_count = 1
 }
@@ -24,6 +24,7 @@ module "network" {
   env = var.env
   location = var.location
   rg = var.rg
+  service_delegation_name = "Microsoft.Web/serverFarms" # "Microsoft.App/environments" for flex consumption plan
   subnet_cidr_range = var.subnet_cidr_range
   tags = var.tags
   vnet_cidr_range = var.vnet_cidr_range

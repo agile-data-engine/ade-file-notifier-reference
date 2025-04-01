@@ -18,6 +18,11 @@ variable "rg" {
     description = "Resource group name"
 }
 
+variable "service_delegation_name" {
+    type = string
+    description = "Subnet service delegation name"
+}
+
 variable "subnet_cidr_range" {
     type = string
     description = "Notifier subnet CIDR address space"
