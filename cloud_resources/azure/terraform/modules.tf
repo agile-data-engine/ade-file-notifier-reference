@@ -6,7 +6,7 @@ module "app_service_plan" {
   rg = var.rg
   sku = "EP1" # "FC1" for flex consumption plan
   tags = var.tags
-  worker_count = 1 # Not used with flex consumption plan
+  worker_count = 1 # Unset with flex consumption plan
 }
 
 module "log_analytics" {
