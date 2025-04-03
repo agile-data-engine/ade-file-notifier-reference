@@ -1,6 +1,8 @@
 import azure.functions as func
 import logging
 import os
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
 from shared.azure_handler import (
     AzureFileHandler,
     download_config,
@@ -55,16 +57,22 @@ def process_events(event_data: object):
 
         container_name = os.getenv('container_name')
         config_prefix = os.getenv('config_prefix')
+
+        # Using SecretClient to get secrets from key vault instead of references in app settings for Flex Consumption Plan compatibility
+        # https://learn.microsoft.com/en-us/azure/azure-functions/flex-consumption-plan#considerations
+        credential = DefaultAzureCredential()
+        kv_client = SecretClient(vault_url=os.getenv('key_vault_url'), credential=credential)
         secrets = {
-            "base_url": os.getenv('notify_api_base_url'),
-            "api_key": os.getenv('notify_api_key'),
-            "api_key_secret": os.getenv('notify_api_key_secret')
+            "base_url": kv_client.get_secret('notify_api_base_url'),
+            "api_key": kv_client.get_secret('notify_api_key'),
+            "api_key_secret": kv_client.get_secret('notify_api_key_secret')
         }
         ext_api_secrets = {
-            "base_url": os.getenv('external_api_base_url'),
-            "api_key": os.getenv('external_api_key'),
-            "api_key_secret": os.getenv('external_api_key_secret')
+            "base_url": kv_client.get_secret('external_api_base_url'),
+            "api_key": kv_client.get_secret('external_api_key'),
+            "api_key_secret": kv_client.get_secret('external_api_key_secret')
         }
+
         config_dict = download_config(container_name, config_prefix)
         notifier_status = []
         if 'calls' not in event_data:
