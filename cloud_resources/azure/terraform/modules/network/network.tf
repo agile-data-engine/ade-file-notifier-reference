@@ -16,7 +16,7 @@ resource "azurerm_subnet" "notifier" {
     name = "delegation"
     service_delegation {
       name = var.service_delegation_name
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
     }
   }
 }
