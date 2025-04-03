@@ -9,14 +9,14 @@ Module for creating an App Service Plan for the Function App.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.11 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.21 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.11 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.21 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 4.21 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 4.21 |
 
 ## Modules
 
@@ -38,7 +38,7 @@ No modules.
 | <a name="input_rg"></a> [rg](#input\_rg) | Resource group name | `string` | n/a | yes |
 | <a name="input_sku"></a> [sku](#input\_sku) | SKU name | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Azure tags | `map(string)` | n/a | yes |
-| <a name="input_worker_count"></a> [worker\_count](#input\_worker\_count) | Worker count | `number` | n/a | yes |
+| <a name="input_worker_count"></a> [worker\_count](#input\_worker\_count) | Worker count, leave unset if flex consumption plan | `number` | `null` | no |
 
 ## Outputs
 

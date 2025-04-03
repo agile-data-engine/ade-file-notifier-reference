@@ -30,5 +30,6 @@ variable "tags" {
 
 variable "worker_count" {
     type = number
-    description = "Worker count"
+    default = null
+    description = "Worker count, unset if using flex consumption plan"
 }
