@@ -63,12 +63,12 @@ def process_events(event_data: object):
         credential = DefaultAzureCredential()
         kv_client = SecretClient(vault_url=os.getenv('key_vault_uri'), credential=credential)
         secrets = {
-            "base_url": kv_client.get_secret('notify_api_base_url'),
+            "base_url": os.getenv('notify_api_base_url'),
             "api_key": kv_client.get_secret('notify_api_key'),
             "api_key_secret": kv_client.get_secret('notify_api_key_secret')
         }
         ext_api_secrets = {
-            "base_url": kv_client.get_secret('external_api_base_url'),
+            "base_url": os.getenv('external_api_base_url'),
             "api_key": kv_client.get_secret('external_api_key'),
             "api_key_secret": kv_client.get_secret('external_api_key_secret')
         }
