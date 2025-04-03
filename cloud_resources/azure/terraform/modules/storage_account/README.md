@@ -9,14 +9,14 @@ Module for creating a storage account with queues for triggering the functions a
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.11 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.21 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.11 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.21 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 4.21 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 4.21 |
 
 ## Modules
 
@@ -62,5 +62,6 @@ No modules.
 | <a name="output_notify_queue_name"></a> [notify\_queue\_name](#output\_notify\_queue\_name) | Notify queue name |
 | <a name="output_primary_blob_endpoint"></a> [primary\_blob\_endpoint](#output\_primary\_blob\_endpoint) | Storage account primary blob endpoint |
 | <a name="output_primary_queue_endpoint"></a> [primary\_queue\_endpoint](#output\_primary\_queue\_endpoint) | Storage account primary queue endpoint |
+| <a name="output_primary_table_endpoint"></a> [primary\_table\_endpoint](#output\_primary\_table\_endpoint) | Storage account primary table endpoint |
 
 <!-- END_TF_DOCS -->

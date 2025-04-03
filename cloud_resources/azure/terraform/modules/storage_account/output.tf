@@ -32,3 +32,8 @@ output "primary_queue_endpoint" {
     value = azurerm_storage_account.notifier.primary_queue_endpoint
     description = "Storage account primary queue endpoint"
 }
+
+output "primary_table_endpoint" {
+    value = azurerm_storage_account.notifier.primary_table_endpoint
+    description = "Storage account primary table endpoint"
+}
