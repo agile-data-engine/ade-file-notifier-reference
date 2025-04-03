@@ -61,7 +61,7 @@ def process_events(event_data: object):
         # Using SecretClient to get secrets from key vault instead of references in app settings for Flex Consumption Plan compatibility
         # https://learn.microsoft.com/en-us/azure/azure-functions/flex-consumption-plan#considerations
         credential = DefaultAzureCredential()
-        kv_client = SecretClient(vault_url=os.getenv('key_vault_url'), credential=credential)
+        kv_client = SecretClient(vault_url=os.getenv('key_vault_uri'), credential=credential)
         secrets = {
             "base_url": kv_client.get_secret('notify_api_base_url'),
             "api_key": kv_client.get_secret('notify_api_key'),

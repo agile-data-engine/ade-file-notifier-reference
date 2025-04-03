@@ -77,10 +77,7 @@ resource "azurerm_linux_function_app" "notifier" {
         config_prefix = var.config_prefix
         notify_api_base_url = var.notify_api_base_url
         external_api_base_url = var.external_api_base_url
-        notify_api_key = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/notify-api-key)"
-        notify_api_key_secret = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/notify-api-key-secret)"
-        external_api_key = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/external-api-key)"
-        external_api_key_secret = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/external-api-key-secret)"
+        key_vault_uri = var.key_vault_uri
     }
 }
 
