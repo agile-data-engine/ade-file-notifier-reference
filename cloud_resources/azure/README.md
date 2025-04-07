@@ -23,3 +23,7 @@ Please refer to the readme file in each [terraform module](terraform/modules/) f
 1. Run the Terraform deployment per environment as instructed in [terraform/README.md](terraform/README.md).
 
 2. Deploy the Function App with Azure CLI as instructed in [terraform/README.md](terraform/README.md).
+
+## Known issues
+
+The Function App resource deployment in the [function_app_flex](terraform/modules/function_app_flex/) module adds unwanted app setting "AzureWebJobsStorage" automatically. As a workaround, this setting is then removed by an Azure CLI command run in a null_resource. Currently the setting cannot be properly suppressed in the Terraform configuration, therefore this workaround was added. AzureWebJobsStorage prevents the Function App from connecting to the storage account as shared key authentication is disabled and managed identity is used instead. Make sure the setting is not added when making changes to the Function App.
