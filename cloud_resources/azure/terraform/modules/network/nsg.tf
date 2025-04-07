@@ -11,7 +11,7 @@ resource "azurerm_subnet_network_security_group_association" "notifier" {
 }
 
 resource "azurerm_network_security_rule" "allow_outbound" {
-  name                        = "AllowOutboundInternet"
+  name                        = "AllowInternetOutBound"
   priority                    = 100
   direction                   = "Outbound"
   access                      = "Allow"
@@ -39,7 +39,7 @@ resource "azurerm_network_security_rule" "allow_inbound_vnet" {
 }
 
 resource "azurerm_network_security_rule" "deny_inbound" {
-  name                        = "DenyAllOutBound"
+  name                        = "DenyAllInBound"
   priority                    = 110
   direction                   = "Inbound"
   access                      = "Deny"
