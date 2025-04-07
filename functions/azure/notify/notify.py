@@ -16,28 +16,21 @@ from shared.notifier_common import (
 
 def notify(msg: func.QueueMessage):
     """
-    Triggered as messages are added to Azure Queue storage.
-        
+    Triggered when a message is added to Azure Queue Storage.
+
     Args:
-        msg (azure.functions.QueueMessage): Azure Queue storage message which triggers the function.
+        msg (azure.functions.QueueMessage): The message from Azure Queue Storage that triggers the function.
 
     Returns:
-        Event processing status.
+        str: Event processing status.
     """
     return process_events(msg.get_json())
 
 def process_events(event_data: object):
     """
-    The calls block:
-    {
-        "calls": [
-            ["<ade_source_system>", "<ade_source_entity>"], 
-            ["<ade_source_system1>", "<ade_source_entity1>"]
-            ]
-    }
-    Where ade_source_entity is optional parameter.
+    Processes a queue message and triggers notifications based on calls in the message.
 
-    Event format example:
+    Message format example:
     {
         "calls": [
             ["digitraffic", "metadata_vessels_bq"],
@@ -47,10 +40,14 @@ def process_events(event_data: object):
     }
 
     Args:
-        event_data: Either event data from queue or http call, formatted to JSON object.
+        event_data (object): A message containing the calls block in JSON format.
 
     Returns:
-        Http responses with jsonify
+        None
+    
+    Raises:
+        ValueError: If the event format is incorrect.
+        RuntimeError: If an error occurs during event processing.
     """
     try:
         logging.info(f'Notifier was triggered by call:\n{event_data}')
