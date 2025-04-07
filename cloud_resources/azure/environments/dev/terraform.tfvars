@@ -1,6 +1,6 @@
 allowed_cidr_ranges = ["0.0.0.0/0"]
 allowed_subnet_ids = []
-app = "refadenotif1234"
+app = "adenotif1234"
 entra_tenant_id = "tenant_id"
 env = "dev"
 external_api_base_url = "https://external.services.saas.agiledataengine.com/external-api/api/s1234567/datahub/dev"
@@ -9,7 +9,7 @@ notify_api_base_url = "https://external-api.dev.datahub.s1234567.saas.agiledatae
 rg = "rgnamedev"
 security_group_ids = []
 source_data_container = "raw"
-storage_account_name = "staccname123"
+storage_account_name = "staccname1234"
 subnet_cidr_range = "10.9.0.0/26"
 subscription_id = "subscription_id"
 system_topic_name = "evgt-staccountname"
