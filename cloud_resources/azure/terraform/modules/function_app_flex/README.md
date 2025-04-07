@@ -4,37 +4,40 @@
 ## About
 
 Module for creating a Function App, Application Insights and role assignments/access policies for working with storage, queues and key vault.
+This module is compatible with the Azure Functions Flex Consumption plan.
 
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.11 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.21 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.11 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.25.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_archive"></a> [archive](#provider\_archive) | n/a |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 4.21 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 4.25.0 |
+| <a name="provider_null"></a> [null](#provider\_null) | n/a |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_function_files"></a> [function\_files](#module\_function\_files) | ../function_files | n/a |
+| <a name="module_function_files"></a> [function\_files](#module\_function\_files) | git::https://github.com/agile-data-engine/ade-file-notifier-reference.git//cloud_resources/azure/terraform/modules/function_files | dev_azure_4_2025 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [azurerm_application_insights.notifier](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
+| [azurerm_function_app_flex_consumption.notifier](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/function_app_flex_consumption) | resource |
 | [azurerm_key_vault_access_policy.notifier-access](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
-| [azurerm_linux_function_app.notifier](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_function_app) | resource |
 | [azurerm_role_assignment.notifier-blob-owner](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.notifier-queue-contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.notifier-storage-contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [null_resource.remove_azurewebjobsstorage](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [archive_file.function_archive](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 
 ## Inputs
@@ -65,6 +68,7 @@ Module for creating a Function App, Application Insights and role assignments/ac
 | <a name="input_storage_account_name"></a> [storage\_account\_name](#input\_storage\_account\_name) | Storage account name | `string` | n/a | yes |
 | <a name="input_storage_primary_blob_endpoint"></a> [storage\_primary\_blob\_endpoint](#input\_storage\_primary\_blob\_endpoint) | Storage account primary blob endpoint | `string` | n/a | yes |
 | <a name="input_storage_primary_queue_endpoint"></a> [storage\_primary\_queue\_endpoint](#input\_storage\_primary\_queue\_endpoint) | Storage account primary queue endpoint | `string` | n/a | yes |
+| <a name="input_storage_primary_table_endpoint"></a> [storage\_primary\_table\_endpoint](#input\_storage\_primary\_table\_endpoint) | Storage account primary table endpoint | `string` | n/a | yes |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | Subnet id for the Function App vnet configuration | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Azure tags | `map(string)` | n/a | yes |
 

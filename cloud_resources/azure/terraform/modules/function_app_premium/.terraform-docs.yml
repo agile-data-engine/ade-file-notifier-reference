@@ -4,6 +4,7 @@ content: |-
   ## About
 
   Module for creating a Function App, Application Insights and role assignments/access policies for working with storage, queues and key vault.
+  This module is compatible with the Azure Functions Elastic Premium plan.
   
   {{ .Requirements }}
 

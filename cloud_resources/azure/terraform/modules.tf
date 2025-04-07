@@ -4,9 +4,9 @@ module "app_service_plan" {
   env = var.env
   location = var.location
   rg = var.rg
-  sku = "EP1" # "FC1" for flex consumption plan
+  sku = "FC1" # Use "EP1" for Elastic Premium plan
   tags = var.tags
-  worker_count = 1 # Unset with flex consumption plan
+  # worker_count = 1 # Configure if using Elastic Premium plan
 }
 
 module "log_analytics" {
@@ -24,7 +24,7 @@ module "network" {
   env = var.env
   location = var.location
   rg = var.rg
-  service_delegation_name = "Microsoft.Web/serverFarms" # "Microsoft.App/environments" for flex consumption plan
+  service_delegation_name = "Microsoft.App/environments" # Use "Microsoft.Web/serverFarms" with Elastic Premium plan
   subnet_cidr_range = var.subnet_cidr_range
   tags = var.tags
   vnet_cidr_range = var.vnet_cidr_range
@@ -75,8 +75,42 @@ module "event_subscription" {
   system_topic_rg = var.system_topic_rg
 }
 
+# Azure Functions Flex Consumption plan used by default
 module "function_app" {
-  source = "./modules/function_app"
+  source = "./modules/function_app_flex"
+  allowed_cidr_ranges = var.allowed_cidr_ranges
+  allowed_subnet_ids = var.allowed_subnet_ids
+  app = var.app
+  asp_id = module.app_service_plan.asp_id
+  blob_event_queue = module.storage_account.blob_event_queue_name
+  config_folder = "config"
+  config_prefix = "data-sources/"
+  container_name = module.storage_account.container_name
+  entra_tenant_id = var.entra_tenant_id
+  env = var.env
+  external_api_base_url = var.external_api_base_url
+  function_folder = "functions"
+  key_vault_id = module.secrets.key_vault_id
+  key_vault_name = module.secrets.key_vault_name
+  key_vault_uri = module.secrets.key_vault_uri
+  location = var.location
+  log_analytics_workspace_id = module.log_analytics.workspace_id
+  notify_queue = module.storage_account.notify_queue_name
+  notify_api_base_url = var.notify_api_base_url
+  rg = var.rg
+  subnet_id = module.network.subnet_id
+  storage_account_id = module.storage_account.id
+  storage_account_name = module.storage_account.name
+  storage_primary_blob_endpoint = module.storage_account.primary_blob_endpoint
+  storage_primary_queue_endpoint = module.storage_account.primary_queue_endpoint
+  storage_primary_table_endpoint = module.storage_account.primary_table_endpoint
+  tags = var.tags
+}
+
+/*
+# Use this instead if opting for Azure Functions Elastic Premium plan
+module "function_app" {
+  source = "./modules/function_app_premium"
   allowed_cidr_ranges = var.allowed_cidr_ranges
   allowed_subnet_ids = setunion([module.network.subnet_id], var.allowed_subnet_ids)
   app = var.app
@@ -104,3 +138,4 @@ module "function_app" {
   storage_primary_queue_endpoint = module.storage_account.primary_queue_endpoint
   tags = var.tags
 }
+*/
