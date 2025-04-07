@@ -87,6 +87,7 @@ resource "null_resource" "remove_azurewebjobsstorage" {
     provisioner "local-exec" {
         command = "az functionapp config appsettings delete --name func-${var.app}-${var.env} --resource-group ${var.rg} --setting-names AzureWebJobsStorage"
     }
+    depends_on = [ azurerm_function_app_flex_consumption.notifier ]
 }
 
 resource "azurerm_role_assignment" "notifier-storage-contributor" {
