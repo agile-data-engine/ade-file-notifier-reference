@@ -24,9 +24,23 @@ resource "azurerm_network_security_rule" "allow_outbound" {
   resource_group_name         = var.rg
 }
 
+resource "azurerm_network_security_rule" "allow_inbound_vnet" {
+  name                        = "AllowVnetInBound"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = "VirtualNetwork"
+  network_security_group_name = azurerm_network_security_group.notifier.name
+  resource_group_name         = var.rg
+}
+
 resource "azurerm_network_security_rule" "deny_inbound" {
-  name                        = "DenyInboundAll"
-  priority                    = 300
+  name                        = "DenyAllOutBound"
+  priority                    = 110
   direction                   = "Inbound"
   access                      = "Deny"
   protocol                    = "*"
