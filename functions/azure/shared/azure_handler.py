@@ -14,36 +14,40 @@ from .notifier_common import (
 
 def download_config(container_name, folder_prefix):
     """
-    Downloads config file from Notifier bucket (Blob Storage).
-        
+    Downloads configuration files from the Notifier container (Blob Storage).
+    
     Args:
-        container_name: Notifier container name.
-        folder_prefix: Notifier config-folder.
+        container_name (str): Notifier container name.
+        folder_prefix (str): Notifier config-folder.
 
     Returns:
-        config_dict: Config-file formatted as JSON.
+        dict: The configuration file formatted as JSON.
+
+    Raises:
+        ValueError: If no YAML configuration files are found.
     """
     azure_handler = AzureFileHandler(container_name, folder_prefix)
     yaml_files_data = azure_handler.download_and_load_yaml_files()
 
-    if yaml_files_data == []:
-        logging.error("YAML files data empty")
-        return
+    if not yaml_files_data:
+        error_msg = "YAML files data is empty."
+        logging.error(error_msg)
+        raise ValueError(error_msg)
     
     config_dict = translate_dict(yaml_files_data)
     return config_dict
 
 def upload_notifier_status(container_name, notifier_status_content):
     """
-    Uploads notifier status as JSON file to Blob Storage. 
-    Status files are partitioned by year, month, day, named with Unix milliseconds.
-        
+    Uploads the notifier status as a JSON file to Blob Storage. Status files are partitioned
+    by year, month, day, and named with Unix milliseconds.
+
     Args:
-        container_name: Notifier container name
-        notifier_status_content: Notifier status in JSON format.
+        container_name (str): Notifier container name.
+        notifier_status_content (dict): The notifier status in JSON format.
 
     Returns:
-        None.
+        None
     """
     year, month, day = datetime.now().strftime('%Y %m %d').split()
     timemillis = round(time.time() * 1000)
@@ -57,6 +61,16 @@ def upload_notifier_status(container_name, notifier_status_content):
 
 class AzureFileHandler:
     def __init__(self, container_name, prefix, max_retries=3, retry_delay=2, max_workers=4):
+        """
+        Initializes the AzureFileHandler for interacting with Azure Blob Storage.
+
+        Args:
+            container_name (str): Azure Blob Storage container name.
+            prefix (str): The folder prefix for operations.
+            max_retries (int): Maximum number of retries for download/upload operations.
+            retry_delay (int): Delay in seconds between retries.
+            max_workers (int): Number of concurrent workers for parallel operations.
+        """
         account_url = os.getenv('AzureWebJobsStorage__blobServiceUri')
         credential = DefaultAzureCredential()
         self.blob_service_client = BlobServiceClient(account_url, credential)
@@ -68,18 +82,33 @@ class AzureFileHandler:
 
     def list_files_in_folder(self):
         """
-        List all files in the folder (Azure Blob prefix) with a limit.
+        Lists all files in the folder (Azure Blob prefix).
+
+        Returns:
+            list: A list of blob names matching the prefix.
+
+        Raises:
+            RuntimeError: If an error occurs while listing files.
         """
         try:
             blobs = self.container_client.list_blobs(name_starts_with=self.prefix)
             return [blob.name for blob in blobs]
         except Exception as e:
             logging.error(f"Error listing files with prefix {self.prefix}: {e}")
-            return []
+            raise
         
     def download_file(self, blob_name):
         """
-        Download and process a single file, with retry logic.
+        Downloads and processes a single file, with retry logic.
+
+        Args:
+            blob_name (str): The name of the blob to download.
+
+        Returns:
+            dict or list: Parsed file content (JSON or YAML).
+
+        Raises:
+            RuntimeError: If file download or processing fails after max retries.
         """
         blob_client = self.container_client.get_blob_client(blob_name)
         
@@ -97,11 +126,21 @@ class AzureFileHandler:
             except Exception as e:
                 logging.error(f"Error downloading or processing file {blob_name} (attempt {attempt + 1}): {e}")
                 time.sleep(self.retry_delay)
-        return None
+        
+        # After exceeding max_retries
+        error_msg = f"Failed to download or process file {blob_name} after {self.max_retries} attempts."
+        logging.error(error_msg)
+        raise RuntimeError(error_msg)
 
     def download_and_load_yaml_files(self):
         """
-        Download YAML configuration files concurrently.
+        Downloads YAML configuration files concurrently.
+
+        Returns:
+            list: A list of parsed YAML data (dict or list).
+
+        Raises:
+            RuntimeError: If an error occurs while downloading or processing YAML files.
         """
         blob_names = self.list_files_in_folder()
         yaml_files = [name for name in blob_names if name.endswith(('.yaml', '.yml'))]
@@ -120,12 +159,19 @@ class AzureFileHandler:
                         file_data.append(result)
                 except Exception as e:
                     logging.error(f"Error processing YAML file: {e}")
+                    raise
         
         return file_data
     
     def download_and_list_files(self):
         """
-        Download JSON notification files concurrently.
+        Downloads JSON notification files concurrently.
+
+        Returns:
+            tuple: A tuple containing a list of file data and a list of file names.
+
+        Raises:
+            RuntimeError: If an error occurs while downloading or processing notification files.
         """
         blob_names = self.list_files_in_folder()
         
@@ -146,15 +192,19 @@ class AzureFileHandler:
                         file_data.append(result)
                 except Exception as e:
                     logging.error(f"Error processing file: {e}")
+                    raise
         
         return file_data, file_list
     
     def move_file(self, file_path):
         """
-        Move a single file from the 'queued' folder to the 'processed' folder.
-        
+        Moves a single file from the 'queued' folder to the 'processed' folder.
+
         Args:
-            file_path (str): Path of the file to be moved.
+            file_path (str): The path of the file to be moved.
+
+        Raises:
+            RuntimeError: If an error occurs while moving the file.
         """
         try:
             # Construct the destination path in the 'processed' folder with the current time
@@ -177,14 +227,17 @@ class AzureFileHandler:
 
         except Exception as e:
             logging.error(f"Error moving file {file_path} to processed: {e}")
-            raise e
+            raise
 
     def move_files_to_processed(self, file_paths):
         """
-        Move files from the 'queued' folder to the 'processed' folder in parallel.
-        
+        Moves multiple files from the 'queued' folder to the 'processed' folder concurrently.
+
         Args:
-            file_paths (list): List of file paths to be moved.
+            file_paths (list): A list of file paths to be moved.
+
+        Raises:
+            RuntimeError: If an error occurs while moving any of the files.
         """
 
         # Use ThreadPoolExecutor to execute file moves in parallel
@@ -197,19 +250,23 @@ class AzureFileHandler:
                     future.result()  # This will raise any exceptions that occurred in the thread
                 except Exception as e:
                     logging.error(f"Error processing {file_path}: {e}")
+                    raise
 
 
     def upload_file(self, file_path, data, blob_content_type='application/json'):
         """
-        Upload a file to the Azure Blob Storage container with retry logic.
-        
+        Uploads a file to the Azure Blob Storage container with retry logic.
+
         Args:
             file_path (str): The path where the file should be uploaded in Azure.
             data (str or dict): The data to be uploaded. It can be a string or a dictionary.
             blob_content_type (str): The MIME type of the uploaded file.
-            
+
         Returns:
-            bool: True if upload succeeds, False otherwise.
+            bool: True if the upload succeeds.
+
+        Raises:
+            RuntimeError: If the upload fails after max retries.
         """
         blob_client = self.container_client.get_blob_client(file_path)
 
@@ -221,7 +278,9 @@ class AzureFileHandler:
 
             except Exception as e:
                 logging.error(f"Failed to upload {file_path} to Azure (attempt {attempt + 1}): {e}")
-                time.sleep(self.retry_delay)  # Delay before retry
+                time.sleep(self.retry_delay)
 
-        logging.error(f"Exceeded max retries. Could not upload {file_path}.")
-        return False
+        # After exceeding max_retries
+        error_msg = f"Failed to upload file {file_path} after {self.max_retries} attempts."
+        logging.error(error_msg)
+        raise RuntimeError(error_msg)
