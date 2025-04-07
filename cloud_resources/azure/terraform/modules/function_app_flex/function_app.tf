@@ -83,11 +83,14 @@ resource "azurerm_function_app_flex_consumption" "notifier" {
 
 # AzureWebJobsStorage app setting removal, added automatically and cannot be suppressed, prevents app from connecting to storage
 # Possibly fixed in future azurerm provider or function app releases (7.4.2025)
-resource "null_resource" "remove_azurewebjobsstorage" {
-    provisioner "local-exec" {
-        command = "az functionapp config appsettings delete --name func-${var.app}-${var.env} --resource-group ${var.rg} --setting-names AzureWebJobsStorage"
-    }
+resource "terraform_data" "remove_azurewebjobsstorage" {
     depends_on = [ azurerm_function_app_flex_consumption.notifier ]
+    triggers_replace = {
+        function_app = "${timestamp()}"
+    }
+    provisioner "local-exec" {
+        command = "az functionapp config appsettings delete --name ${azurerm_function_app_flex_consumption.notifier.name} --resource-group ${var.rg} --setting-names AzureWebJobsStorage"
+    }
 }
 
 resource "azurerm_role_assignment" "notifier-storage-contributor" {
