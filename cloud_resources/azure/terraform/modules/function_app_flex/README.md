@@ -19,7 +19,7 @@ This module is compatible with the Azure Functions Flex Consumption plan.
 |------|---------|
 | <a name="provider_archive"></a> [archive](#provider\_archive) | n/a |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 4.25.0 |
-| <a name="provider_null"></a> [null](#provider\_null) | n/a |
+| <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules
 
@@ -37,7 +37,7 @@ This module is compatible with the Azure Functions Flex Consumption plan.
 | [azurerm_role_assignment.notifier-blob-owner](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.notifier-queue-contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.notifier-storage-contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [null_resource.remove_azurewebjobsstorage](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [terraform_data.remove_azurewebjobsstorage](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [archive_file.function_archive](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 
 ## Inputs
