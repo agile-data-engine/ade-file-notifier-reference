@@ -75,7 +75,7 @@ module "event_subscription" {
   system_topic_rg = var.system_topic_rg
 }
 
-# Azure Functions Flex Consumption plan used by default
+# Use this with Azure Functions Flex Consumption plan
 module "function_app" {
   source = "./modules/function_app_flex"
   allowed_cidr_ranges = var.allowed_cidr_ranges
@@ -108,7 +108,7 @@ module "function_app" {
 }
 
 /*
-# Use this instead if opting for Azure Functions Elastic Premium plan
+# Use this with Azure Functions Elastic Premium plan
 module "function_app" {
   source = "./modules/function_app_premium"
   allowed_cidr_ranges = var.allowed_cidr_ranges
