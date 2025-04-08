@@ -5,10 +5,11 @@ resource "azurerm_key_vault" "notifier" {
     tenant_id                  = var.entra_tenant_id
     sku_name                   = "standard"
     soft_delete_retention_days = 7
+    tags = var.tags
     network_acls {
       bypass = "None"
       default_action = "Deny"
-      ip_rules = var.allowed_ips
+      ip_rules = var.allowed_cidr_ranges
       virtual_network_subnet_ids = var.allowed_subnet_ids
     }
 }

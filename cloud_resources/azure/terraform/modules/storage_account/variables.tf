@@ -1,11 +1,11 @@
-variable "allowed_ips" {
-    type = list
-    description = "List of allowed ip addresses"
+variable "allowed_cidr_ranges" {
+    type = list(string)
+    description = "List of allowed cidr ip address ranges"
 }
 
 variable "allowed_subnet_ids" {
-    type = list
-    description = "List of allowed subnet ids"
+    type = list(string)
+    description = "List of allowed vnet subnet ids"
 }
 
 variable "app" {
@@ -33,6 +33,11 @@ variable "location" {
     description = "Region"
 }
 
+variable "name" {
+    type = string
+    description = "Storage account name"
+}
+
 variable "notify_queue" {
     type = string
     description = "Notify queue name, triggers notifying"
@@ -43,7 +48,12 @@ variable "rg" {
     description = "Resource group name"
 }
 
-variable "security_group_id" {
-    type = string
-    description = "Id of Entra security group which is given access to resources"
+variable "security_group_ids" {
+    type = list(string)
+    description = "Ids of Entra security groups which are given access to resources"
+}
+
+variable "tags" {
+    type = map(string)
+    description = "Azure tags"
 }

@@ -25,6 +25,7 @@ resource "azurerm_linux_function_app" "notifier" {
     functions_extension_version = "~4"
     https_only = true
     zip_deploy_file = data.archive_file.function_archive.output_path
+    tags = var.tags
     identity {
         type = "SystemAssigned"
     }
@@ -39,6 +40,28 @@ resource "azurerm_linux_function_app" "notifier" {
             # Allows functions to be triggered manually in Azure portal
             allowed_origins = ["https://portal.azure.com"]
         }
+
+        dynamic "ip_restriction" {
+            for_each = var.allowed_cidr_ranges
+            content {
+                ip_address = ip_restriction.value
+                action     = "Allow"
+                priority   = 100
+                name       = "AllowedIP_${ip_restriction.key}"
+            }
+        }
+
+        dynamic "ip_restriction" {
+            for_each = var.allowed_subnet_ids
+            content {
+                virtual_network_subnet_id = ip_restriction.value
+                action                    = "Allow"
+                priority                  = 100
+                name                      = "AllowedVNet_${ip_restriction.key}"
+            }
+        }
+
+        ip_restriction_default_action = "Deny"
     }
     app_settings = {
         AzureWebJobsDisableHomepage = true
@@ -54,10 +77,7 @@ resource "azurerm_linux_function_app" "notifier" {
         config_prefix = var.config_prefix
         notify_api_base_url = var.notify_api_base_url
         external_api_base_url = var.external_api_base_url
-        notify_api_key = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/notify-api-key)"
-        notify_api_key_secret = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/notify-api-key-secret)"
-        external_api_key = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/external-api-key)"
-        external_api_key_secret = "@Microsoft.KeyVault(SecretUri=${var.key_vault_uri}/secrets/external-api-key-secret)"
+        key_vault_uri = var.key_vault_uri
     }
 }
 

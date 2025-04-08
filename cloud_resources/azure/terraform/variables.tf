@@ -1,7 +1,13 @@
-variable "allowed_ips" {
-    type = list
-    description = "List of allowed ip addresses"
+variable "allowed_cidr_ranges" {
+    type = list(string)
+    description = "List of allowed cidr ip address ranges"
 }
+
+variable "allowed_subnet_ids" {
+    type = list(string)
+    description = "List of allowed vnet subnet ids"
+}
+
 variable "app" {
     type = string
     description = "Application name to be used for resource naming"
@@ -61,9 +67,14 @@ variable "rg" {
     description = "Resource group name"
 }
 
-variable "security_group_id" {
+variable "security_group_ids" {
+    type = list(string)
+    description = "Ids of Entra security groups which are given access to resources"
+}
+
+variable "storage_account_name" {
     type = string
-    description = "Id of Entra security group which is given access to resources"
+    description = "Name for storage account to be created"
 }
 
 variable "source_data_container" {
@@ -94,6 +105,11 @@ variable "system_topic_principal_id" {
 variable "system_topic_rg" {
     type = string
     description = "System topic resource group name for source file events"
+}
+
+variable "tags" {
+    type = map(string)
+    description = "Azure tags"
 }
 
 variable "vnet_cidr_range" {

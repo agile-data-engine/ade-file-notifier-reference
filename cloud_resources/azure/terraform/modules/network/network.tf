@@ -3,6 +3,7 @@ resource "azurerm_virtual_network" "notifier" {
   address_space       = [var.vnet_cidr_range]
   location            = var.location
   resource_group_name = var.rg
+  tags = var.tags
 }
 
 resource "azurerm_subnet" "notifier" {
@@ -12,10 +13,10 @@ resource "azurerm_subnet" "notifier" {
   address_prefixes     = [var.subnet_cidr_range]
   service_endpoints    = ["Microsoft.Storage", "Microsoft.KeyVault"]
   delegation {
-    name = "Microsoft.Web/serverFarms"
+    name = "delegation"
     service_delegation {
-      name = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+      name = var.service_delegation_name
+      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
     }
   }
 }
@@ -24,6 +25,7 @@ resource "azurerm_nat_gateway" "notifier" {
   name                    = "ng-${var.app}-${var.env}"
   location                = var.location
   resource_group_name     = var.rg
+  tags = var.tags
 }
 
 resource "azurerm_public_ip" "notifier" {
@@ -31,6 +33,7 @@ resource "azurerm_public_ip" "notifier" {
   resource_group_name = var.rg
   location            = var.location
   allocation_method   = "Static"
+  tags = var.tags
 }
 
 resource "azurerm_nat_gateway_public_ip_association" "notifier" {

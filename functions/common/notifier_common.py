@@ -228,17 +228,17 @@ def start_dag_run_v2(session: requests.Session, base_url: str, dag_id: str):
         dag_id (string): DAG name in ADE Runtime environment.
     Returns:
         content
+    Raises:
+        HTTPError: If the request fails.
 
     """
     response = session.post(f"{base_url}/dagger/v2/dags/{dag_id}/dag-runs")
-    content = json.loads(response.text) if response.text else ""
+    content = response.json() if response.text else {}
 
     if response.status_code == 401:
-        logging.ERROR(
-            f"\nUnauthorized. Response code {response.status_code}", err=True)
-        exit(1)
+        logging.error(f"Unauthorized. Response code {response.status_code}")
+        raise requests.exceptions.HTTPError("Unauthorized access. Please check your credentials.")
     elif response.status_code != 201:
-        logging.ERROR(
-            f"Unable to start dag with dag id {dag_id}. Response code {response.status_code}: \n{content}", err=True)
-        exit(1)
+        logging.error(f"Unable to start DAG with dag id {dag_id}. Response code {response.status_code}: \n{content}")
+        raise requests.exceptions.HTTPError(f"Request failed with status code {response.status_code}")
     return content

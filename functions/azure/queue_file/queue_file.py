@@ -15,14 +15,20 @@ from shared.notifier_common import (
 )
 
 def queue_file(msg: func.QueueMessage):
-    """Triggered as messages are added to Azure Queue storage.
-    Gets configuration, identifies data source, adds file to queued folder if the source is identified.
-        
+    """
+    Triggered when a message is added to Azure Storage Queue. 
+    This function processes the message, identifies the data source, and 
+    uploads the file to the 'queued' folder in Azure Blob Storage if the source is identified.
+
     Args:
-        msg (azure.functions.QueueMessage): Azure Queue storage message which triggers the function.
+        msg (azure.functions.QueueMessage): A message from Azure Storage Queue that triggers the function.
 
     Returns:
-        None.
+        None
+    
+    Raises:
+        KeyError: If neither 'blobUrl' nor 'url' are found in the event data.
+        RuntimeError: If an error occurs during event processing or file upload.
     """
 
     try:
@@ -55,16 +61,17 @@ def queue_file(msg: func.QueueMessage):
             upload_result = azure_handler.upload_file(file_path, file_data)
 
             if upload_result:
-                logging.info(f"Successfully queued file: {blob_url}")
+                logging.info(f"Successfully queued file: {blob_url}\nContent: {file_data}")
 
                 # If single file manifest option is True, notification will be done right away
                 # this is done by sending data to queue, which invokes the notification process
                 if source['attributes'].get('single_file_manifest', False):
-                    logging.info("Single_file_manifest set as true, triggering notification.")
+                    logging.info(f"Single_file_manifest true for source {source['id']}, triggering notification.")
                     handle_single_file_manifest(source)
             else:
-                logging.error(f"Failed to queue file: {blob_url}")
-                return
+                error_msg = f"Failed to queue file: {blob_url}"
+                logging.error(error_msg)
+                raise RuntimeError(error_msg)
         return
     except Exception as e:
         logging.error(f"Error processing event: {e}")
@@ -73,16 +80,22 @@ def queue_file(msg: func.QueueMessage):
 
 def handle_single_file_manifest(source):
     """
-    Sends trigger message to notify queue when 'single_file_manifest' is True.
-    
+    Sends a trigger message to the notify queue when the 'single_file_manifest' flag is set to True for the given source.
+
+    This function constructs and sends a message containing the source system and entity to the notify queue in Base64-encoded format. 
+    The message will trigger a notification process for that source system and entity.
+
     Args:
-        source: The source dictionary containing attributes.
-    
-    Raises:
-        ValueError: If required attributes are missing or empty.
+        source (dict): The source dictionary.
 
     Returns:
         None
+    
+    Raises:
+        ValueError: If the required attributes 'ade_source_system' or 'ade_source_entity' are missing or empty.
+        RuntimeError: If an error occurs while adding the message to the queue.
+
+    
     """
     
     # Validate required attributes

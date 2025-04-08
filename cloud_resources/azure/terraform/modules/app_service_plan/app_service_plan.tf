@@ -4,5 +4,6 @@ resource "azurerm_service_plan" "notifier" {
   location = var.location
   os_type = "Linux"
   sku_name = var.sku
+  tags = var.tags
   worker_count = var.worker_count
 }

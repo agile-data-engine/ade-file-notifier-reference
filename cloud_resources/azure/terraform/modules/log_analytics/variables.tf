@@ -18,22 +18,7 @@ variable "rg" {
     description = "Resource group name"
 }
 
-variable "service_delegation_name" {
-    type = string
-    description = "Subnet service delegation name"
-}
-
-variable "subnet_cidr_range" {
-    type = string
-    description = "Notifier subnet CIDR address space"
-}
-
 variable "tags" {
     type = map(string)
     description = "Azure tags"
-}
-
-variable "vnet_cidr_range" {
-    type = string
-    description = "Virtual network CIDR address space"
 }

@@ -1,6 +1,8 @@
 import azure.functions as func
 import logging
 import os
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
 from shared.azure_handler import (
     AzureFileHandler,
     download_config,
@@ -14,28 +16,21 @@ from shared.notifier_common import (
 
 def notify(msg: func.QueueMessage):
     """
-    Triggered as messages are added to Azure Queue storage.
-        
+    Triggered when a message is added to Azure Queue Storage.
+
     Args:
-        msg (azure.functions.QueueMessage): Azure Queue storage message which triggers the function.
+        msg (azure.functions.QueueMessage): The message from Azure Queue Storage that triggers the function.
 
     Returns:
-        Event processing status.
+        str: Event processing status.
     """
     return process_events(msg.get_json())
 
 def process_events(event_data: object):
     """
-    The calls block:
-    {
-        "calls": [
-            ["<ade_source_system>", "<ade_source_entity>"], 
-            ["<ade_source_system1>", "<ade_source_entity1>"]
-            ]
-    }
-    Where ade_source_entity is optional parameter.
+    Processes a queue message and triggers notifications based on calls in the message.
 
-    Event format example:
+    Message format example:
     {
         "calls": [
             ["digitraffic", "metadata_vessels_bq"],
@@ -45,26 +40,36 @@ def process_events(event_data: object):
     }
 
     Args:
-        event_data: Either event data from queue or http call, formatted to JSON object.
+        event_data (object): A message containing the calls block in JSON format.
 
     Returns:
-        Http responses with jsonify
+        None
+    
+    Raises:
+        ValueError: If the event format is incorrect.
+        RuntimeError: If an error occurs during event processing.
     """
     try:
         logging.info(f'Notifier was triggered by call:\n{event_data}')
 
         container_name = os.getenv('container_name')
         config_prefix = os.getenv('config_prefix')
+
+        # Using SecretClient to get secrets from key vault instead of references in app settings for Flex Consumption Plan compatibility
+        # https://learn.microsoft.com/en-us/azure/azure-functions/flex-consumption-plan#considerations
+        credential = DefaultAzureCredential()
+        kv_client = SecretClient(vault_url=os.getenv('key_vault_uri'), credential=credential)
         secrets = {
             "base_url": os.getenv('notify_api_base_url'),
-            "api_key": os.getenv('notify_api_key'),
-            "api_key_secret": os.getenv('notify_api_key_secret')
+            "api_key": kv_client.get_secret('notify-api-key').value,
+            "api_key_secret": kv_client.get_secret('notify-api-key-secret').value
         }
         ext_api_secrets = {
             "base_url": os.getenv('external_api_base_url'),
-            "api_key": os.getenv('external_api_key'),
-            "api_key_secret": os.getenv('external_api_key_secret')
+            "api_key": kv_client.get_secret('external-api-key').value,
+            "api_key_secret": kv_client.get_secret('external-api-key-secret').value
         }
+
         config_dict = download_config(container_name, config_prefix)
         notifier_status = []
         if 'calls' not in event_data:
@@ -79,10 +84,15 @@ def process_events(event_data: object):
                 logging.error(f"Invalid call format: {call}")
                 return
 
-            
             ade_source_system = call[0]
-            ade_source_entity = call[1] if len(call) > 1 and call[1] else ""
-            file_path_prefix = f"queued/{ade_source_system}/{ade_source_entity}"
+            
+            if len(call) > 1 and call[1]:
+                ade_source_entity = call[1]
+                file_path_prefix = f"queued/{ade_source_system}/{ade_source_entity}/"
+            else:
+                ade_source_entity = ""
+                file_path_prefix = f"queued/{ade_source_system}/"
+            
             matching_configs = get_matching_configs(config_dict, ade_source_system, ade_source_entity)
 
             try:
@@ -91,7 +101,7 @@ def process_events(event_data: object):
                 json_files_data, file_list = file_handler.download_and_list_files()
 
                 if json_files_data == []:
-                    logging.info(f'No events to notify for ade_source_system: {ade_source_system}, ade_source_entity: {ade_source_entity}')
+                    logging.info(f'No events to notify for ade_source_system: {ade_source_system}, ade_source_entity: {ade_source_entity}\nFile list: {file_list}')
                     continue
                 entries = [item['full_file_path'] for item in json_files_data]
 

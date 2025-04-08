@@ -3,7 +3,7 @@ content: |-
 
   ## About
 
-  Module for creating a virtual network, network security group, NAT gateway and public ip for the notifier Function App.
+  Module for creating a Log Analytics Workspace
   
   {{ .Requirements }}
 
