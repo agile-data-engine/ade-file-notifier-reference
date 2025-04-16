@@ -3,7 +3,7 @@ parameters:
 schedules:
   - schedule_id: 3
     name: digitraffic-schedule
-    cron: "0 */4 * * *"
+    cron: "0 2 * * *"
 source_systems:
   - ade_source_system: ny_tlc
     single_file_manifest: true
