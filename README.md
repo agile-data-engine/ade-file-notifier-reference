@@ -82,7 +82,7 @@ Source systems and entities are the data source configuration for the notifier. 
 | source_systems.`ade_source_system` | Yes | Source system name as defined for the source entity in ADE, e.g. `taxidata` or `mdm`. |
 | `entities` | Yes | A list of source entities. |
 | entities.`ade_source_entity` | Yes | Source entity name in ADE, e.g. `yellow_tripdata`. |
-| entities.`file_location` | Yes | The path to the file location, relative to the root storage path, e.g. `taxidata/yellow_tripdata`. |
+| entities.`file_location` | Yes | The path to the file location, relative to the root storage path, e.g. `taxidata/yellow_tripdata/`. **Make sure to include a trailing slash** (`/`) to clearly indicate a folder and avoid conflicts where a similar prefix might match multiple paths (e.g. `yellow_tripdata_monthly`)|
 
 The rest of the attributes can be defined on either **source_system** or **entity** level. Entity-level settings override source_system-level settings.
 
