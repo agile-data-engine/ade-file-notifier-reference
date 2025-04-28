@@ -9,55 +9,56 @@ source_systems:
     skiph: 1
     compression: GZIP
     batch_from_file_path_regex: batch\\.(\\d*)\\.csv
-    dag_trigger: ADVENTUREWORKS_BQ
+    dag_trigger: ADVENTUREWORKS
+    schedule_id: 2
     entities:
-      - ade_source_entity: address_bq
+      - ade_source_entity: address
         file_location: adventureworks/address/
-      - ade_source_entity: addresstype_bq
+      - ade_source_entity: addresstype
         file_location: adventureworks/addresstype/
-      - ade_source_entity: businessentity_bq
+      - ade_source_entity: businessentity
         file_location: adventureworks/businessentity/
-      - ade_source_entity: businessentityaddress_bq
+      - ade_source_entity: businessentityaddress
         file_location: adventureworks/businessentityaddress/
-      - ade_source_entity: customer_bq
+      - ade_source_entity: customer
         file_location: adventureworks/customer/
-      - ade_source_entity: department_bq
+      - ade_source_entity: department
         file_location: adventureworks/department/
-      - ade_source_entity: employee_bq
+      - ade_source_entity: employee
         file_location: adventureworks/employee/
-      - ade_source_entity: employeedepartmenthistory_bq
+      - ade_source_entity: employeedepartmenthistory
         file_location: adventureworks/employeedepartmenthistory/
-      - ade_source_entity: employeepayhistory_bq
+      - ade_source_entity: employeepayhistory
         file_location: adventureworks/employeepayhistory/
-      - ade_source_entity: jobcandidate_bq
+      - ade_source_entity: jobcandidate
         file_location: adventureworks/jobcandidate/
-      - ade_source_entity: person_bq
+      - ade_source_entity: person
         file_location: adventureworks/person/
-      - ade_source_entity: product_bq
+      - ade_source_entity: product
         file_location: adventureworks/product/
-      - ade_source_entity: productcategory_bq
+      - ade_source_entity: productcategory
         file_location: adventureworks/productcategory/
-      - ade_source_entity: productdescription_bq
+      - ade_source_entity: productdescription
         file_location: adventureworks/productdescription/
-      - ade_source_entity: productinventory_bq
+      - ade_source_entity: productinventory
         file_location: adventureworks/productinventory/
-      - ade_source_entity: productsubcategory_bq
+      - ade_source_entity: productsubcategory
         file_location: adventureworks/productsubcategory/
-      - ade_source_entity: productvendor_bq
+      - ade_source_entity: productvendor
         file_location: adventureworks/productvendor/
-      - ade_source_entity: purchaseorderdetail_bq
+      - ade_source_entity: purchaseorderdetail
         file_location: adventureworks/purchaseorderdetail/
-      - ade_source_entity: purchaseorderheader_bq
+      - ade_source_entity: purchaseorderheader
         file_location: adventureworks/purchaseorderheader/
-      - ade_source_entity: salesorderdetail_bq
+      - ade_source_entity: salesorderdetail
         file_location: adventureworks/salesorderdetail/
-      - ade_source_entity: salesorderheader_bq
+      - ade_source_entity: salesorderheader
         file_location: adventureworks/salesorderheader/
-      - ade_source_entity: shift_bq
+      - ade_source_entity: shift
         file_location: adventureworks/shift/
-      - ade_source_entity: store_bq
+      - ade_source_entity: store
         file_location: adventureworks/store/
-      - ade_source_entity: vendor_bq
+      - ade_source_entity: vendor
         file_location: adventureworks/vendor/
-      - ade_source_entity: workorder_bq
+      - ade_source_entity: workorder
         file_location: adventureworks/workorder/

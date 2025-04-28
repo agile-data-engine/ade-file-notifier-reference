@@ -1,40 +1,42 @@
 parameters:
   max_files_per_manifest: 1000
 schedules:
-  - schedule_id: 3
-    name: digitraffic-schedule
-    cron: "0 */4 * * *"
+  - schedule_id: 1
+    name: daily_0200
+    cron: "0 2 * * *"
+  - schedule_id: 2
+    name: daily_0400
+    cron: "0 4 * * *"
 source_systems:
-  - ade_source_system: ny_tlc
-    single_file_manifest: true
-    fullscanned: true
-    entities:
-      - ade_source_entity: yellow_tripdata_bq
-        file_location: ny_tlc/yellow_tripdata
-        format: PARQUET
-      - ade_source_entity: green_tripdata_bq
-        file_location: ny_tlc/green_tripdata
-        format: PARQUET
-      - ade_source_entity: taxi_zone_bq
-        file_location: ny_tlc/taxi_zone
-        format: CSV
-        delim: COMMA
-        skiph: 1
-      - file_location: ny_tlc/taxi_zone_geography
-        ade_source_entity: taxi_zone_geography_bq
-        format: JSON
-  - ade_source_system: digitraffic
+  - ade_source_system: barentswatch
+    schedule_id: 1
     single_file_manifest: false
+    batch_from_file_path_regex: batch\\.(\\d*)\\.csv
+    format: CSV
+    delim: PIPE
+    skiph: 1
     fullscanned: false
-    dag_trigger: DV_DIGITRAFFIC_BQ
-    schedule_id: 3
+    path_replace: https://dlsadedemodev.blob.core.windows.net/raw/
+    path_replace_with: ""
     entities:
-      - ade_source_entity: metadata_vessels_bq
-        file_location: digitraffic/metadata_vessels/
+      - ade_source_entity: latest_combined_test
+        file_location: raw/barentswatch/latest_combined/
+  - ade_source_system: digitraffic
+    schedule_id: 2
+    single_file_manifest: false
+    path_replace: https://dlsadedemodev.blob.core.windows.net/raw/
+    path_replace_with: ""
+    fullscanned: false
+    entities:
+      - ade_source_entity: metadata_vessels_test
+        file_location: raw/digitraffic/metadata_vessels/
+        file_extension: .json
         format: JSON
-      - ade_source_entity: locations_latest_bq
-        file_location: digitraffic/locations_latest/
+        batch_from_file_path_regex: batch\\.(\\d*)\\.json
+      - ade_source_entity: locations_latest_test
+        file_location: raw/digitraffic/metadata_vessels/
+        file_extension: .csv
         format: CSV
-        delim: SEMICOLON
+        delim: PIPE
         skiph: 1
-        compression: GZIP
+        batch_from_file_path_regex: batch\\.(\\d*)\\.csv

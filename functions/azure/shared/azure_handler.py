@@ -51,7 +51,7 @@ def upload_notifier_status(container_name, notifier_status_content):
     """
     year, month, day = datetime.now().strftime('%Y %m %d').split()
     timemillis = round(time.time() * 1000)
-    status_file_path = f"status/{year}/{month}/{day}/{timemillis}_notifier_status.json"
+    status_file_path = f"status/year={year}/month={month}/day={day}/{timemillis}_notifier_status.json"
 
     if notifier_status_content:
         status_azure_handler = AzureFileHandler(container_name, "status/")
