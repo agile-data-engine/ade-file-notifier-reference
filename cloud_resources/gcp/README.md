@@ -23,18 +23,27 @@ The infrastructure and Function App deployment have been implemented with Terraf
 
 Status files can be queried with BigQuery External tables. External table and view creation can be added as terraform or to your tool of choice.
 
+Logs are partitioned to hive-partitions `status/year={year}/month={month}/day={day}`, which can be used in the external table queries.
+
 ```SQL
 CREATE OR REPLACE EXTERNAL TABLE file_notifier.raw_status_files (status_content string)
-  OPTIONS (
-    format ="CSV",
-    field_delimiter = '\x10', quote = '',
-    uris = ['gs://reference-notifier-dev/status/*.json']
-    );
+WITH PARTITION COLUMNS
+OPTIONS (
+  format ="CSV",
+  field_delimiter = '\x10', quote = '',
+  uris = ['gs://reference-notifier-dev/status/*.json'],
+  hive_partition_uri_prefix = 'gs://reference-notifier-dev/status',
+  require_hive_partition_filter = false
+  );
+
 
 CREATE OR REPLACE VIEW file_notifier.ade_notifier_status AS
 WITH json_data AS (
   SELECT
     JSON_QUERY_ARRAY(PARSE_JSON(status_content)) AS json_content,
+    year,
+    month,
+    day,
     _FILE_NAME as status_file_name
   FROM file_notifier.raw_status_files
 )
@@ -53,7 +62,10 @@ SELECT
     JSON_VALUE(notifier.manifest_id) AS notifier_manifest_id,
     PARSE_TIMESTAMP('%Y-%m-%d %H:%M:%E6S', JSON_VALUE(notifier.notification_time)) AS notification_time,
     JSON_VALUE(entry.sourceFile) AS source_file,
-    status_file_name
+    status_file_name,
+    year,
+    month,
+    day
 FROM
   json_data,
   UNNEST(json_content) AS json_record,
