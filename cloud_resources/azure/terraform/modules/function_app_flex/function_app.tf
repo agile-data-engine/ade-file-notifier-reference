@@ -1,5 +1,5 @@
 module "function_files" {
-    source = "git::https://github.com/agile-data-engine/ade-file-notifier-reference.git//cloud_resources/azure/terraform/modules/function_files?ref=dev_azure_4_2025"
+    source = "../function_files"
     config_folder = var.config_folder
     config_prefix = var.config_prefix
     function_folder = var.function_folder
