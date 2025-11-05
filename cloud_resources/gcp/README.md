@@ -17,6 +17,11 @@ The infrastructure and Function App deployment have been implemented with Terraf
 
 4. Run the Terraform deployment per environment as instructed in [terraform/README.md](terraform/README.md).
 
+## Deploying secrets
+With Terraform, the secret manager secret is created as empty. You need to add the Notify API keys to the secret manager according to the example [secret_manager_example.json](secret_manager_example.json).
+
+Tenant, service name and environment can be found from Runtime URL:s according to documentation: https://docs.agiledataengine.com/docs/ade-tenant#TenantandEnvironments-TenantserviceURLs 
+
 ## Reading log files
 
 ### Creating external table to BigQuery
