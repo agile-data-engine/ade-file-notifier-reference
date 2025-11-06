@@ -1,4 +1,3 @@
-<!-- BEGIN_TF_DOCS -->
 
 
 ## About
@@ -51,6 +50,7 @@ No modules.
 | <a name="input_notify_api_secret_id"></a> [notify\_api\_secret\_id](#input\_notify\_api\_secret\_id) | n/a | `string` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | Google Cloud project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | Region for resources | `string` | n/a | yes |
+| <a name="input_timezone"></a> [timezone](#input\_timezone) | Timezone for the notifier functions | `string` | n/a | yes |
 | <a name="input_vpc_connector_name"></a> [vpc\_connector\_name](#input\_vpc\_connector\_name) | n/a | `string` | n/a | yes |
 
 ## Outputs
@@ -60,4 +60,3 @@ No modules.
 | <a name="output_notifier_function_name_http"></a> [notifier\_function\_name\_http](#output\_notifier\_function\_name\_http) | Notifier function name |
 | <a name="output_notifier_function_url_http"></a> [notifier\_function\_url\_http](#output\_notifier\_function\_url\_http) | Notifier function URL |
 
-<!-- END_TF_DOCS -->

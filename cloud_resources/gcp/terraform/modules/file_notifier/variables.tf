@@ -84,3 +84,8 @@ variable "notifier_pubsub_topic_id" {
 variable "ingress_settings" {
   type = string
 }
+
+variable "timezone" {
+  type = string
+  description = "Timezone for the notifier functions"
+}

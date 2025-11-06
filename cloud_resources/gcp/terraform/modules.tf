@@ -80,6 +80,7 @@ module "file_notifier" {
   vpc_connector_name               = var.vpc_connector_name
   notifier_pubsub_topic_id         = module.event_queues.notifier_pubsub_topic_id
   ingress_settings                 = "ALLOW_ALL"
+  timezone                         = "UTC"
 }
 
 module "notifier_scheduler" {
