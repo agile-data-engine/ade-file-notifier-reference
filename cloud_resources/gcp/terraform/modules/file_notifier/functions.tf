@@ -20,7 +20,7 @@ resource "google_cloudfunctions2_function" "add_to_manifest_function" {
       SERVICE_ACCOUNT_EMAIL = var.notifier_service_account
       NOTIFIER_BUCKET       = var.notifier_bucket
       CONFIG_PREFIX         = var.config_prefix
-      TIMEZONE              = var.timezone
+      TZ                    = var.timezone
     }
     secret_environment_variables {
       key        = "NOTIFY_API_SECRET_ID"
@@ -73,7 +73,7 @@ resource "google_cloudfunctions2_function" "add_to_manifest_function_http" {
       SERVICE_ACCOUNT_EMAIL = var.notifier_service_account
       NOTIFIER_BUCKET       = var.notifier_bucket
       CONFIG_PREFIX         = var.config_prefix
-      TIMEZONE              = var.timezone
+      TZ                    = var.timezone
     }
     secret_environment_variables {
       key        = "NOTIFY_API_SECRET_ID"
