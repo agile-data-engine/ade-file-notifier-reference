@@ -99,12 +99,8 @@ resource "azurerm_role_assignment" "notifier-queue-contributor" {
     scope                = var.storage_account_id
 }
 
-resource "azurerm_key_vault_access_policy" "notifier-access" {
-    key_vault_id = var.key_vault_id
-    tenant_id    = var.entra_tenant_id
-    object_id    = azurerm_linux_function_app.notifier.identity[0].principal_id
-
-    secret_permissions = [
-        "Get", "List"
-    ]
+resource "azurerm_role_assignment" "notifier-kv-secrets-user" {
+    scope                = var.key_vault_id
+    role_definition_name = "Key Vault Secrets User"
+    principal_id         = azurerm_linux_function_app.notifier.identity[0].principal_id
 }

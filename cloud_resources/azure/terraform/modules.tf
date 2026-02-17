@@ -86,7 +86,6 @@ module "function_app" {
   config_folder = "config"
   config_prefix = "data-sources/"
   container_name = module.storage_account.container_name
-  entra_tenant_id = var.entra_tenant_id
   env = var.env
   external_api_base_url = var.external_api_base_url
   function_folder = "functions"
@@ -119,7 +118,6 @@ module "function_app" {
   config_folder = "config"
   config_prefix = "data-sources/"
   container_name = module.storage_account.container_name
-  entra_tenant_id = var.entra_tenant_id
   env = var.env
   external_api_base_url = var.external_api_base_url
   function_folder = "functions"

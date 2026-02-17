@@ -38,11 +38,6 @@ variable "container_name" {
     description = "Storage container for function files"
 }
 
-variable "entra_tenant_id" {
-    type = string
-    description = "Entra tenant id"
-}
-
 variable "env" {
     type = string
     description = "Environment name"
