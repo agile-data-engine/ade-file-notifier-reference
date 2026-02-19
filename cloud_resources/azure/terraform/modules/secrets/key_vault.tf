@@ -8,7 +8,7 @@ resource "azurerm_key_vault" "notifier" {
     enable_rbac_authorization   = true
     tags = var.tags
     network_acls {
-      bypass = "None"
+      bypass = "AzureServices"
       default_action = "Deny"
       ip_rules = var.allowed_cidr_ranges
       virtual_network_subnet_ids = var.allowed_subnet_ids
