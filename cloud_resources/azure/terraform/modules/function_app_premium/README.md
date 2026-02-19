@@ -3,7 +3,7 @@
 
 ## About
 
-Module for creating a Function App, Application Insights and role assignments/access policies for working with storage, queues and key vault.
+Module for creating a Function App, Application Insights and role assignments for working with storage, queues and key vault.
 This module is compatible with the Azure Functions Elastic Premium plan.
 
 ## Requirements
@@ -31,10 +31,10 @@ This module is compatible with the Azure Functions Elastic Premium plan.
 | Name | Type |
 |------|------|
 | [azurerm_application_insights.notifier](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
-| [azurerm_key_vault_access_policy.notifier-access](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_linux_function_app.notifier](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_function_app) | resource |
 | [azurerm_role_assignment.notifier-blob-owner](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.notifier-queue-contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.notifier-kv-secrets-user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.notifier-storage-contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [archive_file.function_archive](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 
@@ -50,7 +50,6 @@ This module is compatible with the Azure Functions Elastic Premium plan.
 | <a name="input_config_folder"></a> [config\_folder](#input\_config\_folder) | Local folder name for config files | `string` | n/a | yes |
 | <a name="input_config_prefix"></a> [config\_prefix](#input\_config\_prefix) | Target folder name for config files | `string` | n/a | yes |
 | <a name="input_container_name"></a> [container\_name](#input\_container\_name) | Storage container for function files | `string` | n/a | yes |
-| <a name="input_entra_tenant_id"></a> [entra\_tenant\_id](#input\_entra\_tenant\_id) | Entra tenant id | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment name | `string` | n/a | yes |
 | <a name="input_external_api_base_url"></a> [external\_api\_base\_url](#input\_external\_api\_base\_url) | External API base url, e.g. https://external.services.saas.agiledataengine.com/external-api/api/s1234567/datahub/dev | `string` | n/a | yes |
 | <a name="input_function_folder"></a> [function\_folder](#input\_function\_folder) | Local folder name for function files | `string` | n/a | yes |
