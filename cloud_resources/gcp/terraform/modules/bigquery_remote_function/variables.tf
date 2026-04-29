@@ -21,3 +21,8 @@ variable "notifier_function_name" {
 variable "notifier_function_url" {
   type = string
 }
+
+variable "description" {
+  type    = string
+  default = null
+}
