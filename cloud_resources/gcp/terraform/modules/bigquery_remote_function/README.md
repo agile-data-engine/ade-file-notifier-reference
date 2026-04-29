@@ -33,14 +33,15 @@ No modules.
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_app"></a> [app](#input\_app) | n/a | `string` | n/a | yes |
-| <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
-| <a name="input_notifier_function_name"></a> [notifier\_function\_name](#input\_notifier\_function\_name) | n/a | `string` | n/a | yes |
-| <a name="input_notifier_function_url"></a> [notifier\_function\_url](#input\_notifier\_function\_url) | n/a | `string` | n/a | yes |
-| <a name="input_project"></a> [project](#input\_project) | n/a | `string` | n/a | yes |
-| <a name="input_region"></a> [region](#input\_region) | n/a | `string` | n/a | yes |
+| Name                                                                                                     | Description | Type | Default | Required |
+|----------------------------------------------------------------------------------------------------------|-------------|------|---------|:--------:|
+| <a name="input_app"></a> [app](#input\_app)                                                              | n/a | `string` | n/a     | yes |
+| <a name="input_env"></a> [env](#input\_env)                                                              | n/a | `string` | n/a     | yes |
+| <a name="input_notifier_function_name"></a> [notifier\_function\_name](#input\_notifier\_function\_name) | n/a | `string` | n/a     | yes |
+| <a name="input_notifier_function_url"></a> [notifier\_function\_url](#input\_notifier\_function\_url)    | n/a | `string` | n/a     | yes |
+| <a name="input_project"></a> [project](#input\_project)                                                  | n/a | `string` | n/a     | yes |
+| <a name="input_region"></a> [region](#input\_region)                                                     | n/a | `string` | n/a     | yes |
+| <a name="input_description"></a> [description](#input\_description)                                      | n/a | `string` | null    | yes |
 
 ## Outputs
 
