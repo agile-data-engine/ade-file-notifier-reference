@@ -2,6 +2,7 @@ resource "google_bigquery_dataset" "notifier_ds" {
   dataset_id          = "file_notifier"
   location            = var.region
   project             = var.project
+  description         = var.description
   is_case_insensitive = true
 }
 
