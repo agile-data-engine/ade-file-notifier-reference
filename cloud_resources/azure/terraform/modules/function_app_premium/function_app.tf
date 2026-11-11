@@ -33,7 +33,7 @@ resource "azurerm_linux_function_app" "notifier" {
         application_insights_key = azurerm_application_insights.notifier.instrumentation_key
         vnet_route_all_enabled = true
         application_stack {
-            python_version = "3.11"
+            python_version = "3.13"
         }
         cors {
             # Allows functions to be triggered manually in Azure portal

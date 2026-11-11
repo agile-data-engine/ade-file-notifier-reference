@@ -17,7 +17,7 @@ jobs:
         include:
           # Match the Function runtimes set in Terraform
           - cloud: azure
-            python: "3.11"
+            python: "3.13"
           - cloud: gcp
             python: "3.12"
     name: pytest (${{ matrix.cloud }})

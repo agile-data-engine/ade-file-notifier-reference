@@ -22,7 +22,7 @@ resource "azurerm_function_app_flex_consumption" "notifier" {
     storage_container_endpoint  = "${var.storage_primary_blob_endpoint}${var.container_name}"
     storage_authentication_type = "SystemAssignedIdentity"
     runtime_name = "python"
-    runtime_version = "3.11"
+    runtime_version = "3.13"
     maximum_instance_count = 40
     instance_memory_in_mb = 2048
     tags = var.tags
