@@ -85,7 +85,6 @@ module "function_app" {
   blob_event_queue = module.storage_account.blob_event_queue_name
   config_folder = "config"
   config_prefix = "data-sources/"
-  container_id = module.storage_account.container_id
   container_name = module.storage_account.container_name
   env = var.env
   external_api_base_url = var.external_api_base_url
@@ -118,7 +117,6 @@ module "function_app" {
   blob_event_queue = module.storage_account.blob_event_queue_name
   config_folder = "config"
   config_prefix = "data-sources/"
-  container_id = module.storage_account.container_id
   container_name = module.storage_account.container_name
   env = var.env
   external_api_base_url = var.external_api_base_url

@@ -140,6 +140,7 @@ Terraform modules and the function code in `/functions` are released together. P
 ## Upgrading to 0.3.0
 Breaking changes:
 - **Azure:** azurerm provider `~> 5.0` (was 4.x). Function App Python runtime is 3.13 (was 3.11), `azure-functions` is 2.x and the `cryptography` pin is removed.
+- **Azure:** the storage account module now follows the azurerm 5 default `allow_nested_items_to_be_public = false`. Planned as an in-place update; set it explicitly if you rely on public blob access.
 - **GCP:** google provider `~> 8.11` (was 6.18). Upgrade to the latest 7.x first, make `terraform plan` clean, then move to 8.x. The function runtime stays at Python 3.12.
 - Python dependencies are updated and GCP now uses `adenotifier` v0.2.3, which fixes batch number parsing from file paths when a manifest has multiple files.
 

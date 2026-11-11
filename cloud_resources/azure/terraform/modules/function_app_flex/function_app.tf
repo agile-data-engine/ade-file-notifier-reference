@@ -3,7 +3,7 @@ module "function_files" {
     config_folder = var.config_folder
     config_prefix = var.config_prefix
     function_folder = var.function_folder
-    storage_container_id = var.container_id
+    storage_container_id = "${var.storage_account_id}/blobServices/default/containers/${var.container_name}"
 }
 
 data "archive_file" "function_archive" {

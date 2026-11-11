@@ -51,7 +51,6 @@ This module is compatible with the Azure Functions Flex Consumption plan.
 | <a name="input_blob_event_queue"></a> [blob\_event\_queue](#input\_blob\_event\_queue) | Blob event queue name, triggers source file queuing | `string` | n/a | yes |
 | <a name="input_config_folder"></a> [config\_folder](#input\_config\_folder) | Local folder name for config files | `string` | n/a | yes |
 | <a name="input_config_prefix"></a> [config\_prefix](#input\_config\_prefix) | Target folder name for config files | `string` | n/a | yes |
-| <a name="input_container_id"></a> [container\_id](#input\_container\_id) | Storage container id for function files | `string` | n/a | yes |
 | <a name="input_container_name"></a> [container\_name](#input\_container\_name) | Storage container for function files | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment name | `string` | n/a | yes |
 | <a name="input_external_api_base_url"></a> [external\_api\_base\_url](#input\_external\_api\_base\_url) | External API base url, e.g. https://external.services.saas.agiledataengine.com/external-api/api/s1234567/datahub/dev | `string` | n/a | yes |

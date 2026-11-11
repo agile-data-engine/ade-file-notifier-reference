@@ -3,11 +3,6 @@ output "blob_event_queue_name" {
     description = "Blob event queue name"
 }
 
-output "container_id" {
-    value = azurerm_storage_container.notifier.id
-    description = "Container id"
-}
-
 output "container_name" {
     value = azurerm_storage_container.notifier.name
     description = "Container name"

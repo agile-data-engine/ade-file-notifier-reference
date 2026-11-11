@@ -33,11 +33,6 @@ variable "config_prefix" {
     description = "Target folder name for config files"
 }
 
-variable "container_id" {
-    type = string
-    description = "Storage container id for function files"
-}
-
 variable "container_name" {
     type = string
     description = "Storage container for function files"

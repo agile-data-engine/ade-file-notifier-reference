@@ -56,7 +56,6 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_blob_event_queue_name"></a> [blob\_event\_queue\_name](#output\_blob\_event\_queue\_name) | Blob event queue name |
-| <a name="output_container_id"></a> [container\_id](#output\_container\_id) | Container id |
 | <a name="output_container_name"></a> [container\_name](#output\_container\_name) | Container name |
 | <a name="output_id"></a> [id](#output\_id) | Storage account id |
 | <a name="output_name"></a> [name](#output\_name) | Storage account name |
