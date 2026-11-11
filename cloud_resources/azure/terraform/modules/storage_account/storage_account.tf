@@ -24,12 +24,12 @@ resource "azurerm_storage_account_network_rules" "notifier" {
 
 resource "azurerm_storage_queue" "blob-event-queue" {
   name = var.blob_event_queue
-  storage_account_name = azurerm_storage_account.notifier.name
+  storage_account_id = azurerm_storage_account.notifier.id
 }
 
 resource "azurerm_storage_queue" "notify-queue" {
   name = var.notify_queue
-  storage_account_name = azurerm_storage_account.notifier.name
+  storage_account_id = azurerm_storage_account.notifier.id
 }
 
 resource "azurerm_role_assignment" "group-blob-contributor" {

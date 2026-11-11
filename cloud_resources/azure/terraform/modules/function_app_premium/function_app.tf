@@ -3,8 +3,7 @@ module "function_files" {
     config_folder = var.config_folder
     config_prefix = var.config_prefix
     function_folder = var.function_folder
-    storage_account_name = var.storage_account_name
-    storage_container_name = var.container_name
+    storage_container_id = var.container_id
 }
 
 data "archive_file" "function_archive" {

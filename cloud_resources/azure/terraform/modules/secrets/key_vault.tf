@@ -5,7 +5,7 @@ resource "azurerm_key_vault" "notifier" {
     tenant_id                   = var.entra_tenant_id
     sku_name                    = "standard"
     soft_delete_retention_days  = 7
-    enable_rbac_authorization   = true
+    rbac_authorization_enabled  = true
     tags = var.tags
     network_acls {
       bypass = "None"

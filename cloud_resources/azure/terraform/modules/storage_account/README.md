@@ -10,13 +10,13 @@ Module for creating a storage account with queues for triggering the functions a
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.11 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.21 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 5.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 4.21 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 5.0 |
 
 ## Modules
 
@@ -56,6 +56,7 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_blob_event_queue_name"></a> [blob\_event\_queue\_name](#output\_blob\_event\_queue\_name) | Blob event queue name |
+| <a name="output_container_id"></a> [container\_id](#output\_container\_id) | Container id |
 | <a name="output_container_name"></a> [container\_name](#output\_container\_name) | Container name |
 | <a name="output_id"></a> [id](#output\_id) | Storage account id |
 | <a name="output_name"></a> [name](#output\_name) | Storage account name |

@@ -13,12 +13,7 @@ variable "function_folder" {
     description = "Local folder name for function files"
 }
 
-variable "storage_account_name" {
+variable "storage_container_id" {
     type = string
-    description = "Notifier storage account name"
-}
-
-variable "storage_container_name" {
-    type = string
-    description = "Notifier storage container name"
+    description = "Notifier storage container id"
 }

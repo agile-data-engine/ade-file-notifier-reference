@@ -11,7 +11,12 @@ resource "azurerm_subnet" "notifier" {
   resource_group_name  = var.rg
   virtual_network_name = azurerm_virtual_network.notifier.name
   address_prefixes     = [var.subnet_cidr_range]
-  service_endpoints    = ["Microsoft.Storage", "Microsoft.KeyVault"]
+  service_endpoint {
+    service = "Microsoft.Storage"
+  }
+  service_endpoint {
+    service = "Microsoft.KeyVault"
+  }
   delegation {
     name = "delegation"
     service_delegation {
