@@ -131,3 +131,23 @@ functions
 
 # Dependencies
 This solution uses the [adenotifier](https://github.com/agile-data-engine/adenotifier) Python library. Please specify a version in requirements.txt to prevent issues with library upgrades.
+
+# Versioning and upgrading
+Releases are created automatically from the `VERSION` file when it changes on `main`.
+
+Terraform modules and the function code in `/functions` are released together. Pin the repository with `?ref=vX.Y.Z` when referencing modules, and keep your copy of `/functions` and `/config` at the same version as the modules, because the modules package the function code from your repository, not from the module ref.
+
+## Upgrading to 0.3.0
+Breaking changes:
+- **Azure:** azurerm provider `~> 5.0` (was 4.x). Function App Python runtime is 3.13 (was 3.11), `azure-functions` is 2.x and the `cryptography` pin is removed.
+- **GCP:** google provider `~> 8.11` (was 6.18). Upgrade to the latest 7.x first, make `terraform plan` clean, then move to 8.x. The function runtime stays at Python 3.12.
+- Python dependencies are updated and GCP now uses `adenotifier` v0.2.3, which fixes batch number parsing from file paths when a manifest has multiple files.
+
+Steps:
+1. Enable versioning on the Terraform state bucket or container, so state can be restored if needed.
+2. Raise the provider version constraint in your root module and set the module `?ref=v0.3.0`.
+3. Update your copy of `/functions` to v0.3.0.
+4. Run `terraform init -upgrade` and `terraform plan`. Review the plan, and do not apply if resources are unexpectedly replaced or destroyed. Function code changes are expected.
+5. Run `terraform apply`.
+
+To roll back, restore the previous ref, provider version and `/functions`. If `apply` has already run, also restore the previous state version.

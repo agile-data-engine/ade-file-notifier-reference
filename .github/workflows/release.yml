@@ -35,4 +35,5 @@ jobs:
             echo "$tag already exists, skipping"
             exit 0
           fi
-          gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" --generate-notes
+          gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" --generate-notes \
+            --notes "Upgrade instructions: [Versioning and upgrading](https://github.com/$GITHUB_REPOSITORY/blob/$tag/README.md#versioning-and-upgrading)"
