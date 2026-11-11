@@ -10,14 +10,14 @@ This module generates File Event Processor Cloud Function.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.10 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 6.18 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 8.11 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_archive"></a> [archive](#provider\_archive) | n/a |
-| <a name="provider_google"></a> [google](#provider\_google) | ~> 6.18 |
+| <a name="provider_google"></a> [google](#provider\_google) | ~> 8.11 |
 
 ## Modules
 

@@ -3,8 +3,7 @@ module "function_files" {
     config_folder = var.config_folder
     config_prefix = var.config_prefix
     function_folder = var.function_folder
-    storage_account_name = var.storage_account_name
-    storage_container_name = var.container_name
+    storage_container_id = "${var.storage_account_id}/blobServices/default/containers/${var.container_name}"
 }
 
 data "archive_file" "function_archive" {
@@ -23,7 +22,7 @@ resource "azurerm_function_app_flex_consumption" "notifier" {
     storage_container_endpoint  = "${var.storage_primary_blob_endpoint}${var.container_name}"
     storage_authentication_type = "SystemAssignedIdentity"
     runtime_name = "python"
-    runtime_version = "3.11"
+    runtime_version = "3.13"
     maximum_instance_count = 40
     instance_memory_in_mb = 2048
     tags = var.tags

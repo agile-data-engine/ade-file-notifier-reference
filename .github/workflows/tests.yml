@@ -1,0 +1,36 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Match the Function runtimes set in Terraform
+          - cloud: azure
+            python: "3.13"
+          - cloud: gcp
+            python: "3.12"
+    name: pytest (${{ matrix.cloud }})
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: |
+            functions/${{ matrix.cloud }}/requirements.txt
+            tests/requirements.txt
+      - run: pip install -r functions/${{ matrix.cloud }}/requirements.txt -r tests/requirements.txt
+      - run: pip check
+      - run: python -m pytest tests -q

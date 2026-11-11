@@ -10,13 +10,13 @@ Module for generating files and folders for Function App deployment. Files are c
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.11 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 4.21 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 5.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 4.21 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 5.0 |
 | <a name="provider_local"></a> [local](#provider\_local) | n/a |
 
 ## Modules
@@ -46,8 +46,7 @@ Module for generating files and folders for Function App deployment. Files are c
 | <a name="input_config_folder"></a> [config\_folder](#input\_config\_folder) | Local folder name for config files | `string` | n/a | yes |
 | <a name="input_config_prefix"></a> [config\_prefix](#input\_config\_prefix) | Target folder name for config files | `string` | n/a | yes |
 | <a name="input_function_folder"></a> [function\_folder](#input\_function\_folder) | Local folder name for function files | `string` | n/a | yes |
-| <a name="input_storage_account_name"></a> [storage\_account\_name](#input\_storage\_account\_name) | Notifier storage account name | `string` | n/a | yes |
-| <a name="input_storage_container_name"></a> [storage\_container\_name](#input\_storage\_container\_name) | Notifier storage container name | `string` | n/a | yes |
+| <a name="input_storage_container_id"></a> [storage\_container\_id](#input\_storage\_container\_id) | Notifier storage container id | `string` | n/a | yes |
 
 ## Outputs
 

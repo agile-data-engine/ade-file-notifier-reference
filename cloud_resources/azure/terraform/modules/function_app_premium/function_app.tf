@@ -3,8 +3,7 @@ module "function_files" {
     config_folder = var.config_folder
     config_prefix = var.config_prefix
     function_folder = var.function_folder
-    storage_account_name = var.storage_account_name
-    storage_container_name = var.container_name
+    storage_container_id = "${var.storage_account_id}/blobServices/default/containers/${var.container_name}"
 }
 
 data "archive_file" "function_archive" {
@@ -34,7 +33,7 @@ resource "azurerm_linux_function_app" "notifier" {
         application_insights_key = azurerm_application_insights.notifier.instrumentation_key
         vnet_route_all_enabled = true
         application_stack {
-            python_version = "3.11"
+            python_version = "3.13"
         }
         cors {
             # Allows functions to be triggered manually in Azure portal
