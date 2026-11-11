@@ -150,5 +150,5 @@ Steps:
 3. Update your copy of `/functions` to v0.3.0.
 4. Run `terraform init -upgrade` and `terraform plan`. Review the plan, and do not apply if resources are unexpectedly replaced or destroyed. Function code changes are expected.
 5. Run `terraform apply`.
-
+6. **Azure only:** redeploy the Function App code as described in [cloud_resources/azure/terraform/README.md](cloud_resources/azure/terraform/README.md#function-app-deployment) (`az functionapp deployment source config-zip ... --build-remote true`). Terraform changes the Python runtime but does not rebuild the deployed dependencies, so until you redeploy the functions fail to load with `No module named '_cffi_backend'`.
 To roll back, restore the previous ref, provider version and `/functions`. If `apply` has already run, also restore the previous state version.
