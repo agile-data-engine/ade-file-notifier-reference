@@ -11,13 +11,13 @@ Network module is usually left out, because networks are usually part of some ot
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.10 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 6.18 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 8.11 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | ~> 6.18 |
+| <a name="provider_google"></a> [google](#provider\_google) | ~> 8.11 |
 
 ## Modules
 
